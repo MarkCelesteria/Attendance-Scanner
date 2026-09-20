@@ -21,6 +21,17 @@ function ensureDecoder() {
   return true;
 }
 
+function debug(msg) {
+  let el = document.getElementById('scan-debug');
+  if (!el) {
+    el = document.createElement('p');
+    el.id = 'scan-debug';
+    el.style.cssText = 'margin:6px 0 0;font:12px/1.4 monospace;color:#64748b;word-break:break-all';
+    $('reader').parentElement.after(el);
+  }
+  el.textContent = msg;
+}
+
 /** Runs ~SCAN_FPS times a second; `busy` stops frames piling up on slow phones. */
 async function tick() {
   if (busy || !video || video.readyState < 2 || !video.videoWidth) return;
@@ -32,11 +43,13 @@ async function tick() {
     if (canvas.width !== cw || canvas.height !== ch) { canvas.width = cw; canvas.height = ch; }
     ctx.drawImage(video, sx, sy, cw, ch, 0, 0, cw, ch);
     const results = await window.ZXingWASM.readBarcodes(ctx.getImageData(0, 0, cw, ch), {
-      formats: FORMATS, tryHarder: true, maxNumberOfSymbols: 1,
+      formats: FORMATS, tryHarder: false, tryRotate: false, tryInvert: false, maxNumberOfSymbols: 1,
     });
+    frames++;
+    debug(`${vw}x${vh} · frames ${frames} · ${results.length ? 'found: ' + results[0].text : 'no code'}`);
     if (results.length && results[0].text && onCodeCb) onCodeCb(results[0].text);
   } catch (e) {
-    console.warn('decode error', e);
+    debug('decode error: ' + (e && e.message ? e.message : e));
   } finally {
     busy = false;
   }
@@ -60,6 +73,11 @@ export async function startScanner(onCode) {
     toast('Camera error: ' + (e && e.message ? e.message : e), 8000);
     return;
   }
+
+  stream.getVideoTracks()[0].addEventListener('ended', () => {
+    toast('Camera disconnected. Restarting…', 4000);
+    stopScanner().then(() => setTimeout(() => startScanner(onCode), 2000));
+  });
 
   video = document.createElement('video');
   video.setAttribute('playsinline', '');

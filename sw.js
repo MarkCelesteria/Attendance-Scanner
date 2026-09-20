@@ -8,7 +8,7 @@
    ========================================================================== */
 'use strict';
 
-const VERSION = 'v5';
+const VERSION = 'v1.0.5';
 const CACHE = `attendance-shell-${VERSION}`;
 
 // Relative URLs so this works from a GitHub Pages sub-path (/repo-name/).
@@ -30,7 +30,7 @@ const QR_LIB = 'https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-
 self.addEventListener('install', (event) => {
   event.waitUntil((async () => {
     const cache = await caches.open(CACHE);
-    await cache.addAll(SHELL);
+    await Promise.all(SHELL.map((u) => cache.add(new Request(u, { cache: 'reload' }))));
     try { await cache.add(QR_LIB); } catch (e) { /* cached later on first successful fetch */ }
     await self.skipWaiting();
   })());
@@ -57,7 +57,7 @@ self.addEventListener('fetch', (event) => {
     const cache = await caches.open(CACHE);
     const cached = await cache.match(req, { ignoreSearch: true });
 
-    const network = fetch(req)
+    const network = fetch(req, { cache: 'no-cache' })
       .then((res) => { if (res && res.ok) cache.put(req, res.clone()); return res; })
       .catch(() => null);
 
