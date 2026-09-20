@@ -8,7 +8,7 @@
    ========================================================================== */
 'use strict';
 
-const VERSION = 'v3';
+const VERSION = 'v4';
 const CACHE = `attendance-shell-${VERSION}`;
 
 // Relative URLs so this works from a GitHub Pages sub-path (/repo-name/).

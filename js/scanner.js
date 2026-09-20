@@ -32,6 +32,7 @@ export async function startScanner(onCode) {
       {
         fps: SCAN_FPS,
         qrbox: computeQrBox,
+        videoConstraints: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 } },
       },
       onCode,
       () => { /* per-frame "no code found" — intentionally ignored */ }
