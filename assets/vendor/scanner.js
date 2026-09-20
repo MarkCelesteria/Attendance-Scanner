@@ -1,3 +1,8 @@
+/**
+ * Camera scanner using zxing-wasm (the same C++ engine family Google uses),
+ * with our own small capture loop. Far more reliable on 1D barcodes than the
+ * html5-qrcode decoder, especially on low-resolution laptop webcams.
+ */
 import { SCAN_FPS } from './constants.js';
 import { state } from './state.js';
 import { $, toast } from './utils.js';
