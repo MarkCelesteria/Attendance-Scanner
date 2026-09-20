@@ -1,0 +1,63 @@
+/* ---------- Session toggle group ---------- */
+.session-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin-bottom: 14px; }
+.session-btn {
+  appearance: none; text-align: left; cursor: pointer; font: inherit;
+  background: var(--card); color: var(--ink); border: 2px solid var(--line);
+  border-radius: 12px; padding: 10px 14px; min-height: 60px; touch-action: manipulation;
+}
+.session-btn .s-name { display: block; font-weight: 700; font-size: 1.05rem; }
+.session-btn .s-col { display: block; font-size: .8rem; color: var(--ink-2); font-family: var(--mono); }
+.session-btn[aria-checked="true"] { background: var(--brand); border-color: var(--brand); color: #fff; }
+.session-btn[aria-checked="true"] .s-col { color: #B9C4E0; }
+
+/* ---------- Scanner ---------- */
+.scanner {
+  position: relative; background: #0B1226; border-radius: var(--radius); overflow: hidden;
+  min-height: 300px; margin-bottom: 14px;
+}
+#reader { width: 100%; }
+#reader video { width: 100% !important; height: auto !important; display: block; object-fit: cover; }
+.scanner-idle {
+  position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 14px; color: #C7D0E6; text-align: center; padding: 16px;
+}
+.scanner-idle p { margin: 0; }
+.scanner.is-live .scanner-idle { inset: auto 12px 12px auto; flex-direction: row; padding: 0; }
+.scanner.is-live .scanner-idle p { display: none; }
+.scanner.is-live .btn-xl { font-size: .9rem; padding: 8px 14px; min-height: 40px; background: rgba(255,255,255,.92); color: var(--ink); border-color: transparent; }
+
+/* ---------- Result card ---------- */
+.result {
+  border-radius: var(--radius); padding: 18px 18px 16px; margin-bottom: 14px;
+  border: 3px solid var(--line); background: var(--card);
+  transition: background-color .25s ease, border-color .25s ease, color .25s ease;
+}
+.result-status { margin: 0 0 4px; font-weight: 700; color: var(--ink-2); }
+.result-name { margin: 0 0 12px; font-size: clamp(1.9rem, 8vw, 3rem); line-height: 1.05; letter-spacing: -.02em; overflow-wrap: anywhere; }
+.result-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px 16px; margin: 0; }
+.result-meta dt { font-size: .85rem; color: var(--ink-2); }
+.result-meta dd { margin: 0; font-size: 1.35rem; font-weight: 700; overflow-wrap: anywhere; }
+.result-meta #result-id { font-family: var(--mono); }
+.result-foot { margin: 12px 0 0; font-size: .85rem; color: var(--ink-2); min-height: 1.2em; }
+
+.result.is-idle .result-name { font-size: 1.3rem; color: var(--ink-2); font-weight: 600; }
+.result.is-idle .result-meta { display: none; }
+
+/* Green flood on success */
+.result.is-ok { background: var(--ok); border-color: var(--ok); color: #fff; animation: pop .22s ease-out; }
+.result.is-ok .result-status, .result.is-ok .result-meta dt, .result.is-ok .result-foot { color: rgba(255,255,255,.88); }
+/* After the flash: calm "last scanned" state */
+.result.is-last { background: var(--ok-soft); border-color: var(--ok); }
+.result.is-last .result-status { color: var(--ok); }
+/* Not found */
+.result.is-error { background: var(--bad); border-color: var(--bad); color: #fff; animation: shake .3s; }
+.result.is-error .result-status, .result.is-error .result-foot { color: rgba(255,255,255,.9); }
+.result.is-error .result-meta { display: none; }
+
+@keyframes pop { from { transform: scale(.985); } to { transform: none; } }
+@keyframes shake { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+
+/* ---------- Manual entry ---------- */
+.manual { display: flex; gap: 10px; }
+.manual input { flex: 1; font-family: var(--mono); font-size: 1.1rem; }
+

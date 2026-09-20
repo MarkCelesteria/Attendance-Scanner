@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#14213D">
+  <meta name="description" content="Offline-capable attendance scanner that logs to Google Sheets.">
+  <title>Attendance Scanner</title>
+
+  <!-- All paths are RELATIVE so the app works under https://user.github.io/repo-name/ -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/setup.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+
+  <!-- =====================================================================
+       VIEW 1: FIRST-TIME / EDIT SETUP
+       ===================================================================== -->
+  <main id="view-setup" class="view" hidden>
+    <header class="setup-head">
+      <h1>Set up your attendance sheet</h1>
+      <p>Saved on this device only. You can change it later from the gear icon.</p>
+    </header>
+
+    <form id="setup-form" class="setup-form" novalidate autocomplete="off">
+      <fieldset>
+        <legend>Connection</legend>
+
+        <label for="cfg-url">Apps Script Web App URL</label>
+        <input id="cfg-url" type="url" inputmode="url" placeholder="https://script.google.com/macros/s/…/exec" required>
+
+        <label for="cfg-key">Access key <span class="opt">(optional)</span></label>
+        <input id="cfg-key" type="text" placeholder="Only if you set ACCESS_KEY in the script">
+      </fieldset>
+
+      <fieldset>
+        <legend>Sessions</legend>
+        <label for="cfg-sessions">Session names, in column order</label>
+        <input id="cfg-sessions" type="text" placeholder="Morning In, Morning Out, Afternoon In, Afternoon Out" required>
+        <p class="hint">Separate with commas. Each name gets its own timestamp column.</p>
+      </fieldset>
+
+      <fieldset>
+        <legend>Sheet columns</legend>
+        <div class="col-grid">
+          <div><label for="cfg-id">Student ID</label><input id="cfg-id" maxlength="3" value="A" required></div>
+          <div><label for="cfg-name">Name</label><input id="cfg-name" maxlength="3" value="B" required></div>
+          <div><label for="cfg-program">Program / Class</label><input id="cfg-program" maxlength="3" value="C" required></div>
+          <div><label for="cfg-year">Year level</label><input id="cfg-year" maxlength="3" value="D" required></div>
+          <div><label for="cfg-start">Timestamps start at</label><input id="cfg-start" maxlength="3" value="E" required></div>
+        </div>
+        <p id="mapping-preview" class="hint" aria-live="polite"></p>
+      </fieldset>
+
+      <details class="advanced">
+        <summary>Advanced</summary>
+        <label for="cfg-sheet">Sheet tab name <span class="opt">(blank = first tab)</span></label>
+        <input id="cfg-sheet" type="text" placeholder="Sheet1">
+        <label for="cfg-row">First student row</label>
+        <input id="cfg-row" type="number" min="1" value="2" inputmode="numeric">
+      </details>
+
+      <p id="setup-error" class="form-error" role="alert" hidden></p>
+
+      <div class="setup-actions">
+        <button id="btn-setup-save" type="submit" class="btn btn-primary">Save and download roster</button>
+        <button id="btn-setup-cancel" type="button" class="btn" hidden>Cancel</button>
+        <button id="btn-reset" type="button" class="btn btn-danger" hidden>Reset all data</button>
+      </div>
+    </form>
+  </main>
+
+  <!-- =====================================================================
+       VIEW 2: SCANNER DASHBOARD
+       ===================================================================== -->
+  <main id="view-dashboard" class="view" hidden>
+    <header class="topbar">
+      <div class="topbar-left">
+        <div id="sync-pill" class="pill pill-synced" role="status" aria-live="polite">
+          <span class="dot"></span><span id="sync-text">Cloud Synced</span>
+        </div>
+        <p id="roster-meta" class="roster-meta"></p>
+      </div>
+      <div class="topbar-right">
+        <button id="btn-refresh" class="icon-btn" title="Refresh roster" aria-label="Refresh roster">⟳</button>
+        <button id="btn-settings" class="icon-btn" title="Settings" aria-label="Settings">⚙</button>
+      </div>
+    </header>
+
+    <!-- Session selector: which timestamp column the next scan writes to -->
+    <section aria-label="Active session">
+      <div id="session-group" class="session-group" role="radiogroup" aria-label="Active session"></div>
+    </section>
+
+    <!-- Scanner -->
+    <section class="scanner" aria-label="Camera scanner">
+      <div id="reader"></div>
+      <div id="scanner-idle" class="scanner-idle">
+        <button id="btn-camera" class="btn btn-primary btn-xl">Start camera</button>
+        <p>Point at a barcode or QR code</p>
+      </div>
+    </section>
+
+    <!-- Scan result -->
+    <section id="result" class="result is-idle" aria-live="assertive">
+      <p id="result-status" class="result-status">Ready for the next scan</p>
+      <h2 id="result-name" class="result-name"></h2>
+      <dl class="result-meta">
+        <div><dt>ID</dt><dd id="result-id"></dd></div>
+        <div><dt>Program</dt><dd id="result-program"></dd></div>
+        <div><dt>Year</dt><dd id="result-year"></dd></div>
+      </dl>
+      <p id="result-foot" class="result-foot"></p>
+    </section>
+
+    <!-- Manual entry -->
+    <form id="manual-form" class="manual" autocomplete="off">
+      <label for="manual-id" class="sr-only">Student ID</label>
+      <input id="manual-id" type="text" inputmode="text" placeholder="Type a student ID" enterkeyhint="done">
+      <button type="submit" class="btn btn-primary">Record</button>
+    </form>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <!-- QR/barcode library. Cached by sw.js after first load so it works offline.
+       To self-host instead, download the file into this repo and change the src. -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js" defer></script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+/* ---------- Setup ---------- */
+.setup-head h1 { font-size: 1.6rem; margin: 8px 0 4px; letter-spacing: -.01em; }
+.setup-head p { margin: 0 0 16px; color: var(--ink-2); }
+.setup-form fieldset {
+  border: 1px solid var(--line); background: var(--card); border-radius: var(--radius);
+  padding: 14px 16px 16px; margin: 0 0 14px;
+}
+.setup-form legend { font-weight: 700; padding: 0 6px; }
+.setup-form label { display: block; font-weight: 600; margin: 12px 0 6px; }
+.setup-form label:first-of-type { margin-top: 4px; }
+.opt { font-weight: 400; color: var(--ink-2); }
+.hint { color: var(--ink-2); font-size: .9rem; margin: 8px 0 0; }
+.col-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
+.col-grid label { margin-top: 0 !important; font-size: .9rem; }
+.col-grid input { text-transform: uppercase; text-align: center; font-family: var(--mono); font-size: 1.2rem; font-weight: 700; }
+.advanced { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 16px 16px; margin-bottom: 14px; }
+.advanced summary { font-weight: 700; cursor: pointer; min-height: 32px; }
+.form-error { background: var(--bad-soft); color: var(--bad); border: 1px solid var(--bad); padding: 10px 12px; border-radius: 10px; font-weight: 600; }
+.setup-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.setup-actions .btn-primary { flex: 1 1 220px; }
+

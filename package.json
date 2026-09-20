@@ -1,0 +1,11 @@
+{
+  "name": "attendance-pwa",
+  "version": "1.0.0",
+  "description": "Offline-first barcode attendance scanner backed by Google Sheets. Static site for GitHub Pages.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node tests/backend.test.js",
+    "serve": "npx serve ."
+  }
+}

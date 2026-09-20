@@ -1,0 +1,49 @@
+/* ---------- Buttons & inputs ---------- */
+.btn {
+  appearance: none; border: 2px solid var(--ink); background: var(--card); color: var(--ink);
+  font: inherit; font-weight: 600; padding: 12px 18px; border-radius: 10px; cursor: pointer;
+  min-height: 48px; touch-action: manipulation;
+}
+.btn:active { transform: translateY(1px); }
+.btn-primary { background: var(--brand); color: #fff; }
+.btn-danger { border-color: var(--bad); color: var(--bad); }
+.btn-xl { font-size: 1.25rem; padding: 16px 28px; }
+.btn[disabled] { opacity: .55; cursor: progress; }
+
+input[type="text"], input[type="url"], input[type="number"], input:not([type]) {
+  width: 100%; font: inherit; padding: 12px 14px; min-height: 48px;
+  border: 2px solid var(--line); border-radius: 10px; background: #fff; color: var(--ink);
+}
+input:focus { border-color: var(--focus); outline: none; box-shadow: 0 0 0 3px rgba(43, 91, 255, .2); }
+
+.icon-btn {
+  appearance: none; border: 0; background: transparent; color: var(--ink);
+  font-size: 1.6rem; width: 48px; height: 48px; border-radius: 10px; cursor: pointer;
+}
+.icon-btn:hover { background: rgba(20, 33, 61, .08); }
+.icon-btn.is-spinning { animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ---------- Top bar & sync pill ---------- */
+.topbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
+.topbar-left { min-width: 0; }
+.topbar-right { display: flex; }
+.roster-meta { margin: 4px 2px 0; font-size: .8rem; color: var(--ink-2); }
+.pill {
+  display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px 7px 12px;
+  border-radius: 999px; font-weight: 700; font-size: .95rem; border: 2px solid currentColor;
+}
+.pill .dot { width: 10px; height: 10px; border-radius: 50%; background: currentColor; }
+.pill-synced  { color: var(--ok);   background: var(--ok-soft); }
+.pill-syncing { color: var(--warn); background: var(--warn-soft); }
+.pill-syncing .dot { animation: pulse 1s ease-in-out infinite; }
+.pill-offline { color: var(--bad);  background: var(--bad-soft); }
+@keyframes pulse { 50% { opacity: .25; } }
+
+/* ---------- Toast ---------- */
+.toast {
+  position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom)); transform: translateX(-50%);
+  background: var(--ink); color: #fff; padding: 12px 18px; border-radius: 10px; max-width: 90vw; z-index: 10;
+  font-weight: 600;
+}
+

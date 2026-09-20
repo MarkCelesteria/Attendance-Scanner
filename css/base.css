@@ -1,0 +1,46 @@
+/* ==========================================================================
+   Attendance Scanner — styles
+   Design notes:
+   - Light, high-contrast "clipboard" palette: readable in bright hallways.
+   - System fonts only (no network dependency, works offline).
+   - The result card is the one loud element: it floods green on a good scan.
+   ========================================================================== */
+
+:root {
+  --paper:   #EEF1F5;   /* page background */
+  --card:    #FFFFFF;
+  --ink:     #14213D;   /* primary text / brand navy */
+  --ink-2:   #4A5877;   /* secondary text */
+  --line:    #CBD3E1;
+  --brand:   #14213D;
+  --ok:      #12A150;   /* success flood */
+  --ok-soft: #DDF5E7;
+  --warn:    #B7791F;
+  --warn-soft:#FFF3D6;
+  --bad:     #C62F3E;
+  --bad-soft:#FBE3E6;
+  --focus:   #2B5BFF;
+  --radius:  14px;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--paper);
+  color: var(--ink);
+  font: 16px/1.45 var(--font);
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+[hidden] { display: none !important; }
+.view { max-width: 720px; margin: 0 auto; padding: 16px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
