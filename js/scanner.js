@@ -6,7 +6,8 @@ import { unlockAudio } from './audio.js';
 
 /** Rectangular viewfinder: only this region is decoded, far cheaper than full frames. */
 function computeQrBox(viewW, viewH) {
-  return { width: Math.floor(viewW * 0.9), height: Math.floor(Math.min(viewH * 0.8, viewW * 0.55)) };
+  const side = Math.floor(Math.min(viewW, viewH) * 0.9);
+  return { width: Math.floor(viewW * 0.9), height: side };
 }
 
 /** @param {(text: string) => void} onCode called for every decoded frame */
@@ -20,9 +21,8 @@ export async function startScanner(onCode) {
     const F = window.Html5QrcodeSupportedFormats;
     state.scanner = new window.Html5Qrcode('reader', {
       verbose: false,
+      useBarCodeDetectorIfSupported: false, 
       formatsToSupport: [F.CODE_128, F.CODE_39, F.CODE_93, F.EAN_13, F.EAN_8, F.UPC_A, F.ITF, F.CODABAR, F.QR_CODE],
-      // Uses the phone's native (hardware-accelerated) detector when available.
-      experimentalFeatures: { useBarCodeDetectorIfSupported: true },
     });
   }
 
@@ -32,8 +32,6 @@ export async function startScanner(onCode) {
       {
         fps: SCAN_FPS,
         qrbox: computeQrBox,
-        disableFlip: true,   // skip mirrored-frame decoding: halves the work
-        videoConstraints: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 } },
       },
       onCode,
       () => { /* per-frame "no code found" — intentionally ignored */ }
@@ -42,9 +40,9 @@ export async function startScanner(onCode) {
     $('scanner-idle').closest('.scanner').classList.add('is-live');
     $('btn-camera').textContent = 'Stop camera';
     requestWakeLock();
-  } catch {
+  } catch (e) {
     state.scanning = false;
-    toast('Camera unavailable. Allow camera access in your browser, or type IDs below.', 6000);
+    toast('Camera error: ' + (e && e.message ? e.message : e), 8000);
   }
 }
 

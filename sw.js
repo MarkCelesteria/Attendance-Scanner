@@ -8,7 +8,7 @@
    ========================================================================== */
 'use strict';
 
-const VERSION = 'v2';
+const VERSION = 'v3';
 const CACHE = `attendance-shell-${VERSION}`;
 
 // Relative URLs so this works from a GitHub Pages sub-path (/repo-name/).
@@ -16,6 +16,7 @@ const SHELL = [
   './',
   'index.html',
   'manifest.webmanifest',
+  'assets/vendor/html5-qrcode.min.js',
   'css/base.css', 'css/components.css', 'css/setup.css', 'css/dashboard.css',
   'js/main.js', 'js/constants.js', 'js/state.js', 'js/utils.js', 'js/db.js',
   'js/config.js', 'js/roster.js', 'js/audio.js', 'js/ui.js', 'js/sync.js',
