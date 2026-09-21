@@ -10,16 +10,55 @@ import { refreshPending } from './sync.js';
 import { clearRecent } from './history.js';
 import { showDashboard } from './dashboard.js';
 
-/** Live "Timestamps use columns E–H" preview under the column inputs. */
-export function renderMappingPreview() {
-  const n = $('cfg-sessions').value.split(',').map((s) => s.trim()).filter(Boolean).length;
-  const start = $('cfg-start').value.trim();
-  const el = $('mapping-preview');
-  if (!/^[A-Za-z]{1,3}$/.test(start) || !n) { el.textContent = ''; return; }
-  const a = colToIndex(start);
-  el.textContent = n === 1
-    ? `Timestamps will be written to column ${start.toUpperCase()}.`
-    : `${n} sessions will use columns ${start.toUpperCase()}–${indexToCol(a + n - 1)}, in the order listed.`;
+/** Column letter after the highest one already used (for the "+" button). */
+function nextColumn() {
+  const used = [...document.querySelectorAll('#session-rows .s-col, #cfg-id, #cfg-name, #cfg-program, #cfg-year')]
+    .map((el) => el.value.trim())
+    .filter((v) => /^[A-Za-z]{1,3}$/.test(v))
+    .map(colToIndex);
+  return indexToCol((used.length ? Math.max(...used) : 4) + 1);
+}
+
+function updateRemoveButtons() {
+  const rows = document.querySelectorAll('#session-rows .session-row');
+  rows.forEach((r) => { r.querySelector('.row-del').disabled = rows.length < 2; });
+}
+
+function addSessionRow(name = '', col = '') {
+  const row = document.createElement('div');
+  row.className = 'session-row';
+
+  const nameEl = document.createElement('input');
+  nameEl.type = 'text'; nameEl.className = 's-name'; nameEl.value = name;
+  nameEl.placeholder = 'e.g. Morning In'; nameEl.autocomplete = 'off';
+  nameEl.setAttribute('aria-label', 'Session name');
+
+  const colEl = document.createElement('input');
+  colEl.type = 'text'; colEl.className = 's-col'; colEl.value = col; colEl.maxLength = 3;
+  colEl.placeholder = 'E'; colEl.autocomplete = 'off';
+  colEl.setAttribute('aria-label', 'Column letter');
+
+  const del = document.createElement('button');
+  del.type = 'button'; del.className = 'row-del'; del.textContent = '×';
+  del.setAttribute('aria-label', 'Remove this session');
+
+  row.append(nameEl, colEl, del);
+  $('session-rows').appendChild(row);
+  updateRemoveButtons();
+  return nameEl;
+}
+
+function buildSessionRows(list) {
+  $('session-rows').textContent = '';
+  (list && list.length ? list : [{ name: '', col: 'E' }]).forEach((s) => addSessionRow(s.name, s.col));
+}
+
+export function initSessionEditor() {
+  $('btn-add-session').addEventListener('click', () => addSessionRow('', nextColumn()).focus());
+  $('session-rows').addEventListener('click', (e) => {
+    const b = e.target.closest('.row-del');
+    if (b && !b.disabled) { b.parentElement.remove(); updateRemoveButtons(); }
+  });
 }
 
 export function showSetup(isEditing) {
@@ -33,14 +72,12 @@ export function showSetup(isEditing) {
   const c = state.config;
   if (c) {
     $('cfg-url').value = c.scriptUrl;       $('cfg-key').value = c.accessKey || '';
-    $('cfg-sessions').value = c.sessions.join(', ');
     $('cfg-id').value = c.idCol;            $('cfg-name').value = c.nameCol;
     $('cfg-program').value = c.programCol;  $('cfg-year').value = c.yearCol;
-    $('cfg-start').value = c.startCol;
     $('cfg-sheet').value = c.sheetName || ''; $('cfg-row').value = c.firstRow;
     $('cfg-policy').value = c.timePolicy || 'earliest';
   }
-  renderMappingPreview();
+  buildSessionRows(c ? c.sessions : null);
 }
 
 export async function onSetupSubmit(ev) {

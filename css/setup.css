@@ -55,3 +55,21 @@
 .modal[open] { display: flex; flex-direction: column; }
 .modal-body { flex: 1 1 auto; min-height: 0; max-height: none; padding-bottom: 8px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
 .modal-actions { flex: none; padding: 12px 20px; border-top: 1px solid var(--line); background: var(--card); }
+
+/* ---------- Session rows ---------- */
+.session-head, .session-row { display: grid; grid-template-columns: 1fr 84px 40px; gap: 8px; align-items: center; }
+.session-head { font-size: .85rem; font-weight: 600; color: var(--ink-2); margin: 0 0 6px; }
+.session-head span:nth-child(2) { text-align: center; }
+.session-row { margin-bottom: 8px; }
+.session-row .s-col { text-align: center; text-transform: uppercase; font-family: var(--mono); font-weight: 700; font-size: 1.1rem; padding-left: 6px; padding-right: 6px; }
+.row-del {
+  width: 40px; height: 48px; border-radius: 10px; border: 2px solid var(--line);
+  background: var(--card); color: var(--ink-2); font-size: 1.3rem; line-height: 1; cursor: pointer;
+}
+.row-del:hover:not(:disabled) { border-color: var(--bad); color: var(--bad); }
+.row-del:disabled { opacity: .35; cursor: not-allowed; }
+.add-session {
+  display: block; width: 100%; min-height: 48px; border: 2px dashed var(--line); border-radius: 10px;
+  background: transparent; color: var(--ink); font-size: 1.6rem; font-weight: 700; cursor: pointer;
+}
+.add-session:hover, .add-session:focus-visible { border-color: var(--focus); color: var(--focus); outline: none; }

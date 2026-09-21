@@ -43,7 +43,7 @@ async function postBatch(batch) {
   const c = state.config;
   const payload = {
     key: c.accessKey || '',
-    config: { sheet: c.sheetName || '', idCol: c.idCol, startCol: c.startCol, sessions: c.sessions, firstRow: c.firstRow, timePolicy: c.timePolicy || 'earliest' },
+    config: { sheet: c.sheetName || '', idCol: c.idCol, sessions: c.sessions.map((s) => ({ name: s.name, col: s.col })), firstRow: c.firstRow, timePolicy: c.timePolicy || 'earliest' },
     entries: batch.map((e) => ({ qid: e.qid, id: e.id, session: e.session, ts: e.ts })),
   };
 

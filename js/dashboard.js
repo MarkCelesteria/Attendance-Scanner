@@ -10,7 +10,8 @@ export function showDashboard() {
   $('view-dashboard').hidden = false;
 
   const stored = localStorage.getItem(LS_ACTIVE);
-  state.activeSession = state.config.sessions.includes(stored) ? stored : state.config.sessions[0];
+  const names = state.config.sessions.map((s) => s.name);
+  state.activeSession = names.includes(stored) ? stored : names[0];
 
   renderSessions();
   renderRosterMeta();

@@ -1,15 +1,8 @@
-/** Small, dependency-free helpers. */
-
 export const $ = (id) => document.getElementById(id);
-
-/** IDs are compared trimmed + upper-cased so "s001 " matches "S001". */
 export const normalizeId = (v) => String(v == null ? '' : v).trim().toUpperCase();
-
-/** "A" -> 1, "Z" -> 26, "AA" -> 27 */
 export const colToIndex = (letters) =>
   letters.toUpperCase().split('').reduce((n, c) => n * 26 + c.charCodeAt(0) - 64, 0);
 
-/** 1 -> "A", 27 -> "AA" */
 export function indexToCol(n) {
   let s = '';
   while (n > 0) {

@@ -1,21 +1,20 @@
 /** Pure rendering: session buttons, sync pill, roster line, result card. */
 import { LS_ACTIVE, LS_ROSTER_T, FLASH_MS } from './constants.js';
 import { state } from './state.js';
-import { $, colToIndex, indexToCol, clockTime } from './utils.js';
+import { $, clockTime } from './utils.js';
 
 export function renderSessions() {
   const group = $('session-group');
   group.textContent = '';
-  const startIdx = colToIndex(state.config.startCol);
 
-  state.config.sessions.forEach((name, i) => {
+  state.config.sessions.forEach(({ name, col }) => {
     const b = document.createElement('button');
     b.type = 'button';
     b.className = 'session-btn';
     b.setAttribute('role', 'radio');
     b.setAttribute('aria-checked', String(name === state.activeSession));
     const n = document.createElement('span'); n.className = 's-name'; n.textContent = name;
-    const c = document.createElement('span'); c.className = 's-col';  c.textContent = `Column ${indexToCol(startIdx + i)}`;
+    const c = document.createElement('span'); c.className = 's-col'; c.textContent = `Column ${col}`;
     b.append(n, c);
     b.addEventListener('click', () => {
       state.activeSession = name;

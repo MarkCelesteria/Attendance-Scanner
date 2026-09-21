@@ -41,22 +41,21 @@
       </fieldset>
 
       <fieldset>
-        <legend>Sessions</legend>
-        <label for="cfg-sessions">Session names, in column order</label>
-        <input id="cfg-sessions" type="text" placeholder="Morning In, Morning Out, Afternoon In, Afternoon Out" required>
-        <p class="hint">Separate with commas. Each name gets its own timestamp column.</p>
-      </fieldset>
-
-      <fieldset>
         <legend>Sheet columns</legend>
         <div class="col-grid">
           <div><label for="cfg-id">Student ID</label><input id="cfg-id" maxlength="3" value="A" required></div>
           <div><label for="cfg-name">Name</label><input id="cfg-name" maxlength="3" value="B" required></div>
-          <div><label for="cfg-year">Year level</label><input id="cfg-year" maxlength="3" value="C" required></div>
           <div><label for="cfg-program">Program / Class</label><input id="cfg-program" maxlength="3" value="D" required></div>
-          <div><label for="cfg-start">Timestamps start at</label><input id="cfg-start" maxlength="3" value="E" required></div>
+          <div><label for="cfg-year">Year level</label><input id="cfg-year" maxlength="3" value="C" required></div>
         </div>
-        <p id="mapping-preview" class="hint" aria-live="polite"></p>
+      </fieldset>
+
+      <fieldset>
+        <legend>Sessions</legend>
+        <div class="session-head" aria-hidden="true"><span>Session name</span><span>Column</span><span></span></div>
+        <div id="session-rows"></div>
+        <button type="button" id="btn-add-session" class="add-session" aria-label="Add another session" title="Add another session">+</button>
+        <p class="hint">Type the sheet column where each session's time is saved.</p>
       </fieldset>
 
       <details class="advanced">

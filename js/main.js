@@ -10,7 +10,7 @@ import { startScanner, stopScanner } from './scanner.js';
 import { onCameraCode, onManualSubmit } from './scan.js';
 import { showDashboard } from './dashboard.js';
 import { initHelp } from './help.js';
-import { showSetup, renderMappingPreview, onSetupSubmit, onReset, onRefreshRoster } from './setup.js';
+import { showSetup, initSessionEditor, onSetupSubmit, onReset, onRefreshRoster } from './setup.js';
 
 function registerServiceWorker() {
   if ('serviceWorker' in navigator) {
@@ -21,7 +21,7 @@ function registerServiceWorker() {
 function bindEvents() {
   initHelp();
   $('setup-form').addEventListener('submit', onSetupSubmit);
-  ['cfg-sessions', 'cfg-start'].forEach((id) => $(id).addEventListener('input', renderMappingPreview));
+  initSessionEditor();
   $('btn-setup-cancel').addEventListener('click', showDashboard);
   $('btn-reset').addEventListener('click', onReset);
 
