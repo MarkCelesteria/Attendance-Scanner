@@ -1,4 +1,3 @@
-/** Background sync: upload queued scans to Apps Script (doPost) in batches. */
 import { SYNC_BATCH_SIZE } from './constants.js';
 import { state } from './state.js';
 import { toast } from './utils.js';
@@ -12,10 +11,6 @@ export async function refreshPending() {
   renderTables();
 }
 
-/**
- * Safe to call repeatedly: state.syncing prevents overlapping runs.
- * An entry leaves the queue only after the script acknowledges it.
- */
 export async function syncNow() {
   if (state.syncing || !navigator.onLine || !state.config) return;
   state.syncing = true; state.syncFailed = false;
@@ -27,7 +22,7 @@ export async function syncNow() {
       renderSyncPill();
       const results = await postBatch(batch);
       const acked = results.map((r) => r.qid);
-      if (!acked.length) throw new Error('No entries acknowledged');   // avoid a hot loop
+      if (!acked.length) throw new Error('No entries acknowledged');
       skipped += results.filter((r) => r.status === 'not_found' || r.status === 'bad_session').length;
       const done = new Set(results.filter((r) => r.status === 'written' || r.status === 'duplicate').map((r) => r.qid));
       addRecent(batch.filter((e) => done.has(e.qid)));
@@ -48,18 +43,26 @@ async function postBatch(batch) {
   const c = state.config;
   const payload = {
     key: c.accessKey || '',
-    // The script is stateless: it learns the layout from every request.
     config: { sheet: c.sheetName || '', idCol: c.idCol, startCol: c.startCol, sessions: c.sessions, firstRow: c.firstRow, timePolicy: c.timePolicy || 'earliest' },
     entries: batch.map((e) => ({ qid: e.qid, id: e.id, session: e.session, ts: e.ts })),
   };
-  // "text/plain" keeps this a CORS "simple request" (no preflight, which Apps Script can't answer).
-  const res = await fetch(c.scriptUrl, {
-    method: 'POST',
-    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-    body: JSON.stringify(payload),
-    redirect: 'follow',
-  });
-  const data = JSON.parse(await res.text());
+
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 30000);
+  let text;
+  try {
+    const res = await fetch(c.scriptUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload),
+      redirect: 'follow',
+      signal: ctrl.signal,
+    });
+    text = await res.text();
+  } finally {
+    clearTimeout(timer);
+  }
+  const data = JSON.parse(text);
   if (!data.ok) throw new Error(data.error || 'Script error');
   return data.results || [];
 }

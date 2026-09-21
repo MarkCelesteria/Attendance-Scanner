@@ -50,6 +50,7 @@ function bindEvents() {
 
 async function init() {
   registerServiceWorker();
+  if (navigator.storage && navigator.storage.persist) navigator.storage.persist();   // ask the browser not to evict saved scans
   bindEvents();
   state.config = loadConfig();
   try { state.roster = await loadRoster(); } catch (e) { console.warn('Roster load failed', e); }
