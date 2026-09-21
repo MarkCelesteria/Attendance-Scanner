@@ -1,34 +1,6 @@
-/**
- * ============================================================================
- * Attendance Sheet — Google Apps Script Web App
- * ----------------------------------------------------------------------------
- * Paste this whole file into the Apps Script editor attached to your Sheet
- * (Extensions → Apps Script), replacing Code.gs. Then Deploy → New deployment
- * → Web app → Execute as: Me, Who has access: Anyone.
- *
- * Endpoints
- *   GET  ?idCol=A&nameCol=B&programCol=C&yearCol=D&firstRow=2[&sheet=Tab][&key=…]
- *        → { ok, count, students: [{id, name, program, year}, …] }
- *   POST body (JSON, sent as text/plain to avoid CORS preflight):
- *        { key, config:{sheet,idCol,startCol,sessions[],firstRow},
- *          entries:[{qid,id,session,ts(ms epoch)}, …] }
- *        → { ok, results:[{qid,status}] }
- *        status: written | duplicate | not_found | bad_session
- *
- * The script is stateless: column layout and session names come from the app
- * with every request, so one script works for any sheet layout.
- * ============================================================================
- */
-
 const SETTINGS = {
-  // true  = a second scan for the same student + session replaces the first timestamp
-  // false = the FIRST timestamp is kept; later scans are reported as "duplicate"
   OVERWRITE_EXISTING: false,
-
-  // Format written into the cell (uses the spreadsheet's own time zone).
   TIMESTAMP_FORMAT: 'yyyy-MM-dd HH:mm:ss',
-
-  // Max time to wait if two devices sync at the same moment.
   LOCK_WAIT_MS: 30000,
 };
 
@@ -48,13 +20,16 @@ function doGet(e) {
     if (lastRow < firstRow) return json_({ ok: true, count: 0, students: [] });
 
     const n = lastRow - firstRow + 1;
-    const read = (col) => sheet.getRange(firstRow, col, n, 1).getValues();   // 4 bulk reads, not n×4
+    const read = (col) => sheet.getRange(firstRow, col, n, 1).getValues(); 
     const ids = read(idCol), names = read(nameCol), progs = read(progCol), years = read(yearCol);
+
+    const skip = dividerRows_(sheet, firstRow, n, idCol);  
 
     const students = [];
     for (let i = 0; i < n; i++) {
+      if (skip.has(i)) continue;                       
       const id = String(ids[i][0]).trim();
-      if (!id) continue;                                   // skip blank rows
+      if (!id) continue;                       
       students.push({
         id: id,
         name: String(names[i][0]).trim(),
@@ -82,7 +57,6 @@ function doPost(e) {
     const entries = Array.isArray(body.entries) ? body.entries : [];
     if (!entries.length) return json_({ ok: true, results: [] });
 
-    // Serialise writers so two phones syncing at once cannot clobber each other.
     lock.waitLock(SETTINGS.LOCK_WAIT_MS);
 
     const sheet = getSheet_(cfg.sheet);
@@ -92,7 +66,6 @@ function doPost(e) {
     const width = sessions.length;
     const tz = sheet.getParent().getSpreadsheetTimeZone();
 
-    // Label the timestamp columns (only fills EMPTY header cells).
     const headerRow = firstRow - 1;
     if (headerRow >= 1) {
       const hdr = sheet.getRange(headerRow, startCol, 1, width);
@@ -108,16 +81,14 @@ function doPost(e) {
     }
     const n = lastRow - firstRow + 1;
 
-    // Build ID -> row offset map ONCE (first occurrence wins). This guarantees we
-    // only ever update the existing student row and never create a new one.
     const idVals = sheet.getRange(firstRow, idCol, n, 1).getValues();
+    const skip = dividerRows_(sheet, firstRow, n, idCol); 
     const rowOf = new Map();
     for (let i = 0; i < n; i++) {
       const k = norm_(idVals[i][0]);
-      if (k && !rowOf.has(k)) rowOf.set(k, i);
+      if (k && !rowOf.has(k) && !skip.has(i)) rowOf.set(k, i);
     }
 
-    // Read the whole timestamp block, edit in memory, write it back in ONE call.
     const block = sheet.getRange(firstRow, startCol, n, width);
     const values = block.getValues();
     let dirty = false;
@@ -136,7 +107,6 @@ function doPost(e) {
         continue;
       }
 
-      // Use the time the student was SCANNED (en.ts), not the time we synced.
       values[row][col] = Utilities.formatDate(new Date(Number(en.ts)), tz, SETTINGS.TIMESTAMP_FORMAT);
       dirty = true;
       results.push({ qid: en.qid, status: 'written' });
@@ -175,6 +145,17 @@ function colIndex_(letters) {
   let n = 0;
   for (let i = 0; i < s.length; i++) n = n * 26 + (s.charCodeAt(i) - 64);
   return n;
+}
+
+function dividerRows_(sheet, firstRow, n, idCol) {
+  const skip = new Set();
+  const lastCol = Math.max(sheet.getLastColumn(), idCol);
+  sheet.getRange(firstRow, 1, n, lastCol).getMergedRanges().forEach((m) => {
+    if (m.getNumColumns() < 2) return;                                // ignore vertical-only merges
+    if (idCol < m.getColumn() || idCol > m.getLastColumn()) return;   // must cover the ID column
+    for (let r = m.getRow(); r <= m.getLastRow(); r++) skip.add(r - firstRow);
+  });
+  return skip;
 }
 
 const norm_ = (v) => String(v == null ? '' : v).trim().toUpperCase();
