@@ -3,7 +3,7 @@ import { $, clockTime, normalizeId } from './utils.js';
 import { latestQueue } from './db.js';
 
 const LS_RECENT = 'attendance.recent.v1';
-const MAX_ROWS = 10;
+const MAX_ROWS = 5;
 
 function loadRecent() {
   try { return JSON.parse(localStorage.getItem(LS_RECENT)) || []; } catch { return []; }

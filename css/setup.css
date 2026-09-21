@@ -50,3 +50,8 @@
 .key-help summary { cursor: pointer; font-weight: 600; }
 .key-help[open] summary { margin-bottom: 8px; }
 .key-help .steps { margin-top: 4px; }
+
+.modal { overflow: hidden; max-height: calc(100vh - 24px); max-height: calc(100dvh - 24px); }
+.modal[open] { display: flex; flex-direction: column; }
+.modal-body { flex: 1 1 auto; min-height: 0; max-height: none; padding-bottom: 8px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.modal-actions { flex: none; padding: 12px 20px; border-top: 1px solid var(--line); background: var(--card); }
