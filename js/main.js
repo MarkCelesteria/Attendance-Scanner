@@ -9,6 +9,7 @@ import { syncNow } from './sync.js';
 import { startScanner, stopScanner } from './scanner.js';
 import { onCameraCode, onManualSubmit } from './scan.js';
 import { showDashboard } from './dashboard.js';
+import { initHelp } from './help.js';
 import { showSetup, renderMappingPreview, onSetupSubmit, onReset, onRefreshRoster } from './setup.js';
 
 function registerServiceWorker() {
@@ -18,6 +19,7 @@ function registerServiceWorker() {
 }
 
 function bindEvents() {
+  initHelp();
   $('setup-form').addEventListener('submit', onSetupSubmit);
   ['cfg-sessions', 'cfg-start'].forEach((id) => $(id).addEventListener('input', renderMappingPreview));
   $('btn-setup-cancel').addEventListener('click', showDashboard);

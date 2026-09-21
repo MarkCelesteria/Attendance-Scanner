@@ -30,7 +30,10 @@
       <fieldset>
         <legend>Connection</legend>
 
-        <label for="cfg-url">Apps Script Web App URL</label>
+        <div class="label-row">
+          <label for="cfg-url">Apps Script Web App URL</label>
+          <button type="button" id="btn-help" class="help-btn" aria-label="How do I get this URL?" title="How do I get this URL?">?</button>
+        </div>
         <input id="cfg-url" type="url" inputmode="url" placeholder="https://script.google.com/macros/s/…/exec" required>
 
         <label for="cfg-key">Access key <span class="opt">(optional)</span></label>
@@ -141,6 +144,42 @@
     </div>
     
   </main>
+
+  <dialog id="help-modal" class="modal" aria-labelledby="help-title">
+    <div class="modal-body">
+      <h2 id="help-title">How to get your Web App URL</h2>
+      <ol class="steps">
+        <li>Open your Google Sheet. (Put headers in row 1 and one student per row starting at row 2 or simply change the property in advance setting).</li>
+        <li>Click <b>Extensions → Apps Script</b>.</li>
+        <li>
+          Select everything in the editor (Ctrl+A), delete it, then paste the script.
+          <div class="copy-row">
+            <button type="button" id="btn-copy-script" class="btn btn-primary btn-sm">Copy script (Code.gs)</button>
+            <span id="copy-msg" class="copy-msg" role="status" aria-live="polite"></span>
+          </div>
+        </li>
+        <li>Click the <b>Save</b> icon (or press Ctrl+S).</li>
+        <li>Click <b>Deploy → New deployment</b>. Next to "Select type", click the gear icon and choose <b>Web app</b>.</li>
+        <li>Set <b>Execute as: Me</b> and <b>Who has access: Anyone</b>, then click <b>Deploy</b>.</li>
+        <li>Click <b>Authorize access</b> and pick your Google account. If you see "Google hasn't verified this app", choose <b>Advanced → Go to (your project) → Allow</b>. This is normal for your own script.</li>
+        <li>Copy the <b>Web app URL</b> (it ends in <code>/exec</code>) and paste it into the URL field.</li>
+      </ol>
+      <details class="key-help">
+        <summary>Optional: protect it with an access key</summary>
+        <ol class="steps">
+          <li>In the Apps Script editor, click the gear icon (<b>Project Settings</b>) in the left sidebar.</li>
+          <li>Under <b>Script properties</b>, click <b>Add script property</b>.</li>
+          <li>Set <b>Property</b> to <code>ACCESS_KEY</code> (capital letters) and <b>Value</b> to a password you choose, then click <b>Save script properties</b>.</li>
+          <li>Type the same password into the <b>Access key</b> field in this app. Every device needs it.</li>
+        </ol>
+        <p class="hint">No redeploy needed. To change the key, update it in both places. To turn it off, delete the property and clear the field. It keeps strangers out, but don't reuse a real password.</p>
+      </details>
+      <p class="hint">Changed the script later? Use <b>Deploy → Manage deployments → Edit → New version</b>. The URL stays the same.</p>
+      <div class="modal-actions">
+        <button type="button" id="btn-help-close" class="btn">Close</button>
+      </div>
+    </div>
+  </dialog>
 
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 
