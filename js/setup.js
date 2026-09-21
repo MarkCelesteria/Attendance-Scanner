@@ -7,6 +7,7 @@ import { clearAllStores } from './db.js';
 import { stopScanner } from './scanner.js';
 import { renderRosterMeta } from './ui.js';
 import { refreshPending } from './sync.js';
+import { clearRecent } from './history.js';
 import { showDashboard } from './dashboard.js';
 
 /** Live "Timestamps use columns E–H" preview under the column inputs. */
@@ -74,6 +75,7 @@ export async function onReset() {
   if (!confirm(warn)) return;
   clearLocalSettings();
   await clearAllStores();
+  clearRecent();
   state.config = null; state.roster = new Map(); state.pending = 0;
   $('setup-form').reset();
   showSetup(false);

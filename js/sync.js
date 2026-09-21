@@ -4,10 +4,12 @@ import { state } from './state.js';
 import { toast } from './utils.js';
 import { queueCount, peekQueue, removeFromQueue } from './db.js';
 import { renderSyncPill } from './ui.js';
+import { addRecent, renderTables } from './history.js';
 
 export async function refreshPending() {
   try { state.pending = await queueCount(); } catch { /* ignore */ }
   renderSyncPill();
+  renderTables();
 }
 
 /**
@@ -27,6 +29,8 @@ export async function syncNow() {
       const acked = results.map((r) => r.qid);
       if (!acked.length) throw new Error('No entries acknowledged');   // avoid a hot loop
       skipped += results.filter((r) => r.status === 'not_found' || r.status === 'bad_session').length;
+      const done = new Set(results.filter((r) => r.status === 'written' || r.status === 'duplicate').map((r) => r.qid));
+      addRecent(batch.filter((e) => done.has(e.qid)));
       await removeFromQueue(acked);
       await refreshPending();
     }

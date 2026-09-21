@@ -1,10 +1,3 @@
-/**
- * IndexedDB layer.
- *   roster : keyPath "key" (normalised ID)  — the downloaded student list
- *   queue  : keyPath "qid" (auto-increment) — scans waiting to be uploaded
- * Scan-time lookups use the in-memory Map (state.roster) hydrated from here,
- * which keeps them far below 5 ms even with 5,000+ students.
- */
 import { DB_NAME, DB_VER } from './constants.js';
 
 let dbPromise = null;
@@ -28,7 +21,6 @@ function openDB() {
 const reqToPromise = (r) => new Promise((res, rej) => { r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); });
 const txDone = (t) => new Promise((res, rej) => { t.oncomplete = () => res(); t.onerror = () => rej(t.error); t.onabort = () => rej(t.error); });
 
-/** Replace the whole roster in ONE transaction (all-or-nothing). */
 export async function saveRoster(list) {
   const db = await openDB();
   const t = db.transaction('roster', 'readwrite');
@@ -57,7 +49,6 @@ export async function queueCount() {
   return reqToPromise(db.transaction('queue').objectStore('queue').count());
 }
 
-/** Oldest-first slice of the queue (IDB iterates by ascending key). */
 export async function peekQueue(limit) {
   const db = await openDB();
   return reqToPromise(db.transaction('queue').objectStore('queue').getAll(null, limit));
@@ -78,4 +69,17 @@ export async function clearAllStores() {
   t.objectStore('roster').clear();
   t.objectStore('queue').clear();
   await txDone(t);
+}
+
+export async function latestQueue(limit) {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const out = [];
+    const req = db.transaction('queue').objectStore('queue').openCursor(null, 'prev');
+    req.onsuccess = () => {
+      const cur = req.result;
+      if (cur && out.length < limit) { out.push(cur.value); cur.continue(); } else resolve(out);
+    };
+    req.onerror = () => reject(req.error);
+  });
 }

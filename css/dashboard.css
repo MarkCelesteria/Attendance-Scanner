@@ -67,3 +67,15 @@
   border: 3px solid rgba(255, 255, 255, .9); border-radius: 14px;
   box-shadow: 0 0 0 9999px rgba(0, 0, 0, .35); pointer-events: none;
 }
+
+/* ---------- Activity tables ---------- */
+.tables { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+@media (max-width: 560px) { .tables { grid-template-columns: 1fr; } }
+.tbl-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 14px; }
+.tbl-card h3 { margin: 0 0 8px; font-size: .95rem; }
+.tbl-card .more { font-weight: 400; font-size: .8rem; color: var(--warn); margin-left: 6px; }
+.tbl-card table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+.tbl-card th { text-align: left; font-size: .75rem; text-transform: uppercase; letter-spacing: .04em; color: var(--ink-2); padding: 4px 0; border-bottom: 1px solid var(--line); }
+.tbl-card td { padding: 5px 0; border-bottom: 1px solid var(--paper); font-family: var(--mono); }
+.tbl-card td:last-child, .tbl-card th:last-child { text-align: right; }
+.tbl-card td.empty { text-align: center; color: var(--ink-2); font-family: var(--font); padding: 12px 0; }
