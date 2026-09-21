@@ -4,8 +4,6 @@ const SETTINGS = {
   LOCK_WAIT_MS: 30000,
 };
 
-/* ============================ GET: roster ================================= */
-
 function doGet(e) {
   try {
     const p = (e && e.parameter) || {};
@@ -14,14 +12,18 @@ function doGet(e) {
     const sheet = getSheet_(p.sheet);
     const firstRow = toInt_(p.firstRow, 2);
     const idCol = colIndex_(p.idCol), nameCol = colIndex_(p.nameCol);
-    const progCol = colIndex_(p.programCol), yearCol = colIndex_(p.yearCol);
+    const optCol = (v) => (String(v || '').trim() ? colIndex_(v) : 0);
+    const progCol = optCol(p.programCol), yearCol = optCol(p.yearCol);
+    const collegeCol = optCol(p.collegeCol), genderCol = optCol(p.genderCol);
 
     const lastRow = sheet.getLastRow();
     if (lastRow < firstRow) return json_({ ok: true, count: 0, students: [] });
 
     const n = lastRow - firstRow + 1;
-    const read = (col) => sheet.getRange(firstRow, col, n, 1).getValues();
+    const read = (col) => (col ? sheet.getRange(firstRow, col, n, 1).getValues() : null);
     const ids = read(idCol), names = read(nameCol), progs = read(progCol), years = read(yearCol);
+    const colleges = read(collegeCol), genders = read(genderCol);
+    const cell = (grid, i) => (grid ? String(grid[i][0]).trim() : '');
 
     const skip = dividerRows_(sheet, firstRow, n, idCol);
 
@@ -32,9 +34,11 @@ function doGet(e) {
       if (!id) continue;
       students.push({
         id: id,
-        name: String(names[i][0]).trim(),
-        program: String(progs[i][0]).trim(),
-        year: String(years[i][0]).trim(),
+        name: cell(names, i),
+        program: cell(progs, i),
+        year: cell(years, i),
+        college: cell(colleges, i),
+        gender: cell(genders, i),
       });
     }
     return json_({ ok: true, count: students.length, students: students });
@@ -42,8 +46,6 @@ function doGet(e) {
     return json_({ ok: false, error: message_(err) });
   }
 }
-
-/* ========================== POST: attendance batch ======================== */
 
 function doPost(e) {
   const lock = LockService.getScriptLock();
@@ -137,8 +139,6 @@ function doPost(e) {
     try { lock.releaseLock(); } catch (ignore) {  }
   }
 }
-
-/* ================================ Helpers ================================= */
 
 function authorize_(provided) {
   const expected = PropertiesService.getScriptProperties().getProperty('ACCESS_KEY');

@@ -69,8 +69,12 @@ export function showResult(kind, student, extra) {
     $('result-status').textContent = `${state.activeSession} recorded at ${clockTime()}`;
     $('result-name').textContent = student.name || '(no name)';
     $('result-id').textContent = student.id;
-    $('result-program').textContent = student.program || '—';
-    $('result-year').textContent = student.year || '—';
+    const cfg = state.config;
+    const field = (key, col, value) => { $('fld-' + key).hidden = !col; $('result-' + key).textContent = value || '—'; };
+    field('program', cfg.programCol, student.program);
+    field('year', cfg.yearCol, student.year);
+    field('college', cfg.collegeCol, student.college);
+    field('gender', cfg.genderCol, student.gender);
     $('result-foot').textContent = extra || '';
     state.flashTimer = setTimeout(() => { r.classList.remove('is-ok'); r.classList.add('is-last'); }, FLASH_MS);
   } else {

@@ -30,19 +30,29 @@ export function readForm() {
   const scriptUrl = val('cfg-url');
   if (!/^https:\/\//i.test(scriptUrl)) throw new Error('Enter the full Web App URL (it starts with https://).');
 
-  const infoCols = {
-    idCol: val('cfg-id'), nameCol: val('cfg-name'), programCol: val('cfg-program'), yearCol: val('cfg-year'),
-  };
-  const infoLabels = { idCol: 'Student ID', nameCol: 'Name', programCol: 'Program', yearCol: 'Year level' };
-  for (const [k, v] of Object.entries(infoCols)) {
-    if (!colRe.test(v)) throw new Error('Column letters must be 1–3 letters, like A or AB.');
-    infoCols[k] = v.toUpperCase();
-  }
+  const infoDefs = [
+    ['idCol', 'cfg-id', 'Student ID', true],
+    ['nameCol', 'cfg-name', 'Name', true],
+    ['programCol', 'cfg-program', 'Program', false],
+    ['yearCol', 'cfg-year', 'Year level', false],
+    ['collegeCol', 'cfg-college', 'College', false],
+    ['genderCol', 'cfg-gender', 'Gender', false],
+  ];
+  const infoCols = {};
   const infoUsed = new Map();   // column index -> label
-  for (const [k, v] of Object.entries(infoCols)) {
-    const idx = colToIndex(v);
-    if (infoUsed.has(idx)) throw new Error(`${infoLabels[k]} and ${infoUsed.get(idx)} both use column ${v}.`);
-    infoUsed.set(idx, infoLabels[k]);
+  for (const [key, id, label, required] of infoDefs) {
+    const v = val(id);
+    if (!v) {
+      if (required) throw new Error(`${label} column is required.`);
+      infoCols[key] = '';
+      continue;
+    }
+    if (!colRe.test(v)) throw new Error(`${label}: enter a column letter like A or AB.`);
+    const letters = v.toUpperCase();
+    const idx = colToIndex(letters);
+    if (infoUsed.has(idx)) throw new Error(`${label} and ${infoUsed.get(idx)} both use column ${letters}.`);
+    infoUsed.set(idx, label);
+    infoCols[key] = letters;
   }
 
   // One row per session: name on the left, sheet column on the right.

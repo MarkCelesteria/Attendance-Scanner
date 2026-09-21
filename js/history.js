@@ -23,7 +23,7 @@ export function clearRecent() {
 function programLabel(id) {
   const s = state.roster.get(normalizeId(id));
   if (!s) return '—';
-  return [s.year, s.program].filter(Boolean).join(' - ') || '—';
+  return [s.year, s.program, s.college].filter(Boolean).join(' - ') || '—';
 }
 
 function fill(tbodyId, rows, emptyText) {

@@ -45,9 +45,12 @@
         <div class="col-grid">
           <div><label for="cfg-id">Student ID</label><input id="cfg-id" maxlength="3" value="A" required></div>
           <div><label for="cfg-name">Name</label><input id="cfg-name" maxlength="3" value="B" required></div>
-          <div><label for="cfg-program">Program / Class</label><input id="cfg-program" maxlength="3" value="D" required></div>
-          <div><label for="cfg-year">Year level</label><input id="cfg-year" maxlength="3" value="C" required></div>
-        </div>
+            <div><label for="cfg-program">Program <span class="opt">(optional)</span></label><input id="cfg-program" maxlength="3" value="D" placeholder="none"></div>
+            <div><label for="cfg-year">Year level <span class="opt">(op tional)</span></label><input id="cfg-year" maxlength="3" value="C" placeholder="none"></div>
+            <div><label for="cfg-college">College <span class="opt">(optional)</span></label><input id="cfg-college" maxlength="3" placeholder="none"></div>
+            <div><label for="cfg-gender">Gender <span class="opt">(optional)</span></label><input id="cfg-gender" maxlength="3" placeholder="none"></div>
+          </div>
+          <p class="hint">Student ID and Name are required. Leave the others blank if your sheet doesn't have them.</p>
       </fieldset>
 
       <fieldset>
@@ -98,7 +101,6 @@
       </div>
     </header>
 
-    <!-- Session selector: which timestamp column the next scan writes to -->
     <section aria-label="Active session">
       <div id="session-group" class="session-group" role="radiogroup" aria-label="Active session"></div>
     </section>
@@ -118,8 +120,10 @@
       <h2 id="result-name" class="result-name"></h2>
       <dl class="result-meta">
         <div><dt>ID</dt><dd id="result-id"></dd></div>
-        <div><dt>Program</dt><dd id="result-program"></dd></div>
-        <div><dt>Year</dt><dd id="result-year"></dd></div>
+        <div id="fld-program"><dt>Program</dt><dd id="result-program"></dd></div>
+        <div id="fld-year"><dt>Year</dt><dd id="result-year"></dd></div>
+        <div id="fld-college"><dt>College</dt><dd id="result-college"></dd></div>
+        <div id="fld-gender"><dt>Gender</dt><dd id="result-gender"></dd></div>
       </dl>
       <p id="result-foot" class="result-foot"></p>
     </section>

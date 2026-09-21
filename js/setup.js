@@ -12,7 +12,7 @@ import { showDashboard } from './dashboard.js';
 
 /** Column letter after the highest one already used (for the "+" button). */
 function nextColumn() {
-  const used = [...document.querySelectorAll('#session-rows .s-col, #cfg-id, #cfg-name, #cfg-program, #cfg-year')]
+  const used = [...document.querySelectorAll('#session-rows .s-col, #cfg-id, #cfg-name, #cfg-program, #cfg-year, #cfg-college, #cfg-gender')]
     .map((el) => el.value.trim())
     .filter((v) => /^[A-Za-z]{1,3}$/.test(v))
     .map(colToIndex);
@@ -73,7 +73,8 @@ export function showSetup(isEditing) {
   if (c) {
     $('cfg-url').value = c.scriptUrl;       $('cfg-key').value = c.accessKey || '';
     $('cfg-id').value = c.idCol;            $('cfg-name').value = c.nameCol;
-    $('cfg-program').value = c.programCol;  $('cfg-year').value = c.yearCol;
+    $('cfg-program').value = c.programCol || '';  $('cfg-year').value = c.yearCol || '';
+    $('cfg-college').value = c.collegeCol || '';  $('cfg-gender').value = c.genderCol || '';
     $('cfg-sheet').value = c.sheetName || ''; $('cfg-row').value = c.firstRow;
     $('cfg-policy').value = c.timePolicy || 'earliest';
   }

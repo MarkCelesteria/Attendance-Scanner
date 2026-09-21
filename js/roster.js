@@ -7,7 +7,8 @@ import { saveRoster, loadRoster } from './db.js';
 /** Fetch students, replace the local roster, refresh the in-memory Map. */
 export async function downloadRoster(cfg) {
   const q = new URLSearchParams({
-    idCol: cfg.idCol, nameCol: cfg.nameCol, programCol: cfg.programCol, yearCol: cfg.yearCol,
+    idCol: cfg.idCol, nameCol: cfg.nameCol, programCol: cfg.programCol || '', yearCol: cfg.yearCol || '',
+    collegeCol: cfg.collegeCol || '', genderCol: cfg.genderCol || '',
     firstRow: String(cfg.firstRow), sheet: cfg.sheetName || '', key: cfg.accessKey || '',
   });
   const url = cfg.scriptUrl + (cfg.scriptUrl.includes('?') ? '&' : '?') + q.toString();
@@ -20,11 +21,17 @@ export async function downloadRoster(cfg) {
   let data;
   try { data = JSON.parse(text); }
   catch { throw new Error('The script did not return data. Deploy it as a Web App with access set to "Anyone".'); }
-  if (!data.ok) throw new Error(data.error || 'The script reported an error.');
+  if (!data.ok) {
+    if (/Invalid column letter: ""/.test(data.error || '')) {
+      throw new Error('Your Apps Script is out of date. Paste the newest Code.gs, then Deploy → Manage deployments → Edit → New version.');
+    }
+    throw new Error(data.error || 'The script reported an error.');
+  }
 
   const list = data.students.map((s) => ({
     key: normalizeId(s.id), id: String(s.id).trim(),
     name: String(s.name || '').trim(), program: String(s.program || '').trim(), year: String(s.year || '').trim(),
+    college: String(s.college || '').trim(), gender: String(s.gender || '').trim(),
   })).filter((s) => s.key);
 
   await saveRoster(list);
