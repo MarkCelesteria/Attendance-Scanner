@@ -12,7 +12,10 @@ function doGet(e) {
     const sheet = getSheet_(p.sheet);
     const firstRow = toInt_(p.firstRow, 2);
     const idCol = colIndex_(p.idCol), nameCol = colIndex_(p.nameCol);
-    const optCol = (v) => (String(v || '').trim() ? colIndex_(v) : 0);
+    const optCol = (v) => {
+      const s = String(v || '').trim();
+      return s && s.toLowerCase() !== 'none' ? colIndex_(s) : 0;
+    };
     const progCol = optCol(p.programCol), yearCol = optCol(p.yearCol);
     const collegeCol = optCol(p.collegeCol), genderCol = optCol(p.genderCol);
 
@@ -20,25 +23,25 @@ function doGet(e) {
     if (lastRow < firstRow) return json_({ ok: true, count: 0, students: [] });
 
     const n = lastRow - firstRow + 1;
-    const read = (col) => (col ? sheet.getRange(firstRow, col, n, 1).getValues() : null);
-    const ids = read(idCol), names = read(nameCol), progs = read(progCol), years = read(yearCol);
-    const colleges = read(collegeCol), genders = read(genderCol);
-    const cell = (grid, i) => (grid ? String(grid[i][0]).trim() : '');
+    const used = [idCol, nameCol, progCol, yearCol, collegeCol, genderCol].filter(Boolean);
+    const minCol = Math.min.apply(null, used), maxCol = Math.max.apply(null, used);
+    const block = sheet.getRange(firstRow, minCol, n, maxCol - minCol + 1).getValues();
+    const at = (i, col) => (col ? String(block[i][col - minCol]).trim() : '');
 
     const skip = dividerRows_(sheet, firstRow, n, idCol);
 
     const students = [];
     for (let i = 0; i < n; i++) {
       if (skip.has(i)) continue;
-      const id = String(ids[i][0]).trim();
+      const id = at(i, idCol);
       if (!id) continue;
       students.push({
         id: id,
-        name: cell(names, i),
-        program: cell(progs, i),
-        year: cell(years, i),
-        college: cell(colleges, i),
-        gender: cell(genders, i),
+        name: at(i, nameCol),
+        program: at(i, progCol),
+        year: at(i, yearCol),
+        college: at(i, collegeCol),
+        gender: at(i, genderCol),
       });
     }
     return json_({ ok: true, count: students.length, students: students });
@@ -76,9 +79,11 @@ function doPost(e) {
 
     const headerRow = firstRow - 1;
     if (headerRow >= 1) {
+      let widest = 1;
+      colOfSession.forEach((ci) => { if (ci > widest) widest = ci; });
+      const header = sheet.getRange(headerRow, 1, 1, widest).getValues()[0];
       colOfSession.forEach((ci, name) => {
-        const cell = sheet.getRange(headerRow, ci, 1, 1);
-        if (cell.getValues()[0][0] === '') cell.setValues([[name]]);
+        if (header[ci - 1] === '') sheet.getRange(headerRow, ci, 1, 1).setValues([[name]]);
       });
     }
 
@@ -96,14 +101,23 @@ function doPost(e) {
       if (k && !rowOf.has(k) && !skip.has(i)) rowOf.set(k, i);
     }
 
-    const colCache = new Map();
-    const columnOf = (ci) => {
-      if (!colCache.has(ci)) {
-        const range = sheet.getRange(firstRow, ci, n, 1);
-        colCache.set(ci, { range: range, values: range.getValues(), dirty: false });
-      }
-      return colCache.get(ci);
-    };
+    const usedCols = [];
+    entries.forEach((en) => {
+      const ci = colOfSession.get(en.session);
+      if (ci !== undefined && usedCols.indexOf(ci) < 0) usedCols.push(ci);
+    });
+    usedCols.sort((a, b) => a - b);
+    const runs = [];
+    usedCols.forEach((ci) => {
+      const last = runs[runs.length - 1];
+      if (last && ci === last.end + 1) last.end = ci; else runs.push({ start: ci, end: ci });
+    });
+    runs.forEach((run) => {
+      run.range = sheet.getRange(firstRow, run.start, n, run.end - run.start + 1);
+      run.values = run.range.getValues();
+      run.dirty = false;
+    });
+    const runOf = (ci) => runs.filter((r) => ci >= r.start && ci <= r.end)[0];
 
     const results = [];
     const policy = (cfg.timePolicy === 'latest' || cfg.timePolicy === 'earliest')
@@ -116,8 +130,8 @@ function doPost(e) {
       const row = rowOf.get(norm_(en.id));
       if (row === undefined) { results.push({ qid: en.qid, status: 'not_found' }); continue; }
 
-      const cd = columnOf(ci);
-      const existing = cd.values[row][0];
+      const run = runOf(ci), k = ci - run.start;
+      const existing = run.values[row][k];
       if (existing !== '' && existing !== null) {
         const oldSec = Math.floor(existingMs_(existing, tz) / 1000);
         const newSec = Math.floor(Number(en.ts) / 1000);
@@ -125,13 +139,12 @@ function doPost(e) {
         if (!replace) { results.push({ qid: en.qid, status: 'duplicate' }); continue; }
       }
 
-      cd.values[row][0] = Utilities.formatDate(new Date(Number(en.ts)), tz, SETTINGS.TIMESTAMP_FORMAT);
-      cd.dirty = true;
+      run.values[row][k] = Utilities.formatDate(new Date(Number(en.ts)), tz, SETTINGS.TIMESTAMP_FORMAT);
+      run.dirty = true;
       results.push({ qid: en.qid, status: 'written' });
     }
 
-    colCache.forEach((cd) => { if (cd.dirty) cd.range.setValues(cd.values); });
-    SpreadsheetApp.flush();
+    runs.forEach((run) => { if (run.dirty) run.range.setValues(run.values); });
     return json_({ ok: true, results: results });
   } catch (err) {
     return json_({ ok: false, error: message_(err) });
@@ -163,10 +176,8 @@ function colIndex_(letters) {
 
 function dividerRows_(sheet, firstRow, n, idCol) {
   const skip = new Set();
-  const lastCol = Math.max(sheet.getLastColumn(), idCol);
-  sheet.getRange(firstRow, 1, n, lastCol).getMergedRanges().forEach((m) => {
+  sheet.getRange(firstRow, idCol, n, 1).getMergedRanges().forEach((m) => {
     if (m.getNumColumns() < 2) return;
-    if (idCol < m.getColumn() || idCol > m.getLastColumn()) return;
     for (let r = m.getRow(); r <= m.getLastRow(); r++) skip.add(r - firstRow);
   });
   return skip;
