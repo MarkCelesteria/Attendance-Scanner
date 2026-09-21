@@ -65,6 +65,11 @@
         <input id="cfg-sheet" type="text" placeholder="Sheet1">
         <label for="cfg-row">First student row</label>
         <input id="cfg-row" type="number" min="1" value="2" inputmode="numeric">
+        <label for="cfg-policy">If a student is scanned twice in the same session</label>
+        <select id="cfg-policy">
+          <option value="earliest">Keep the earliest time</option>
+          <option value="latest">Keep the latest time</option>
+        </select>
       </details>
 
       <p id="setup-error" class="form-error" role="alert" hidden></p>
@@ -149,7 +154,7 @@
     <div class="modal-body">
       <h2 id="help-title">How to get your Web App URL</h2>
       <ol class="steps">
-        <li>Open your Google Sheet. (Put headers in row 1 and one student per row starting at row 2 or simply change the property in advance setting).</li>
+        <li>Open your Google Sheet.</li>
         <li>Click <b>Extensions → Apps Script</b>.</li>
         <li>
           Select everything in the editor (Ctrl+A), delete it, then paste the script.

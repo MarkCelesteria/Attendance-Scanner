@@ -1,5 +1,5 @@
 const SETTINGS = {
-  OVERWRITE_EXISTING: false,
+  DEFAULT_TIME_POLICY: 'earliest',
   TIMESTAMP_FORMAT: 'yyyy-MM-dd HH:mm:ss',
   LOCK_WAIT_MS: 30000,
 };
@@ -94,6 +94,9 @@ function doPost(e) {
     let dirty = false;
     const results = [];
 
+    const policy = (cfg.timePolicy === 'latest' || cfg.timePolicy === 'earliest')
+      ? cfg.timePolicy : SETTINGS.DEFAULT_TIME_POLICY;
+
     for (const en of entries) {
       const col = sessions.indexOf(en.session);
       if (col < 0) { results.push({ qid: en.qid, status: 'bad_session' }); continue; }
@@ -102,9 +105,11 @@ function doPost(e) {
       if (row === undefined) { results.push({ qid: en.qid, status: 'not_found' }); continue; }
 
       const existing = values[row][col];
-      if (existing !== '' && existing !== null && !SETTINGS.OVERWRITE_EXISTING) {
-        results.push({ qid: en.qid, status: 'duplicate' });
-        continue;
+      if (existing !== '' && existing !== null) {
+        const oldSec = Math.floor(existingMs_(existing, tz) / 1000);
+        const newSec = Math.floor(Number(en.ts) / 1000);
+        const replace = !isNaN(oldSec) && (policy === 'latest' ? newSec > oldSec : newSec < oldSec);
+        if (!replace) { results.push({ qid: en.qid, status: 'duplicate' }); continue; }
       }
 
       values[row][col] = Utilities.formatDate(new Date(Number(en.ts)), tz, SETTINGS.TIMESTAMP_FORMAT);
@@ -156,6 +161,15 @@ function dividerRows_(sheet, firstRow, n, idCol) {
     for (let r = m.getRow(); r <= m.getLastRow(); r++) skip.add(r - firstRow);
   });
   return skip;
+}
+
+function existingMs_(v, tz) {
+  if (v instanceof Date) return v.getTime();
+  const s = String(v).trim();
+  if (/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(s)) {
+    try { return Utilities.parseDate(s, tz, 'yyyy-MM-dd HH:mm:ss').getTime(); } catch (e) { /* fall through */ }
+  }
+  return NaN;
 }
 
 const norm_ = (v) => String(v == null ? '' : v).trim().toUpperCase();

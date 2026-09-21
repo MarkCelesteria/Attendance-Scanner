@@ -51,5 +51,6 @@ export function readForm() {
   const firstRow = parseInt(val('cfg-row'), 10);
   if (!(firstRow >= 1)) throw new Error('First student row must be 1 or higher.');
 
-  return { scriptUrl, accessKey: val('cfg-key'), sessions, ...cols, sheetName: val('cfg-sheet'), firstRow };
+  return { scriptUrl, accessKey: val('cfg-key'), sessions, ...cols, sheetName: val('cfg-sheet'), firstRow,
+    timePolicy: val('cfg-policy') === 'latest' ? 'latest' : 'earliest' };
 }

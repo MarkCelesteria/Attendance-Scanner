@@ -38,6 +38,7 @@ export function showSetup(isEditing) {
     $('cfg-program').value = c.programCol;  $('cfg-year').value = c.yearCol;
     $('cfg-start').value = c.startCol;
     $('cfg-sheet').value = c.sheetName || ''; $('cfg-row').value = c.firstRow;
+    $('cfg-policy').value = c.timePolicy || 'earliest';
   }
   renderMappingPreview();
 }

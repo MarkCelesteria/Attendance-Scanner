@@ -49,7 +49,7 @@ async function postBatch(batch) {
   const payload = {
     key: c.accessKey || '',
     // The script is stateless: it learns the layout from every request.
-    config: { sheet: c.sheetName || '', idCol: c.idCol, startCol: c.startCol, sessions: c.sessions, firstRow: c.firstRow },
+    config: { sheet: c.sheetName || '', idCol: c.idCol, startCol: c.startCol, sessions: c.sessions, firstRow: c.firstRow, timePolicy: c.timePolicy || 'earliest' },
     entries: batch.map((e) => ({ qid: e.qid, id: e.id, session: e.session, ts: e.ts })),
   };
   // "text/plain" keeps this a CORS "simple request" (no preflight, which Apps Script can't answer).
