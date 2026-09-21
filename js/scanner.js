@@ -4,13 +4,12 @@ import { $, toast } from './utils.js';
 import { unlockAudio } from './audio.js';
 
 const FORMATS = ['Code128', 'Code39', 'Code93', 'EAN-13', 'EAN-8', 'UPC-A', 'ITF', 'Codabar', 'QRCode'];
-const CROP_W = 0.9;   // decode the centre 90% x 70% of the frame (matches the on-screen frame)
+const CROP_W = 0.9; 
 const CROP_H = 0.7;
 
 let stream = null, video = null, canvas = null, ctx = null, timer = null;
 let busy = false, decoderReady = false, onCodeCb = null;
 
-/** Point the engine at our locally hosted .wasm file (works offline). */
 function ensureDecoder() {
   if (decoderReady) return true;
   if (!window.ZXingWASM) return false;
@@ -21,18 +20,17 @@ function ensureDecoder() {
   return true;
 }
 
-function debug(msg) {
-  let el = document.getElementById('scan-debug');
-  if (!el) {
-    el = document.createElement('p');
-    el.id = 'scan-debug';
-    el.style.cssText = 'margin:6px 0 0;font:12px/1.4 monospace;color:#64748b;word-break:break-all';
-    $('reader').parentElement.after(el);
-  }
-  el.textContent = msg;
-}
+// function debug(msg) {
+//   let el = document.getElementById('scan-debug');
+//   if (!el) {
+//     el = document.createElement('p');
+//     el.id = 'scan-debug';
+//     el.style.cssText = 'margin:6px 0 0;font:12px/1.4 monospace;color:#64748b;word-break:break-all';
+//     $('reader').parentElement.after(el);
+//   }
+//   el.textContent = msg;
+// }
 
-/** Runs ~SCAN_FPS times a second; `busy` stops frames piling up on slow phones. */
 async function tick() {
   if (busy || !video || video.readyState < 2 || !video.videoWidth) return;
   busy = true;
@@ -45,11 +43,12 @@ async function tick() {
     const results = await window.ZXingWASM.readBarcodes(ctx.getImageData(0, 0, cw, ch), {
       formats: FORMATS, tryHarder: false, tryRotate: false, tryInvert: false, maxNumberOfSymbols: 1,
     });
-    frames++;
-    debug(`${vw}x${vh} · frames ${frames} · ${results.length ? 'found: ' + results[0].text : 'no code'}`);
+    // frames++;
+    // debug(`${vw}x${vh} · frames ${frames} · ${results.length ? 'found: ' + results[0].text : 'no code'}`);
     if (results.length && results[0].text && onCodeCb) onCodeCb(results[0].text);
   } catch (e) {
-    debug('decode error: ' + (e && e.message ? e.message : e));
+    // debug('decode error: ' + (e && e.message ? e.message : e));
+    console.warn('decode error', e);
   } finally {
     busy = false;
   }
@@ -60,14 +59,14 @@ export async function startScanner(onCode) {
   if (state.scanning) return;
   if (!ensureDecoder()) { toast('Scanner engine not loaded yet. Reload the page while online.', 5000); return; }
 
-  unlockAudio();   // browsers need a user gesture before audio can play
+  unlockAudio();
   onCodeCb = onCode;
 
   try {
     // "ideal" (not "exact") so laptops fall back to their webcam.
     stream = await navigator.mediaDevices.getUserMedia({
       audio: false,
-      video: { facingMode: 'environment', width: { ideal: 1920 }, height: { ideal: 1080 } },
+      video: { facingMode: 'environment', width: { ideal: 640 }, height: { ideal: 480 }, frameRate: { ideal: 10, max: 15 } },
     });
   } catch (e) {
     toast('Camera error: ' + (e && e.message ? e.message : e), 8000);
