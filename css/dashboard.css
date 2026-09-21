@@ -79,3 +79,4 @@
 .tbl-card td { padding: 5px 0; border-bottom: 1px solid var(--paper); font-family: var(--mono); }
 .tbl-card td:last-child, .tbl-card th:last-child { text-align: right; }
 .tbl-card td.empty { text-align: center; color: var(--ink-2); font-family: var(--font); padding: 12px 0; }
+.tbl-card td:nth-child(2) { font-family: var(--font); }

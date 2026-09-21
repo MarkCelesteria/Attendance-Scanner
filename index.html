@@ -7,7 +7,6 @@
   <meta name="description" content="Offline-capable attendance scanner that logs to Google Sheets.">
   <title>Attendance Scanner</title>
 
-  <!-- All paths are RELATIVE so the app works under https://user.github.io/repo-name/ -->
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="assets/icons/icon-192.png">
   <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
@@ -50,8 +49,8 @@
         <div class="col-grid">
           <div><label for="cfg-id">Student ID</label><input id="cfg-id" maxlength="3" value="A" required></div>
           <div><label for="cfg-name">Name</label><input id="cfg-name" maxlength="3" value="B" required></div>
-          <div><label for="cfg-program">Program / Class</label><input id="cfg-program" maxlength="3" value="C" required></div>
-          <div><label for="cfg-year">Year level</label><input id="cfg-year" maxlength="3" value="D" required></div>
+          <div><label for="cfg-year">Year level</label><input id="cfg-year" maxlength="3" value="C" required></div>
+          <div><label for="cfg-program">Program / Class</label><input id="cfg-program" maxlength="3" value="D" required></div>
           <div><label for="cfg-start">Timestamps start at</label><input id="cfg-start" maxlength="3" value="E" required></div>
         </div>
         <p id="mapping-preview" class="hint" aria-live="polite"></p>
@@ -130,14 +129,14 @@
       <section class="tbl-card" aria-labelledby="pending-title">
         <h3 id="pending-title">Pending sync <span id="pending-more" class="more"></span></h3>
         <table>
-          <thead><tr><th>ID</th><th>Time</th></tr></thead>
+          <thead><tr><th>ID</th><th>Program</th><th>Time</th></tr></thead>
           <tbody id="tbl-pending"></tbody>
         </table>
       </section>
       <section class="tbl-card" aria-labelledby="recent-title">
         <h3 id="recent-title">Recently synced</h3>
         <table>
-          <thead><tr><th>ID</th><th>Time</th></tr></thead>
+          <thead><tr><th>ID</th><th>Program</th><th>Time</th></tr></thead>
           <tbody id="tbl-recent"></tbody>
         </table>
       </section>

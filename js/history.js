@@ -1,5 +1,5 @@
 import { state } from './state.js';
-import { $, clockTime } from './utils.js';
+import { $, clockTime, normalizeId } from './utils.js';
 import { latestQueue } from './db.js';
 
 const LS_RECENT = 'attendance.recent.v1';
@@ -20,6 +20,12 @@ export function clearRecent() {
   localStorage.removeItem(LS_RECENT);
 }
 
+function programLabel(id) {
+  const s = state.roster.get(normalizeId(id));
+  if (!s) return '—';
+  return [s.year, s.program].filter(Boolean).join(' - ') || '—';
+}
+
 function fill(tbodyId, rows, emptyText) {
   const body = $(tbodyId);
   if (!body) return;
@@ -27,15 +33,16 @@ function fill(tbodyId, rows, emptyText) {
   if (!rows.length) {
     const tr = document.createElement('tr');
     const td = document.createElement('td');
-    td.colSpan = 2; td.className = 'empty'; td.textContent = emptyText;
+    td.colSpan = 3; td.className = 'empty'; td.textContent = emptyText;
     tr.appendChild(td); body.appendChild(tr);
     return;
   }
   for (const r of rows) {
     const tr = document.createElement('tr');
     const id = document.createElement('td'); id.textContent = r.id;
+    const prog = document.createElement('td'); prog.textContent = programLabel(r.id);
     const time = document.createElement('td'); time.textContent = clockTime(new Date(r.ts));
-    tr.append(id, time); body.appendChild(tr);
+    tr.append(id, prog, time); body.appendChild(tr);
   }
 }
 
