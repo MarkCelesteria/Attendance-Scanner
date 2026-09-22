@@ -62,12 +62,16 @@ function doPost(e) {
     const entries = Array.isArray(body.entries) ? body.entries : [];
     if (!entries.length) return json_({ ok: true, results: [] });
 
-    const colOfSession = new Map();
+    const sessionInfo = new Map();
     if (typeof sessions[0] === 'string') {
       const startCol = colIndex_(cfg.startCol);
-      sessions.forEach((name, i) => colOfSession.set(name, startCol + i));
+      sessions.forEach((name, i) => sessionInfo.set(name, { col: startCol + i, supCol: 0, supName: '' }));
     } else {
-      sessions.forEach((s) => colOfSession.set(s.name, colIndex_(s.col)));
+      sessions.forEach((s) => sessionInfo.set(s.name, {
+        col: colIndex_(s.col),
+        supCol: s.supCol ? colIndex_(s.supCol) : 0,
+        supName: s.supName || '',
+      }));
     }
 
     lock.waitLock(SETTINGS.LOCK_WAIT_MS);
@@ -79,11 +83,20 @@ function doPost(e) {
 
     const headerRow = firstRow - 1;
     if (headerRow >= 1) {
+      const supColCounts = new Map();
+      sessionInfo.forEach((info) => { if (info.supCol) supColCounts.set(info.supCol, (supColCounts.get(info.supCol) || 0) + 1); });
+      const headerLabels = new Map();
+      sessionInfo.forEach((info, name) => {
+        if (!headerLabels.has(info.col)) headerLabels.set(info.col, name);
+        if (info.supCol && !headerLabels.has(info.supCol)) {
+          headerLabels.set(info.supCol, supColCounts.get(info.supCol) > 1 ? 'Supervisor' : name + ' Supervisor');
+        }
+      });
       let widest = 1;
-      colOfSession.forEach((ci) => { if (ci > widest) widest = ci; });
+      headerLabels.forEach((_, col) => { if (col > widest) widest = col; });
       const header = sheet.getRange(headerRow, 1, 1, widest).getValues()[0];
-      colOfSession.forEach((ci, name) => {
-        if (header[ci - 1] === '') sheet.getRange(headerRow, ci, 1, 1).setValues([[name]]);
+      headerLabels.forEach((label, col) => {
+        if (header[col - 1] === '') sheet.getRange(headerRow, col, 1, 1).setValues([[label]]);
       });
     }
 
@@ -102,10 +115,13 @@ function doPost(e) {
     }
 
     const usedCols = [];
+    const noteCol = (ci) => { if (ci && usedCols.indexOf(ci) < 0) usedCols.push(ci); };
     entries.forEach((en) => {
-      const ci = colOfSession.get(en.session);
-      if (ci !== undefined && usedCols.indexOf(ci) < 0) usedCols.push(ci);
-    });
+      const info = sessionInfo.get(en.session);
+      if (!info) return;
+      noteCol(info.col);
+      noteCol(info.supCol);
+    }); 
     usedCols.sort((a, b) => a - b);
     const runs = [];
     usedCols.forEach((ci) => {
@@ -124,13 +140,13 @@ function doPost(e) {
       ? cfg.timePolicy : SETTINGS.DEFAULT_TIME_POLICY;
 
     for (const en of entries) {
-      const ci = colOfSession.get(en.session);
-      if (ci === undefined) { results.push({ qid: en.qid, status: 'bad_session' }); continue; }
+      const info = sessionInfo.get(en.session);
+      if (!info) { results.push({ qid: en.qid, status: 'bad_session' }); continue; }
 
       const row = rowOf.get(norm_(en.id));
       if (row === undefined) { results.push({ qid: en.qid, status: 'not_found' }); continue; }
 
-      const run = runOf(ci), k = ci - run.start;
+      const run = runOf(info.col), k = info.col - run.start;
       const existing = run.values[row][k];
       if (existing !== '' && existing !== null) {
         const oldSec = Math.floor(existingMs_(existing, tz) / 1000);
@@ -141,6 +157,13 @@ function doPost(e) {
 
       run.values[row][k] = Utilities.formatDate(new Date(Number(en.ts)), tz, SETTINGS.TIMESTAMP_FORMAT);
       run.dirty = true;
+
+      if (info.supCol) {
+        const srun = runOf(info.supCol), sk = info.supCol - srun.start;
+        srun.values[row][sk] = info.supName;
+        srun.dirty = true;
+      }
+
       results.push({ qid: en.qid, status: 'written' });
     }
 

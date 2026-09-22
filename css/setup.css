@@ -92,3 +92,10 @@
 .switch input:checked + .slider::before { transform: translateX(20px); }
 .switch input:focus-visible + .slider { outline: 2px solid var(--focus); outline-offset: 2px; }
 .advanced input[type="text"], .advanced input[type="number"] { margin: 0 0 4px; }
+
+/* ---------- Per-session supervisor fields ---------- */
+.session-row { display: block; }
+.sr-main { display: grid; grid-template-columns: 1fr 84px 40px; gap: 8px; align-items: center; }
+.sr-sup { display: none; gap: 8px; margin-top: 6px; }
+#session-rows.show-sup .sr-sup { display: grid; grid-template-columns: 1fr 84px; }
+.sr-sup .sup-col { text-align: center; text-transform: uppercase; font-family: var(--mono); font-weight: 700; }

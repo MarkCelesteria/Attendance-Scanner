@@ -24,9 +24,12 @@ function updateRemoveButtons() {
   rows.forEach((r) => { r.querySelector('.row-del').disabled = rows.length < 2; });
 }
 
-function addSessionRow(name = '', col = '') {
+function addSessionRow(name = '', col = '', supName = '', supCol = '') {
   const row = document.createElement('div');
   row.className = 'session-row';
+
+  const main = document.createElement('div');
+  main.className = 'sr-main';
 
   const nameEl = document.createElement('input');
   nameEl.type = 'text'; nameEl.className = 's-name'; nameEl.value = name;
@@ -42,7 +45,24 @@ function addSessionRow(name = '', col = '') {
   del.type = 'button'; del.className = 'row-del'; del.textContent = '×';
   del.setAttribute('aria-label', 'Remove this session');
 
-  row.append(nameEl, colEl, del);
+  main.append(nameEl, colEl, del);
+
+  const sup = document.createElement('div');
+  sup.className = 'sr-sup';
+
+  const supNameEl = document.createElement('input');
+  supNameEl.type = 'text'; supNameEl.className = 'sup-name'; supNameEl.value = supName;
+  supNameEl.placeholder = 'Supervisor for this session'; supNameEl.autocomplete = 'off';
+  supNameEl.setAttribute('aria-label', 'Supervisor name for this session');
+
+  const supColEl = document.createElement('input');
+  supColEl.type = 'text'; supColEl.className = 'sup-col'; supColEl.value = supCol; supColEl.maxLength = 3;
+  supColEl.placeholder = 'Column'; supColEl.autocomplete = 'off';
+  supColEl.setAttribute('aria-label', 'Supervisor column letter for this session');
+
+  sup.append(supNameEl, document.createElement('span'), supColEl);
+
+  row.append(main, sup);
   $('session-rows').appendChild(row);
   updateRemoveButtons();
   return nameEl;
@@ -50,7 +70,7 @@ function addSessionRow(name = '', col = '') {
 
 function buildSessionRows(list) {
   $('session-rows').textContent = '';
-  (list && list.length ? list : [{ name: '', col: 'E' }]).forEach((s) => addSessionRow(s.name, s.col));
+  (list && list.length ? list : [{ name: '', col: 'E' }]).forEach((s) => addSessionRow(s.name, s.col, s.supName || '', s.supCol || ''));
 }
 
 export function initSessionEditor() {
@@ -61,7 +81,18 @@ export function initSessionEditor() {
   });
 }
 
+function updateSuperVisibility() {
+  const on = $('cfg-super-on').checked;
+  $('super-options').hidden = !on;
+  const perSession = on && $('cfg-super-per-session').checked;
+  $('single-super').hidden = perSession;
+  $('super-hint').hidden = !perSession;
+  $('session-rows').classList.toggle('show-sup', perSession);
+}
+
 export function initAdvancedToggles() {
+  $('cfg-super-on').addEventListener('change', updateSuperVisibility);
+  $('cfg-super-per-session').addEventListener('change', updateSuperVisibility);
   $('cfg-sheet-on').addEventListener('change', (e) => { $('cfg-sheet').hidden = !e.target.checked; });
   $('cfg-row-on').addEventListener('change', (e) => {
     $('cfg-row').hidden = !e.target.checked;
@@ -100,8 +131,12 @@ export function showSetup(isEditing) {
     $('cfg-row').hidden = c.firstRow === 2;
     $('cfg-policy-earliest').checked = (c.timePolicy || 'earliest') === 'earliest';
     updatePolicyLabel();
+    $('cfg-super-on').checked = (c.supervisorMode || 'off') !== 'off';
+    $('cfg-super-per-session').checked = c.supervisorMode === 'per-session';
+    $('cfg-super-name').value = c.supervisorName || '';
   }
   buildSessionRows(c ? c.sessions : null);
+  updateSuperVisibility();
 }
 
 export async function onSetupSubmit(ev) {

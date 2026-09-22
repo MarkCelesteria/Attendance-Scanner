@@ -80,6 +80,22 @@
           <span class="toggle-text" id="cfg-policy-label">Keep earliest scan<br><span class="opt" id="cfg-policy-hint">If a student is scanned twice in one session, the first time is kept.</span></span>
           <label class="switch"><input type="checkbox" id="cfg-policy-earliest" checked><span class="slider"></span></label>
         </div>
+
+        <div class="toggle-row">
+          <span class="toggle-text">Record supervisor / overseer<br><span class="opt">Off records nothing extra</span></span>
+          <label class="switch"><input type="checkbox" id="cfg-super-on"><span class="slider"></span></label>
+        </div>
+        <div id="super-options" hidden>
+          <div class="toggle-row">
+            <span class="toggle-text">Different supervisor per session<br><span class="opt">Off uses one name for everything</span></span>
+            <label class="switch"><input type="checkbox" id="cfg-super-per-session"><span class="slider"></span></label>
+          </div>
+          <div id="single-super">
+            <label for="cfg-super-name">Supervisor's name</label>
+            <input id="cfg-super-name" type="text" placeholder="e.g. Mrs. Santos">
+          </div>
+          <p class="hint" id="super-hint">Enter each session's supervisor next to that session above.</p>
+        </div>
       </details>
 
       <p id="setup-error" class="form-error" role="alert" hidden></p>

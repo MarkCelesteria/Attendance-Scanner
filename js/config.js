@@ -85,6 +85,34 @@ export function readForm() {
   }
   const sheetName = $('cfg-sheet-on').checked ? val('cfg-sheet') : '';
 
+  const superOn = $('cfg-super-on').checked;
+  let supervisorMode = 'off', supervisorName = '';
+  if (superOn) {
+    const perSession = $('cfg-super-per-session').checked;
+    supervisorMode = perSession ? 'per-session' : 'single';
+    if (perSession) {
+      rows.forEach((row, i) => {
+        const n = i + 1, label = sessions[i].name;
+        const supName = row.querySelector('.sup-name').value.trim();
+        const supCol = row.querySelector('.sup-col').value.trim().toUpperCase();
+        if (!supName) throw new Error(`Session ${n} (${label}): enter the supervisor's name, or turn off "Different supervisor per session".`);
+        if (!colRe.test(supCol)) throw new Error(`Session ${n} (${label}): enter a supervisor column letter.`);
+        if (seenCols.has(supCol)) throw new Error(`Column ${supCol} is used more than once.`);
+        seenCols.add(supCol);
+        const clash = infoUsed.get(colToIndex(supCol));
+        if (clash) throw new Error(`Session "${label}"'s supervisor column ${supCol} is the ${clash} column.`);
+        sessions[i].supName = supName;
+        sessions[i].supCol = supCol;
+      });
+    } else {
+      supervisorName = val('cfg-super-name');
+      if (!supervisorName) throw new Error("Enter the supervisor's name, or turn off supervisor tracking.");
+      const used = [...infoUsed.keys(), ...[...seenCols].map(colToIndex)];
+      const supCol = indexToCol(Math.max(...used) + 1);
+      sessions.forEach((s) => { s.supName = supervisorName; s.supCol = supCol; });
+    }
+  }
+
   return { scriptUrl, accessKey: val('cfg-key'), sessions, ...infoCols, sheetName, firstRow,
-    timePolicy: $('cfg-policy-earliest').checked ? 'earliest' : 'latest' };
+    timePolicy: $('cfg-policy-earliest').checked ? 'earliest' : 'latest', supervisorMode, supervisorName };
 }

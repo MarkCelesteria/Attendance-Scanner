@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION = 'v1.4.1';
+const VERSION = 'v1.4.4';
 const CACHE = `attendance-shell-${VERSION}`;
 
 const SHELL = [
@@ -42,7 +42,7 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(req.url);
   const isShell = url.origin === self.location.origin;
   const isQrLib = url.href === QR_LIB;
-  if (!isShell && !isQrLib) return;   // Apps Script, fonts, etc.: let the browser handle it
+  if (!isShell && !isQrLib) return;
 
   event.respondWith((async () => {
     const cache = await caches.open(CACHE);
