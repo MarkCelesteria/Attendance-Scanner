@@ -124,6 +124,7 @@ export function showSetup(isEditing) {
     $('cfg-super-on').checked = (c.timekeeperMode || 'off') !== 'off';
     $('cfg-super-per-session').checked = c.timekeeperMode === 'per-session';
     $('cfg-super-name').value = c.timekeeperName || '';
+    $('cfg-super-col').value = c.timekeeperMode === 'single' && c.sessions[0] ? c.sessions[0].supCol || '' : '';
   }
   buildSessionRows(c ? c.sessions : null);
   updateSuperVisibility();

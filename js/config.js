@@ -107,8 +107,12 @@ export function readForm() {
     } else {
       timekeeperName = val('cfg-super-name');
       if (!timekeeperName) throw new Error("Enter the timekeeper's name, or turn off timekeeper tracking.");
-      const used = [...infoUsed.keys(), ...[...seenCols].map(colToIndex)];
-      const supCol = indexToCol(Math.max(...used) + 1);
+      const supCol = val('cfg-super-col').toUpperCase();
+      if (!colRe.test(supCol)) throw new Error('Timekeeper column: enter a column letter like K or AB.');
+      if (seenCols.has(supCol)) throw new Error(`Column ${supCol} is used more than once.`);
+      seenCols.add(supCol);
+      const clash = infoUsed.get(colToIndex(supCol));
+      if (clash) throw new Error(`The timekeeper column ${supCol} is the ${clash} column.`);
       sessions.forEach((s) => { s.supName = timekeeperName; s.supCol = supCol; });
     }
   }

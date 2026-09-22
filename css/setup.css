@@ -12,6 +12,7 @@
 .hint { color: var(--ink-2); font-size: .9rem; margin: 8px 0 0; }
 .col-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
 .col-grid label { margin-top: 0 !important; font-size: .9rem; }
+.col-grid input { text-transform: uppercase; text-align: center; font-family: var(--mono); font-size: 1.2rem; font-weight: 700; }
 .advanced { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 0 16px; margin-bottom: 14px; }
 .advanced[open] { padding-bottom: 16px; }
 .advanced summary { line-height: 48px; min-height: 48px; margin: 0; padding: 0; font-weight: 700; cursor: pointer; }
@@ -104,3 +105,6 @@
 .switch input:checked + .slider::before { transform: translateX(20px); }
 .switch input:focus-visible + .slider { outline: 2px solid var(--focus); outline-offset: 2px; }
 .advanced input[type="text"], .advanced input[type="number"] { margin: 0 0 4px; }
+
+.single-super-grid { display: grid; grid-template-columns: 1fr 84px; gap: 10px; align-items: end; }
+#cfg-super-col { text-align: center; text-transform: uppercase; font-family: var(--mono); font-weight: 700; }

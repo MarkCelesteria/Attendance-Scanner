@@ -90,9 +90,15 @@
             <span class="toggle-text">Different timekeeper per session<br><span class="opt">Off uses one name for everything</span></span>
             <label class="switch"><input type="checkbox" id="cfg-super-per-session"><span class="slider"></span></label>
           </div>
-          <div id="single-super">
-            <label for="cfg-super-name">Timekeeper's name</label>
-            <input id="cfg-super-name" type="text" placeholder="e.g. Mrs. Santos">
+          <div id="single-super" class="single-super-grid">
+            <div>
+              <label for="cfg-super-name">Timekeeper's name</label>
+              <input id="cfg-super-name" type="text" placeholder="e.g. Mrs. Santos">
+            </div>
+            <div>
+              <label for="cfg-super-col">Column</label>
+              <input id="cfg-super-col" type="text" maxlength="3" placeholder="K">
+            </div>
           </div>
           <p class="hint" id="super-hint">Enter each session's timekeeper next to that session above.</p>
         </div>
