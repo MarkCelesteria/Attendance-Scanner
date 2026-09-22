@@ -1,4 +1,3 @@
-/** Entry point: wire events, restore saved state, choose the first view. */
 import { SYNC_INTERVAL_MS } from './constants.js';
 import { state } from './state.js';
 import { $ } from './utils.js';
@@ -10,7 +9,7 @@ import { startScanner, stopScanner } from './scanner.js';
 import { onCameraCode, onManualSubmit } from './scan.js';
 import { showDashboard } from './dashboard.js';
 import { initHelp } from './help.js';
-import { showSetup, initSessionEditor, onSetupSubmit, onReset, onRefreshRoster } from './setup.js';
+import { showSetup, initSessionEditor, initAdvancedToggles, onSetupSubmit, onReset, onRefreshRoster } from './setup.js';
 
 function registerServiceWorker() {
   if ('serviceWorker' in navigator) {
@@ -22,6 +21,7 @@ function bindEvents() {
   initHelp();
   $('setup-form').addEventListener('submit', onSetupSubmit);
   initSessionEditor();
+  initAdvancedToggles();
   $('btn-setup-cancel').addEventListener('click', showDashboard);
   $('btn-reset').addEventListener('click', onReset);
 
@@ -30,12 +30,10 @@ function bindEvents() {
   $('btn-camera').addEventListener('click', () => (state.scanning ? stopScanner() : startScanner(onCameraCode)));
   $('manual-form').addEventListener('submit', onManualSubmit);
 
-  // Connectivity: sync as soon as we're back online; update the pill immediately when we drop.
   window.addEventListener('online',  () => { renderSyncPill(); syncNow(); });
   window.addEventListener('offline', renderSyncPill);
   setInterval(syncNow, SYNC_INTERVAL_MS);
 
-  // Free the camera when the tab is hidden; resume when it returns.
   document.addEventListener('visibilitychange', async () => {
     if (document.hidden) {
       state.resumeScanOnShow = state.scanning;
@@ -50,7 +48,7 @@ function bindEvents() {
 
 async function init() {
   registerServiceWorker();
-  if (navigator.storage && navigator.storage.persist) navigator.storage.persist();   // ask the browser not to evict saved scans
+  if (navigator.storage && navigator.storage.persist) navigator.storage.persist();  
   bindEvents();
   state.config = loadConfig();
   try { state.roster = await loadRoster(); } catch (e) { console.warn('Roster load failed', e); }

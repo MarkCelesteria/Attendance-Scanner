@@ -77,9 +77,14 @@ export function readForm() {
     if (clash) throw new Error(`Session "${s.name}" uses column ${s.col}, which is the ${clash} column.`);
   }
 
-  const firstRow = parseInt(val('cfg-row'), 10);
-  if (!(firstRow >= 1)) throw new Error('First student row must be 1 or higher.');
+  const rowOn = $('cfg-row-on').checked;
+  let firstRow = 2;
+  if (rowOn) {
+    firstRow = parseInt(val('cfg-row'), 10);
+    if (!(firstRow >= 1)) throw new Error('First student row must be 1 or higher.');
+  }
+  const sheetName = $('cfg-sheet-on').checked ? val('cfg-sheet') : '';
 
-  return { scriptUrl, accessKey: val('cfg-key'), sessions, ...infoCols, sheetName: val('cfg-sheet'), firstRow,
-    timePolicy: val('cfg-policy') === 'latest' ? 'latest' : 'earliest' };
+  return { scriptUrl, accessKey: val('cfg-key'), sessions, ...infoCols, sheetName, firstRow,
+    timePolicy: $('cfg-policy-earliest').checked ? 'earliest' : 'latest' };
 }

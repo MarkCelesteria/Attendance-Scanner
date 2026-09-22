@@ -46,7 +46,7 @@
           <div><label for="cfg-id">Student ID</label><input id="cfg-id" maxlength="3" value="A" required></div>
           <div><label for="cfg-name">Name</label><input id="cfg-name" maxlength="3" value="B" required></div>
             <div><label for="cfg-program">Program <span class="opt">(optional)</span></label><input id="cfg-program" maxlength="3" value="D" placeholder="none"></div>
-            <div><label for="cfg-year">Year level <span class="opt">(op tional)</span></label><input id="cfg-year" maxlength="3" value="C" placeholder="none"></div>
+            <div><label for="cfg-year">Year level <span class="opt">(optional)</span></label><input id="cfg-year" maxlength="3" value="C" placeholder="none"></div>
             <div><label for="cfg-college">College <span class="opt">(optional)</span></label><input id="cfg-college" maxlength="3" placeholder="none"></div>
             <div><label for="cfg-gender">Gender <span class="opt">(optional)</span></label><input id="cfg-gender" maxlength="3" placeholder="none"></div>
           </div>
@@ -63,15 +63,23 @@
 
       <details class="advanced">
         <summary>Advanced</summary>
-        <label for="cfg-sheet">Sheet tab name <span class="opt">(blank = first tab)</span></label>
-        <input id="cfg-sheet" type="text" placeholder="Sheet1">
-        <label for="cfg-row">First student row</label>
-        <input id="cfg-row" type="number" min="1" value="2" inputmode="numeric">
-        <label for="cfg-policy">If a student is scanned twice in the same session</label>
-        <select id="cfg-policy">
-          <option value="earliest">Keep the earliest time</option>
-          <option value="latest">Keep the latest time</option>
-        </select>
+
+        <div class="toggle-row">
+          <span class="toggle-text">Custom sheet tab name<br><span class="opt">Off uses the first tab</span></span>
+          <label class="switch"><input type="checkbox" id="cfg-sheet-on"><span class="slider"></span></label>
+        </div>
+        <input id="cfg-sheet" type="text" placeholder="Sheet1" hidden>
+
+        <div class="toggle-row">
+          <span class="toggle-text">Custom student row start<br><span class="opt">Off starts at row 2</span></span>
+          <label class="switch"><input type="checkbox" id="cfg-row-on"><span class="slider"></span></label>
+        </div>
+        <input id="cfg-row" type="number" min="1" value="2" inputmode="numeric" hidden>
+
+        <div class="toggle-row">
+          <span class="toggle-text" id="cfg-policy-label">Keep earliest scan<br><span class="opt" id="cfg-policy-hint">If a student is scanned twice in one session, the first time is kept.</span></span>
+          <label class="switch"><input type="checkbox" id="cfg-policy-earliest" checked><span class="slider"></span></label>
+        </div>
       </details>
 
       <p id="setup-error" class="form-error" role="alert" hidden></p>
@@ -135,7 +143,7 @@
       <button type="submit" class="btn btn-primary">Record</button>
     </form>
 
-        <!-- Activity tables -->
+    <!-- Activity tables -->
     <div class="tables">
       <section class="tbl-card" aria-labelledby="pending-title">
         <h3 id="pending-title">Pending sync <span id="pending-more" class="more"></span></h3>

@@ -61,6 +61,23 @@ export function initSessionEditor() {
   });
 }
 
+export function initAdvancedToggles() {
+  $('cfg-sheet-on').addEventListener('change', (e) => { $('cfg-sheet').hidden = !e.target.checked; });
+  $('cfg-row-on').addEventListener('change', (e) => {
+    $('cfg-row').hidden = !e.target.checked;
+    if (!e.target.checked) $('cfg-row').value = 2;
+  });
+  $('cfg-policy-earliest').addEventListener('change', updatePolicyLabel);
+}
+
+function updatePolicyLabel() {
+  const earliest = $('cfg-policy-earliest').checked;
+  $('cfg-policy-label').firstChild.textContent = earliest ? 'Keep earliest scan' : 'Keep latest scan';
+  $('cfg-policy-hint').textContent = earliest
+    ? 'If a student is scanned twice in one session, the first time is kept.'
+    : 'If a student is scanned twice in one session, the most recent time is kept.';
+}
+
 export function showSetup(isEditing) {
   stopScanner();
   $('view-dashboard').hidden = true;
@@ -75,8 +92,14 @@ export function showSetup(isEditing) {
     $('cfg-id').value = c.idCol;            $('cfg-name').value = c.nameCol;
     $('cfg-program').value = c.programCol || '';  $('cfg-year').value = c.yearCol || '';
     $('cfg-college').value = c.collegeCol || '';  $('cfg-gender').value = c.genderCol || '';
-    $('cfg-sheet').value = c.sheetName || ''; $('cfg-row').value = c.firstRow;
-    $('cfg-policy').value = c.timePolicy || 'earliest';
+    $('cfg-sheet-on').checked = !!c.sheetName;
+    $('cfg-sheet').value = c.sheetName || '';
+    $('cfg-sheet').hidden = !c.sheetName;
+    $('cfg-row-on').checked = c.firstRow !== 2;
+    $('cfg-row').value = c.firstRow || 2;
+    $('cfg-row').hidden = c.firstRow === 2;
+    $('cfg-policy-earliest').checked = (c.timePolicy || 'earliest') === 'earliest';
+    updatePolicyLabel();
   }
   buildSessionRows(c ? c.sessions : null);
 }
