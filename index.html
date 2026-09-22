@@ -45,8 +45,8 @@
         <div class="col-grid">
           <div><label for="cfg-id">Student ID</label><input id="cfg-id" maxlength="3" value="A" required></div>
           <div><label for="cfg-name">Name</label><input id="cfg-name" maxlength="3" value="B" required></div>
-            <div><label for="cfg-program">Program <span class="opt">(optional)</span></label><input id="cfg-program" maxlength="3" value="D" placeholder="none"></div>
             <div><label for="cfg-year">Year level <span class="opt">(optional)</span></label><input id="cfg-year" maxlength="3" value="C" placeholder="none"></div>
+            <div><label for="cfg-program">Program <span class="opt">(optional)</span></label><input id="cfg-program" maxlength="3" value="D" placeholder="none"></div>
             <div><label for="cfg-college">College <span class="opt">(optional)</span></label><input id="cfg-college" maxlength="3" placeholder="none"></div>
             <div><label for="cfg-gender">Gender <span class="opt">(optional)</span></label><input id="cfg-gender" maxlength="3" placeholder="none"></div>
           </div>
@@ -82,19 +82,19 @@
         </div>
 
         <div class="toggle-row">
-          <span class="toggle-text">Record supervisor / overseer<br><span class="opt">Off records nothing extra</span></span>
+          <span class="toggle-text">Record timekeeper<br><span class="opt">Off records nothing extra</span></span>
           <label class="switch"><input type="checkbox" id="cfg-super-on"><span class="slider"></span></label>
         </div>
         <div id="super-options" hidden>
           <div class="toggle-row">
-            <span class="toggle-text">Different supervisor per session<br><span class="opt">Off uses one name for everything</span></span>
+            <span class="toggle-text">Different timekeeper per session<br><span class="opt">Off uses one name for everything</span></span>
             <label class="switch"><input type="checkbox" id="cfg-super-per-session"><span class="slider"></span></label>
           </div>
           <div id="single-super">
-            <label for="cfg-super-name">Supervisor's name</label>
+            <label for="cfg-super-name">Timekeeper's name</label>
             <input id="cfg-super-name" type="text" placeholder="e.g. Mrs. Santos">
           </div>
-          <p class="hint" id="super-hint">Enter each session's supervisor next to that session above.</p>
+          <p class="hint" id="super-hint">Enter each session's timekeeper next to that session above.</p>
         </div>
       </details>
 

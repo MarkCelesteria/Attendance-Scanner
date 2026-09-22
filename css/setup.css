@@ -68,6 +68,16 @@
 }
 .row-del:hover:not(:disabled) { border-color: var(--bad); color: var(--bad); }
 .row-del:disabled { opacity: .35; cursor: not-allowed; }
+.session-row { grid-template-rows: auto auto; align-items: stretch; }
+.session-row .s-name { grid-column: 1; grid-row: 1; }
+.session-row .s-col  { grid-column: 2; grid-row: 1; }
+.session-row .row-del { grid-column: 3; grid-row: 1 / span 2; width: 40px; height: auto; min-height: 48px; }
+.session-row .sup-name,
+.session-row .sup-col { display: none; grid-row: 2; }
+.session-row .sup-name { grid-column: 1; }
+.session-row .sup-col  { grid-column: 2; text-align: center; text-transform: uppercase; font-family: var(--mono); font-weight: 700; }
+#session-rows.show-sup .sup-name,
+#session-rows.show-sup .sup-col { display: block; }
 .add-session {
   display: block; width: 100%; min-height: 48px; border: 2px dashed var(--line); border-radius: 10px;
   background: transparent; color: var(--ink); font-size: 1.6rem; font-weight: 700; cursor: pointer;
@@ -92,10 +102,3 @@
 .switch input:checked + .slider::before { transform: translateX(20px); }
 .switch input:focus-visible + .slider { outline: 2px solid var(--focus); outline-offset: 2px; }
 .advanced input[type="text"], .advanced input[type="number"] { margin: 0 0 4px; }
-
-/* ---------- Per-session supervisor fields ---------- */
-.session-row { display: block; }
-.sr-main { display: grid; grid-template-columns: 1fr 84px 40px; gap: 8px; align-items: center; }
-.sr-sup { display: none; gap: 8px; margin-top: 6px; }
-#session-rows.show-sup .sr-sup { display: grid; grid-template-columns: 1fr 84px; }
-.sr-sup .sup-col { text-align: center; text-transform: uppercase; font-family: var(--mono); font-weight: 700; }

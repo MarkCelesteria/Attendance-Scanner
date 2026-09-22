@@ -89,7 +89,7 @@ function doPost(e) {
       sessionInfo.forEach((info, name) => {
         if (!headerLabels.has(info.col)) headerLabels.set(info.col, name);
         if (info.supCol && !headerLabels.has(info.supCol)) {
-          headerLabels.set(info.supCol, supColCounts.get(info.supCol) > 1 ? 'Supervisor' : name + ' Supervisor');
+          headerLabels.set(info.supCol, supColCounts.get(info.supCol) > 1 ? 'Timekeeper' : name + ' Timekeeper');
         }
       });
       let widest = 1;

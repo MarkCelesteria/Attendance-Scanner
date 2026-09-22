@@ -28,9 +28,6 @@ function addSessionRow(name = '', col = '', supName = '', supCol = '') {
   const row = document.createElement('div');
   row.className = 'session-row';
 
-  const main = document.createElement('div');
-  main.className = 'sr-main';
-
   const nameEl = document.createElement('input');
   nameEl.type = 'text'; nameEl.className = 's-name'; nameEl.value = name;
   nameEl.placeholder = 'e.g. Morning In'; nameEl.autocomplete = 'off';
@@ -45,24 +42,17 @@ function addSessionRow(name = '', col = '', supName = '', supCol = '') {
   del.type = 'button'; del.className = 'row-del'; del.textContent = '×';
   del.setAttribute('aria-label', 'Remove this session');
 
-  main.append(nameEl, colEl, del);
-
-  const sup = document.createElement('div');
-  sup.className = 'sr-sup';
-
   const supNameEl = document.createElement('input');
   supNameEl.type = 'text'; supNameEl.className = 'sup-name'; supNameEl.value = supName;
-  supNameEl.placeholder = 'Supervisor for this session'; supNameEl.autocomplete = 'off';
-  supNameEl.setAttribute('aria-label', 'Supervisor name for this session');
+  supNameEl.placeholder = 'Timekeeper for this session'; supNameEl.autocomplete = 'off';
+  supNameEl.setAttribute('aria-label', 'Timekeeper name for this session');
 
   const supColEl = document.createElement('input');
   supColEl.type = 'text'; supColEl.className = 'sup-col'; supColEl.value = supCol; supColEl.maxLength = 3;
   supColEl.placeholder = 'Column'; supColEl.autocomplete = 'off';
-  supColEl.setAttribute('aria-label', 'Supervisor column letter for this session');
+  supColEl.setAttribute('aria-label', 'Timekeeper column letter for this session');
 
-  sup.append(supNameEl, document.createElement('span'), supColEl);
-
-  row.append(main, sup);
+  row.append(nameEl, colEl, del, supNameEl, supColEl);
   $('session-rows').appendChild(row);
   updateRemoveButtons();
   return nameEl;
@@ -77,7 +67,7 @@ export function initSessionEditor() {
   $('btn-add-session').addEventListener('click', () => addSessionRow('', nextColumn()).focus());
   $('session-rows').addEventListener('click', (e) => {
     const b = e.target.closest('.row-del');
-    if (b && !b.disabled) { b.parentElement.remove(); updateRemoveButtons(); }
+    if (b && !b.disabled) { b.closest('.session-row').remove(); updateRemoveButtons(); }
   });
 }
 
@@ -131,9 +121,9 @@ export function showSetup(isEditing) {
     $('cfg-row').hidden = c.firstRow === 2;
     $('cfg-policy-earliest').checked = (c.timePolicy || 'earliest') === 'earliest';
     updatePolicyLabel();
-    $('cfg-super-on').checked = (c.supervisorMode || 'off') !== 'off';
-    $('cfg-super-per-session').checked = c.supervisorMode === 'per-session';
-    $('cfg-super-name').value = c.supervisorName || '';
+    $('cfg-super-on').checked = (c.timekeeperMode || 'off') !== 'off';
+    $('cfg-super-per-session').checked = c.timekeeperMode === 'per-session';
+    $('cfg-super-name').value = c.timekeeperName || '';
   }
   buildSessionRows(c ? c.sessions : null);
   updateSuperVisibility();
