@@ -14,7 +14,7 @@ const SHELL = [
   'js/config.js', 'js/roster.js', 'js/audio.js', 'js/ui.js', 'js/sync.js',
   'js/scanner.js', 'js/scan.js', 'js/dashboard.js', 'js/setup.js', 'js/history.js',
   'assets/icons/logo.png',
-  'assets/icons/icon-512.png',
+  'assets/icons/logo-2.png',
 ];
 const QR_LIB = 'https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js';
 
