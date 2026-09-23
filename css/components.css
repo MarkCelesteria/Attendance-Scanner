@@ -19,9 +19,11 @@ input:focus { border-color: var(--focus); outline: none; box-shadow: 0 0 0 3px r
 .icon-btn {
   appearance: none; border: 0; background: transparent; color: var(--ink);
   font-size: 1.6rem; width: 48px; height: 48px; border-radius: 10px; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
 }
 .icon-btn:hover { background: rgba(20, 33, 61, .08); }
 .icon-btn.is-spinning { animation: spin 1s linear infinite; }
+.icon-btn { display: inline-flex; align-items: center; justify-content: center; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
 /* ---------- Top bar & sync pill ---------- */
@@ -29,15 +31,11 @@ input:focus { border-color: var(--focus); outline: none; box-shadow: 0 0 0 3px r
 .topbar-left { min-width: 0; }
 .topbar-right { display: flex; }
 .roster-meta { margin: 4px 2px 0; font-size: .8rem; color: var(--ink-2); }
-.pill {
-  display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px 7px 12px;
-  border-radius: 999px; font-weight: 700; font-size: .95rem; border: 2px solid currentColor;
-}
-.pill .dot { width: 10px; height: 10px; border-radius: 50%; background: currentColor; }
-.pill-synced  { color: var(--ok);   background: var(--ok-soft); }
-.pill-syncing { color: var(--warn); background: var(--warn-soft); }
-.pill-syncing .dot { animation: pulse 1s ease-in-out infinite; }
-.pill-offline { color: var(--bad);  background: var(--bad-soft); }
+.pill { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; font-size: .95rem; color: var(--ink); }
+.pill .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--ink-2); flex: none; }
+.pill-synced  .dot { background: var(--ok); }
+.pill-syncing .dot { background: var(--warn); animation: pulse 1s ease-in-out infinite; }
+.pill-offline .dot { background: var(--bad); }
 @keyframes pulse { 50% { opacity: .25; } }
 
 /* ---------- Toast ---------- */

@@ -89,3 +89,17 @@
 #admin-table { width: 100%; border-collapse: collapse; font-size: .9rem; white-space: nowrap; }
 #admin-table th, #admin-table td { padding: 6px 10px; border-bottom: 1px solid var(--paper); text-align: left; }
 #admin-table thead th { position: sticky; top: 0; background: var(--card); border-bottom: 1px solid var(--line); }
+
+/* ---------- Admin split view ---------- */
+.dash-split { display: block; }
+.admin-panel {
+  margin-top: 16px; background: var(--card); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 14px 16px;
+}
+.admin-panel-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.admin-panel-head h2 { margin: 0; font-size: 1.1rem; }
+@media (min-width: 1024px) {
+  .dash-split { display: flex; gap: 20px; align-items: flex-start; }
+  .dash-main { flex: 1 1 0; min-width: 0; }
+  .admin-panel { flex: 0 0 420px; margin-top: 0; position: sticky; top: 12px; }
+}

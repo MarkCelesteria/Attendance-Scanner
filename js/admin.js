@@ -1,21 +1,26 @@
 import { state } from './state.js';
-import { $ } from './utils.js';
+import { $, toast } from './utils.js';
 import { downloadQrSheet } from './qrpdf.js';
+
+const MIN_WIDTH = 1024
 
 export function renderAdminButton() {
   const btn = $('btn-admin');
   if (btn) btn.hidden = !(state.config && state.config.adminEnabled !== false);
 }
 
-function resetModal() {
+function resetPanel() {
   $('admin-login-step').hidden = false;
   $('admin-table-step').hidden = true;
   $('admin-login-error').hidden = true;
   $('admin-key-input').value = '';
-  $('btn-admin-submit').hidden = false;
-  $('btn-admin-submit').disabled = false;
-  $('btn-admin-submit').textContent = 'Unlock';
   $('btn-admin-qrpdf').hidden = true;
+}
+
+function closePanel() {
+  $('admin-panel').hidden = true;
+  $('view-dashboard').classList.remove('admin-active');
+  resetPanel();
 }
 
 async function fetchAdminRoster(adminKey) {
@@ -85,7 +90,6 @@ async function onSubmit() {
     $('admin-table-step').hidden = false;
     $('btn-admin-qrpdf').hidden = false;
     $('btn-admin-qrpdf').onclick = () => downloadQrSheet(data.students);
-    btn.hidden = true;
   } catch (e) {
     $('admin-login-error').textContent = e.message;
     $('admin-login-error').hidden = false;
@@ -95,9 +99,13 @@ async function onSubmit() {
 }
 
 export function initAdmin() {
-  $('btn-admin').addEventListener('click', () => { resetModal(); $('admin-modal').showModal(); });
-  $('btn-admin-close').addEventListener('click', () => $('admin-modal').close());
-  $('admin-modal').addEventListener('click', (e) => { if (e.target === $('admin-modal')) $('admin-modal').close(); });
+  $('btn-admin').addEventListener('click', () => {
+    if (window.innerWidth < MIN_WIDTH) { toast('Admin view needs a wider screen — try a tablet or PC.', 5000); return; }
+    resetPanel();
+    $('admin-panel').hidden = false;
+    $('view-dashboard').classList.add('admin-active');
+  });
+  $('btn-admin-close').addEventListener('click', closePanel);
   $('btn-admin-submit').addEventListener('click', onSubmit);
   $('admin-key-input').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); onSubmit(); } });
 }

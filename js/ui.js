@@ -28,7 +28,7 @@ export function renderSessions() {
 export function renderRosterMeta() {
   const t = localStorage.getItem(LS_ROSTER_T);
   const when = t ? new Date(t).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' }) : 'never';
-  $('roster-meta').textContent = `${state.roster.size} students · roster updated ${when}`;
+  $('roster-meta').textContent = `${state.roster.size} students · updated ${when}`;
 }
 
 /** "Cloud Synced" / "Syncing... (X remaining)" / "Offline - X pending" */

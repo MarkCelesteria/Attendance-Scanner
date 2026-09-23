@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION = 'v1.5.7';
+const VERSION = 'v1.5.9';
 const CACHE = `attendance-shell-${VERSION}`;
 
 const SHELL = [
@@ -16,8 +16,8 @@ const SHELL = [
   'js/config.js', 'js/roster.js', 'js/audio.js', 'js/ui.js', 'js/sync.js',
   'js/scanner.js', 'js/scan.js', 'js/dashboard.js', 'js/setup.js', 'js/history.js',
   'js/admin.js', 'js/qrpdf.js',
-  'assets/icons/logo.png',
-  'assets/icons/logo-pwa.png',
+  'assets/icons/logo.png', 'assets/icons/logo-pwa.png',
+  'assets/icons/Settings.svg', 'assets/icons/Admin.svg', 'assets/icons/Refresh.svg',
 ];
 const QR_LIB = 'https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js';
 

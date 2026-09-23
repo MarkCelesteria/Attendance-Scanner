@@ -130,64 +130,102 @@
         <p id="roster-meta" class="roster-meta"></p>
       </div>
       <div class="topbar-right">
-        <button id="btn-refresh" class="icon-btn" title="Refresh roster" aria-label="Refresh roster">⟳</button>
-        <button id="btn-settings" class="icon-btn" title="Settings" aria-label="Settings">⚙</button>
-      </div>
-      <div class="topbar-right">
-        <button id="btn-admin" class="icon-btn" title="Admin view" aria-label="Admin view" hidden>🛡</button>
-        <button id="btn-refresh" class="icon-btn" title="Refresh roster" aria-label="Refresh roster">⟳</button>
-        <button id="btn-settings" class="icon-btn" title="Settings" aria-label="Settings">⚙</button>
+        <button id="btn-admin" class="icon-btn" title="Admin access" aria-label="Admin view" hidden>
+          <svg viewBox="0 -960 960 960" width="22" height="22" fill="currentColor"><path d="M722.5-297.5Q740-315 740-340t-17.5-42.5Q705-400 680-400t-42.5 17.5Q620-365 620-340t17.5 42.5Q655-280 680-280t42.5-17.5ZM680-160q31 0 57-14.5t42-38.5q-22-13-47-20t-52-7q-27 0-52 7t-47 20q16 24 42 38.5t57 14.5ZM480-80q-139-35-229.5-159.5T160-516v-244l320-120 320 120v227q-19-8-39-14.5t-41-9.5v-147l-240-90-240 90v188q0 47 12.5 94t35 89.5Q310-290 342-254t71 60q11 32 29 61t41 52q-1 0-1.5.5t-1.5.5Zm200 0q-83 0-141.5-58.5T480-280q0-83 58.5-141.5T680-480q83 0 141.5 58.5T880-280q0 83-58.5 141.5T680-80ZM480-494Z"/></svg>
+        </button>
+        <button id="btn-refresh" class="icon-btn" title="Refresh" aria-label="Refresh roster">
+          <svg viewBox="0 -960 960 960" width="22" height="22" fill="currentColor"><path d="M480-160q-134 0-227-93t-93-227q0-134 93-227t227-93q69 0 132 28.5T720-690v-110h80v280H520v-80h168q-32-56-87.5-88T480-720q-100 0-170 70t-70 170q0 100 70 170t170 70q77 0 139-44t87-116h84q-28 106-114 173t-196 67Z"/></svg>
+        </button>
+        <button id="btn-settings" class="icon-btn" title="Settings" aria-label="Settings">
+          <svg viewBox="0 -960 960 960" width="22" height="22" fill="currentColor"><path d="m370-80-16-128q-13-5-24.5-12T307-235l-119 50L78-375l103-78q-1-7-1-13.5v-27q0-6.5 1-13.5L78-585l110-190 119 50q11-8 23-15t24-12l16-128h220l16 128q13 5 24.5 12t22.5 15l119-50 110 190-103 78q1 7 1 13.5v27q0 6.5-2 13.5l103 78-110 190-118-50q-11 8-23 15t-24 12L590-80H370Zm70-80h79l14-106q31-8 57.5-23.5T639-327l99 41 39-68-86-65q5-14 7-29.5t2-31.5q0-16-2-31.5t-7-29.5l86-65-39-68-99 42q-22-23-48.5-38.5T533-694l-13-106h-79l-14 106q-31 8-57.5 23.5T321-633l-99-41-39 68 86 64q-5 15-7 30t-2 32q0 16 2 31t7 30l-86 65 39 68 99-42q22 23 48.5 38.5T427-266l13 106Zm42-180q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Zm-2-140Z"/></svg>
+        </button>
       </div>
     </header>
 
-    <section aria-label="Active session">
-      <div id="session-group" class="session-group" role="radiogroup" aria-label="Active session"></div>
-    </section>
+    <div class="dash-split" id="dash-split">
+      <div class="dash-main" id="dash-main">
 
-    <!-- Scanner -->
-    <section class="scanner" aria-label="Camera scanner">
-      <div id="reader"></div>
-      <div id="scanner-idle" class="scanner-idle">
-        <button id="btn-camera" class="btn btn-primary btn-xl">Start camera</button>
-        <p>Point at a barcode or QR code</p>
+        <section aria-label="Active session">
+          <div id="session-group" class="session-group" role="radiogroup" aria-label="Active session"></div>
+        </section>
+
+        <!-- Scanner -->
+        <section class="scanner" aria-label="Camera scanner">
+          <div id="reader"></div>
+          <div id="scanner-idle" class="scanner-idle">
+            <button id="btn-camera" class="btn btn-primary btn-xl">Start camera</button>
+            <p>Point at a barcode or QR code</p>
+          </div>
+        </section>
+
+        <!-- Scan result -->
+        <section id="result" class="result is-idle" aria-live="assertive">
+          <p id="result-status" class="result-status">Ready for the next scan</p>
+          <h2 id="result-name" class="result-name"></h2>
+          <dl class="result-meta">
+            <div><dt>ID</dt><dd id="result-id"></dd></div>
+            <div id="fld-program"><dt>Program</dt><dd id="result-program"></dd></div>
+            <div id="fld-year"><dt>Year</dt><dd id="result-year"></dd></div>
+            <div id="fld-college"><dt>College</dt><dd id="result-college"></dd></div>
+            <div id="fld-gender"><dt>Gender</dt><dd id="result-gender"></dd></div>
+          </dl>
+          <p id="result-foot" class="result-foot"></p>
+        </section>
+
+        <!-- Manual entry -->
+        <form id="manual-form" class="manual" autocomplete="off">
+          <label for="manual-id" class="sr-only">Student ID</label>
+          <input id="manual-id" type="text" inputmode="text" placeholder="Type a student ID" enterkeyhint="done">
+          <button type="submit" class="btn btn-primary">Record</button>
+        </form>
+
+        <!-- Activity tables -->
+        <div class="tables">
+          <section class="tbl-card" aria-labelledby="pending-title">
+            <h3 id="pending-title">Pending sync <span id="pending-more" class="more"></span></h3>
+            <table>
+              <tbody id="tbl-pending"></tbody>
+            </table>
+          </section>
+          <section class="tbl-card" aria-labelledby="recent-title">
+            <h3 id="recent-title">Recently synced</h3>
+            <table>
+              <tbody id="tbl-recent"></tbody>
+            </table>
+          </section>
+        </div>
+
       </div>
-    </section>
 
-    <!-- Scan result -->
-    <section id="result" class="result is-idle" aria-live="assertive">
-      <p id="result-status" class="result-status">Ready for the next scan</p>
-      <h2 id="result-name" class="result-name"></h2>
-      <dl class="result-meta">
-        <div><dt>ID</dt><dd id="result-id"></dd></div>
-        <div id="fld-program"><dt>Program</dt><dd id="result-program"></dd></div>
-        <div id="fld-year"><dt>Year</dt><dd id="result-year"></dd></div>
-        <div id="fld-college"><dt>College</dt><dd id="result-college"></dd></div>
-        <div id="fld-gender"><dt>Gender</dt><dd id="result-gender"></dd></div>
-      </dl>
-      <p id="result-foot" class="result-foot"></p>
-    </section>
+      <aside id="admin-panel" class="admin-panel" hidden aria-label="Admin view">
+        <div class="admin-panel-head">
+          <h2>Admin Access</h2>
+          <button type="button" id="btn-admin-close" class="icon-btn" title="Close admin view" aria-label="Close admin view">✕</button>
+        </div>
 
-    <!-- Manual entry -->
-    <form id="manual-form" class="manual" autocomplete="off">
-      <label for="manual-id" class="sr-only">Student ID</label>
-      <input id="manual-id" type="text" inputmode="text" placeholder="Type a student ID" enterkeyhint="done">
-      <button type="submit" class="btn btn-primary">Record</button>
-    </form>
+        <div id="admin-login-step">
+          <p class="hint">Enter the admin key set on the Apps Script (a separate key from the sync access key).</p>
+          <label for="admin-key-input" class="sr-only">Admin key</label>
+          <input id="admin-key-input" type="password" autocomplete="off" placeholder="Admin key">
+          <p id="admin-login-error" class="form-error" role="alert" hidden></p>
+          <button type="button" id="btn-admin-submit" class="btn btn-primary">Unlock</button>
+        </div>
 
-    <!-- Activity tables -->
-    <div class="tables">
-      <section class="tbl-card" aria-labelledby="pending-title">
-        <h3 id="pending-title">Pending sync <span id="pending-more" class="more"></span></h3>
-        <table>
-          <tbody id="tbl-pending"></tbody>
-        </table>
-      </section>
-      <section class="tbl-card" aria-labelledby="recent-title">
-        <h3 id="recent-title">Recently synced</h3>
-        <table>
-          <tbody id="tbl-recent"></tbody>
-        </table>
-      </section>
+        <div id="admin-table-step" hidden>
+          <div class="admin-toolbar">
+            <input type="text" class="admin-search" placeholder="Search (coming soon)" disabled>
+            <button type="button" class="btn admin-filter" disabled>Filter</button>
+          </div>
+          <p id="admin-table-meta" class="hint"></p>
+          <div class="admin-table-wrap">
+            <table id="admin-table">
+              <thead><tr id="admin-table-head"></tr></thead>
+              <tbody id="admin-table-body"></tbody>
+            </table>
+          </div>
+          <button type="button" id="btn-admin-qrpdf" class="btn" hidden>Download QR codes (PDF)</button>
+        </div>
+      </aside>
     </div>
     
   </main>
@@ -225,37 +263,6 @@
     </div>
     <div class="modal-actions">
       <button type="button" id="btn-help-close" class="btn">Close</button>
-    </div>
-  </dialog>
-
-  <dialog id="admin-modal" class="modal admin-modal" aria-labelledby="admin-title">
-    <div class="modal-body">
-      <div id="admin-login-step">
-        <h2 id="admin-title">Admin access</h2>
-        <p class="hint">Enter the admin key set on the Apps Script (a separate key from the sync access key).</p>
-        <label for="admin-key-input" class="sr-only">Admin key</label>
-        <input id="admin-key-input" type="password" autocomplete="off" placeholder="Admin key">
-        <p id="admin-login-error" class="form-error" role="alert" hidden></p>
-      </div>
-
-      <div id="admin-table-step" hidden>
-        <div class="admin-toolbar">
-          <input type="text" class="admin-search" placeholder="Search (coming soon)" disabled>
-          <button type="button" class="btn admin-filter" disabled>Filter</button>
-        </div>
-        <p id="admin-table-meta" class="hint"></p>
-        <div class="admin-table-wrap">
-          <table id="admin-table">
-            <thead><tr id="admin-table-head"></tr></thead>
-            <tbody id="admin-table-body"></tbody>
-          </table>
-        </div>
-        <button type="button" id="btn-admin-qrpdf" class="btn" hidden>Download QR codes (PDF)</button>
-      </div>
-    </div>
-    <div class="modal-actions">
-      <button type="button" id="btn-admin-submit" class="btn btn-primary">Unlock</button>
-      <button type="button" id="btn-admin-close" class="btn">Close</button>
     </div>
   </dialog>
 
