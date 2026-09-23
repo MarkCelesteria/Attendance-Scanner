@@ -1,5 +1,6 @@
 import { state } from './state.js';
 import { $ } from './utils.js';
+import { downloadQrSheet } from './qrpdf.js';
 
 export function renderAdminButton() {
   const btn = $('btn-admin');
@@ -14,6 +15,7 @@ function resetModal() {
   $('btn-admin-submit').hidden = false;
   $('btn-admin-submit').disabled = false;
   $('btn-admin-submit').textContent = 'Unlock';
+  $('btn-admin-qrpdf').hidden = true;
 }
 
 async function fetchAdminRoster(adminKey) {
@@ -81,6 +83,8 @@ async function onSubmit() {
     renderTable(data);
     $('admin-login-step').hidden = true;
     $('admin-table-step').hidden = false;
+    $('btn-admin-qrpdf').hidden = false;
+    $('btn-admin-qrpdf').onclick = () => downloadQrSheet(data.students);
     btn.hidden = true;
   } catch (e) {
     $('admin-login-error').textContent = e.message;

@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION = 'v1.5.3';
+const VERSION = 'v1.5.5';
 const CACHE = `attendance-shell-${VERSION}`;
 
 const SHELL = [
@@ -9,11 +9,13 @@ const SHELL = [
   'manifest.webmanifest',
   'assets/vendor/zxing-reader.iife.js',
   'assets/vendor/zxing_reader.wasm',
+  'assets/vendor/qrcode.js',
+  'assets/vendor/jspdf.umd.min.js',
   'css/base.css', 'css/components.css', 'css/setup.css', 'css/dashboard.css',
   'js/main.js', 'js/constants.js', 'js/state.js', 'js/utils.js', 'js/db.js',
   'js/config.js', 'js/roster.js', 'js/audio.js', 'js/ui.js', 'js/sync.js',
   'js/scanner.js', 'js/scan.js', 'js/dashboard.js', 'js/setup.js', 'js/history.js',
-  'js/admin.js',
+  'js/admin.js', 'js/qrpdf.js',
   'assets/icons/logo.png',
   'assets/icons/logo-pwa.png',
 ];
