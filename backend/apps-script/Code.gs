@@ -7,17 +7,14 @@ const SETTINGS = {
 function doGet(e) {
   try {
     const p = (e && e.parameter) || {};
+    if (p.action === 'admin') return handleAdmin_(p);
     authorize_(p.key);
 
     const sheet = getSheet_(p.sheet);
     const firstRow = toInt_(p.firstRow, 2);
     const idCol = colIndex_(p.idCol), nameCol = colIndex_(p.nameCol);
-    const optCol = (v) => {
-      const s = String(v || '').trim();
-      return s && s.toLowerCase() !== 'none' ? colIndex_(s) : 0;
-    };
-    const progCol = optCol(p.programCol), yearCol = optCol(p.yearCol);
-    const collegeCol = optCol(p.collegeCol), genderCol = optCol(p.genderCol);
+    const progCol = optCol_(p.programCol), yearCol = optCol_(p.yearCol);
+    const collegeCol = optCol_(p.collegeCol), genderCol = optCol_(p.genderCol);
 
     const lastRow = sheet.getLastRow();
     if (lastRow < firstRow) return json_({ ok: true, count: 0, students: [] });
@@ -179,6 +176,65 @@ function doPost(e) {
 function authorize_(provided) {
   const expected = PropertiesService.getScriptProperties().getProperty('ACCESS_KEY');
   if (expected && String(provided || '') !== expected) throw new Error('Invalid access key.');
+}
+
+function authorizeAdmin_(provided) {
+  const expected = PropertiesService.getScriptProperties().getProperty('ADMIN_KEY');
+  if (!expected) throw new Error('Admin access is not set up: add an ADMIN_KEY script property first.');
+  if (String(provided || '') !== expected) throw new Error('Invalid admin key.');
+}
+
+function optCol_(v) {
+  const s = String(v || '').trim();
+  return s && s.toLowerCase() !== 'none' ? colIndex_(s) : 0;
+}
+
+function handleAdmin_(p) {
+  try {
+    authorizeAdmin_(p.adminKey);
+
+    const sheet = getSheet_(p.sheet);
+    const firstRow = toInt_(p.firstRow, 2);
+    const idCol = colIndex_(p.idCol), nameCol = colIndex_(p.nameCol);
+    const progCol = optCol_(p.programCol), yearCol = optCol_(p.yearCol);
+    const collegeCol = optCol_(p.collegeCol), genderCol = optCol_(p.genderCol);
+
+    let sessions = [];
+    try { sessions = JSON.parse(p.sessions || '[]'); } catch (e) { sessions = []; }
+    if (!Array.isArray(sessions)) sessions = [];
+    const sessionCols = sessions
+      .filter((s) => s && s.name && s.col)
+      .map((s) => ({ name: String(s.name), col: colIndex_(s.col) }));
+
+    const lastRow = sheet.getLastRow();
+    if (lastRow < firstRow) return json_({ ok: true, count: 0, sessions: sessionCols.map((s) => s.name), students: [] });
+
+    const n = lastRow - firstRow + 1;
+    const used = [idCol, nameCol, progCol, yearCol, collegeCol, genderCol]
+      .concat(sessionCols.map((s) => s.col))
+      .filter(Boolean);
+    const minCol = Math.min.apply(null, used), maxCol = Math.max.apply(null, used);
+    const block = sheet.getRange(firstRow, minCol, n, maxCol - minCol + 1).getValues();
+    const at = (i, col) => (col ? String(block[i][col - minCol]).trim() : '');
+
+    const skip = dividerRows_(sheet, firstRow, n, idCol);
+
+    const students = [];
+    for (let i = 0; i < n; i++) {
+      if (skip.has(i)) continue;
+      const id = at(i, idCol);
+      if (!id) continue;
+      const row = {
+        id: id, name: at(i, nameCol), program: at(i, progCol), year: at(i, yearCol),
+        college: at(i, collegeCol), gender: at(i, genderCol), sessions: {},
+      };
+      sessionCols.forEach((s) => { row.sessions[s.name] = at(i, s.col); });
+      students.push(row);
+    }
+    return json_({ ok: true, count: students.length, sessions: sessionCols.map((s) => s.name), students: students });
+  } catch (err) {
+    return json_({ ok: false, error: message_(err) });
+  }
 }
 
 function getSheet_(name) {

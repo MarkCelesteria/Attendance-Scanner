@@ -4,6 +4,7 @@ import { state } from './state.js';
 import { $ } from './utils.js';
 import { renderSessions, renderRosterMeta, resetResultCard } from './ui.js';
 import { refreshPending, syncNow } from './sync.js';
+import { renderAdminButton } from './admin.js';
 
 export function showDashboard() {
   $('view-setup').hidden = true;
@@ -15,6 +16,7 @@ export function showDashboard() {
 
   renderSessions();
   renderRosterMeta();
+  renderAdminButton();
   resetResultCard();
   refreshPending().then(syncNow);
 }

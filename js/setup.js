@@ -49,7 +49,7 @@ function addSessionRow(name = '', col = '', supName = '', supCol = '') {
 
   const supColEl = document.createElement('input');
   supColEl.type = 'text'; supColEl.className = 'sup-col'; supColEl.value = supCol; supColEl.maxLength = 3;
-  supColEl.placeholder = 'Column'; supColEl.autocomplete = 'off';
+  supColEl.placeholder = 'Z'; supColEl.autocomplete = 'off';
   supColEl.setAttribute('aria-label', 'Timekeeper column letter for this session');
 
   row.append(nameEl, colEl, del, supNameEl, supColEl);
@@ -125,6 +125,7 @@ export function showSetup(isEditing) {
     $('cfg-super-per-session').checked = c.timekeeperMode === 'per-session';
     $('cfg-super-name').value = c.timekeeperName || '';
     $('cfg-super-col').value = c.timekeeperMode === 'single' && c.sessions[0] ? c.sessions[0].supCol || '' : '';
+    $('cfg-admin-on').checked = c.adminEnabled !== false;
   }
   buildSessionRows(c ? c.sessions : null);
   updateSuperVisibility();

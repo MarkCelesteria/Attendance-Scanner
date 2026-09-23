@@ -34,10 +34,10 @@
           <label for="cfg-url">Apps Script Web App URL</label>
           <button type="button" id="btn-help" class="help-btn" aria-label="How do I get this URL?" title="How do I get this URL?">?</button>
         </div>
-        <input id="cfg-url" type="url" inputmode="url" placeholder="https://script.google.com/macros/s/…/exec" required>
+        <input id="cfg-url" type="url" inputmode="url" placeholder="https://script.google.com/…/exec" required>
 
         <label for="cfg-key">Access key <span class="opt">(optional)</span></label>
-        <input id="cfg-key" type="text" placeholder="Only if you set ACCESS_KEY in the script">
+        <input id="cfg-key" type="text" placeholder="Only if you set on the script">
       </fieldset>
 
       <fieldset>
@@ -102,6 +102,10 @@
           </div>
           <p class="hint" id="super-hint">Enter each session's timekeeper next to that session above.</p>
         </div>
+        <div class="toggle-row">
+          <span class="toggle-text">Enable Admin Access<br><span class="opt">Adds an admin button on the scanner screen</span></span>
+          <label class="switch"><input type="checkbox" id="cfg-admin-on" checked><span class="slider"></span></label>
+        </div>
       </details>
 
       <p id="setup-error" class="form-error" role="alert" hidden></p>
@@ -126,6 +130,11 @@
         <p id="roster-meta" class="roster-meta"></p>
       </div>
       <div class="topbar-right">
+        <button id="btn-refresh" class="icon-btn" title="Refresh roster" aria-label="Refresh roster">⟳</button>
+        <button id="btn-settings" class="icon-btn" title="Settings" aria-label="Settings">⚙</button>
+      </div>
+      <div class="topbar-right">
+        <button id="btn-admin" class="icon-btn" title="Admin view" aria-label="Admin view" hidden>🛡</button>
         <button id="btn-refresh" class="icon-btn" title="Refresh roster" aria-label="Refresh roster">⟳</button>
         <button id="btn-settings" class="icon-btn" title="Settings" aria-label="Settings">⚙</button>
       </div>
@@ -216,6 +225,36 @@
     </div>
     <div class="modal-actions">
       <button type="button" id="btn-help-close" class="btn">Close</button>
+    </div>
+  </dialog>
+
+  <dialog id="admin-modal" class="modal admin-modal" aria-labelledby="admin-title">
+    <div class="modal-body">
+      <div id="admin-login-step">
+        <h2 id="admin-title">Admin access</h2>
+        <p class="hint">Enter the admin key set on the Apps Script (a separate key from the sync access key).</p>
+        <label for="admin-key-input" class="sr-only">Admin key</label>
+        <input id="admin-key-input" type="password" autocomplete="off" placeholder="Admin key">
+        <p id="admin-login-error" class="form-error" role="alert" hidden></p>
+      </div>
+
+      <div id="admin-table-step" hidden>
+        <div class="admin-toolbar">
+          <input type="text" class="admin-search" placeholder="Search (coming soon)" disabled>
+          <button type="button" class="btn admin-filter" disabled>Filter</button>
+        </div>
+        <p id="admin-table-meta" class="hint"></p>
+        <div class="admin-table-wrap">
+          <table id="admin-table">
+            <thead><tr id="admin-table-head"></tr></thead>
+            <tbody id="admin-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button type="button" id="btn-admin-submit" class="btn btn-primary">Unlock</button>
+      <button type="button" id="btn-admin-close" class="btn">Close</button>
     </div>
   </dialog>
 

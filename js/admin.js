@@ -1,0 +1,99 @@
+import { state } from './state.js';
+import { $ } from './utils.js';
+
+export function renderAdminButton() {
+  const btn = $('btn-admin');
+  if (btn) btn.hidden = !(state.config && state.config.adminEnabled !== false);
+}
+
+function resetModal() {
+  $('admin-login-step').hidden = false;
+  $('admin-table-step').hidden = true;
+  $('admin-login-error').hidden = true;
+  $('admin-key-input').value = '';
+  $('btn-admin-submit').hidden = false;
+  $('btn-admin-submit').disabled = false;
+  $('btn-admin-submit').textContent = 'Unlock';
+}
+
+async function fetchAdminRoster(adminKey) {
+  const c = state.config;
+  const q = new URLSearchParams({
+    action: 'admin', adminKey,
+    idCol: c.idCol, nameCol: c.nameCol,
+    programCol: c.programCol || '', yearCol: c.yearCol || '',
+    collegeCol: c.collegeCol || '', genderCol: c.genderCol || '',
+    firstRow: String(c.firstRow), sheet: c.sheetName || '',
+    sessions: JSON.stringify(c.sessions.map((s) => ({ name: s.name, col: s.col }))),
+  });
+  const url = c.scriptUrl + (c.scriptUrl.includes('?') ? '&' : '?') + q.toString();
+
+  let res;
+  try { res = await fetch(url); }
+  catch { throw new Error('Could not reach the script. Check your internet connection.'); }
+
+  const data = JSON.parse(await res.text());
+  if (!data.ok) throw new Error(data.error || 'The script reported an error.');
+  return data;
+}
+
+function renderTable(data) {
+  const cfg = state.config;
+  const cols = [{ key: 'id', label: 'ID' }, { key: 'name', label: 'Name' }];
+  if (cfg.programCol) cols.push({ key: 'program', label: 'Program' });
+  if (cfg.yearCol) cols.push({ key: 'year', label: 'Year' });
+  if (cfg.collegeCol) cols.push({ key: 'college', label: 'College' });
+  if (cfg.genderCol) cols.push({ key: 'gender', label: 'Gender' });
+  data.sessions.forEach((name) => cols.push({ key: null, session: name, label: name }));
+
+  const head = $('admin-table-head');
+  head.textContent = '';
+  cols.forEach((c) => {
+    const th = document.createElement('th');
+    th.textContent = c.label;
+    head.appendChild(th);
+  });
+
+  const body = $('admin-table-body');
+  body.textContent = '';
+  data.students.forEach((s) => {
+    const tr = document.createElement('tr');
+    cols.forEach((c) => {
+      const td = document.createElement('td');
+      td.textContent = (c.session ? s.sessions[c.session] : s[c.key]) || '';
+      tr.appendChild(td);
+    });
+    body.appendChild(tr);
+  });
+
+  $('admin-table-meta').textContent = `${data.count} student${data.count === 1 ? '' : 's'}`;
+}
+
+async function onSubmit() {
+  const key = $('admin-key-input').value.trim();
+  if (!key) { $('admin-login-error').textContent = 'Enter the admin key.'; $('admin-login-error').hidden = false; return; }
+
+  const btn = $('btn-admin-submit');
+  btn.disabled = true; btn.textContent = 'Checking…';
+  $('admin-login-error').hidden = true;
+  try {
+    const data = await fetchAdminRoster(key);
+    renderTable(data);
+    $('admin-login-step').hidden = true;
+    $('admin-table-step').hidden = false;
+    btn.hidden = true;
+  } catch (e) {
+    $('admin-login-error').textContent = e.message;
+    $('admin-login-error').hidden = false;
+  } finally {
+    btn.disabled = false; btn.textContent = 'Unlock';
+  }
+}
+
+export function initAdmin() {
+  $('btn-admin').addEventListener('click', () => { resetModal(); $('admin-modal').showModal(); });
+  $('btn-admin-close').addEventListener('click', () => $('admin-modal').close());
+  $('admin-modal').addEventListener('click', (e) => { if (e.target === $('admin-modal')) $('admin-modal').close(); });
+  $('btn-admin-submit').addEventListener('click', onSubmit);
+  $('admin-key-input').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); onSubmit(); } });
+}

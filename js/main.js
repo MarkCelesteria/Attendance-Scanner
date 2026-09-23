@@ -9,6 +9,7 @@ import { startScanner, stopScanner } from './scanner.js';
 import { onCameraCode, onManualSubmit } from './scan.js';
 import { showDashboard } from './dashboard.js';
 import { initHelp } from './help.js';
+import { initAdmin } from './admin.js';
 import { showSetup, initSessionEditor, initAdvancedToggles, onSetupSubmit, onReset, onRefreshRoster } from './setup.js';
 
 function registerServiceWorker() {
@@ -22,6 +23,7 @@ function bindEvents() {
   $('setup-form').addEventListener('submit', onSetupSubmit);
   initSessionEditor();
   initAdvancedToggles();
+  initAdmin();
   $('btn-setup-cancel').addEventListener('click', showDashboard);
   $('btn-reset').addEventListener('click', onReset);
 

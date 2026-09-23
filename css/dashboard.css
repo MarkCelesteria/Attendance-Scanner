@@ -80,3 +80,12 @@
 .tbl-card td:last-child, .tbl-card th:last-child { text-align: right; }
 .tbl-card td.empty { text-align: center; color: var(--ink-2); font-family: var(--font); padding: 12px 0; }
 .tbl-card td:nth-child(2) { font-family: var(--font); }
+
+/* ---------- Admin view ---------- */
+.admin-modal { width: min(900px, calc(100vw - 24px)); }
+.admin-toolbar { display: flex; gap: 8px; margin-bottom: 10px; }
+.admin-search { flex: 1; }
+.admin-table-wrap { max-height: 60vh; overflow: auto; border: 1px solid var(--line); border-radius: 10px; }
+#admin-table { width: 100%; border-collapse: collapse; font-size: .9rem; white-space: nowrap; }
+#admin-table th, #admin-table td { padding: 6px 10px; border-bottom: 1px solid var(--paper); text-align: left; }
+#admin-table thead th { position: sticky; top: 0; background: var(--card); border-bottom: 1px solid var(--line); }
