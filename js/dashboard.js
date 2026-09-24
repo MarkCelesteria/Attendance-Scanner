@@ -1,4 +1,3 @@
-/** Switching to the scanner dashboard. */
 import { LS_ACTIVE } from './constants.js';
 import { state } from './state.js';
 import { $ } from './utils.js';

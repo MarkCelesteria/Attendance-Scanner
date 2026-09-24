@@ -53,3 +53,10 @@ export function initHelp() {
   dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
   $('btn-copy-script').addEventListener('click', onCopy);
 }
+
+export function initAdminHelp() {
+  const dlg = $('admin-help-modal');
+  $('btn-admin-help').addEventListener('click', () => dlg.showModal());
+  $('btn-admin-help-close').addEventListener('click', () => dlg.close());
+  dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+}

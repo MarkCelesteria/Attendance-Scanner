@@ -154,7 +154,7 @@
           <div id="reader"></div>
           <div id="scanner-idle" class="scanner-idle">
             <button id="btn-camera" class="btn btn-primary btn-xl">Start camera</button>
-            <p>Point at a barcode or QR code</p>
+            <p>Point at a QR code</p>
           </div>
         </section>
 
@@ -199,12 +199,22 @@
 
       <aside id="admin-panel" class="admin-panel" hidden aria-label="Admin view">
         <div class="admin-panel-head">
-          <h2>Admin Access</h2>
-          <button type="button" id="btn-admin-close" class="icon-btn" title="Close admin view" aria-label="Close admin view">✕</button>
+          <div class="label-row">
+            <h2>Admin Access</h2>
+            <button type="button" id="btn-admin-help" class="help-btn" aria-label="How do I set the admin key?" title="How do I set the admin key?">?</button>
+          </div>
+          <div class="admin-panel-actions">
+            <button type="button" id="btn-admin-refresh" class="icon-btn" title="Refresh table" aria-label="Refresh table" hidden>
+              <svg viewBox="0 -960 960 960" width="20" height="20" fill="currentColor"><path d="M480-160q-134 0-227-93t-93-227q0-134 93-227t227-93q69 0 132 28.5T720-690v-110h80v280H520v-80h168q-32-56-87.5-88T480-720q-100 0-170 70t-70 170q0 100 70 170t170 70q77 0 139-44t87-116h84q-28 106-114 173t-196 67Z"/></svg>
+            </button>
+            <button type="button" id="btn-admin-close" class="icon-btn" title="Close admin view" aria-label="Close admin view">✕</button>
+          </div>
         </div>
 
         <div id="admin-login-step">
-          <p class="hint">Enter the admin key set on the Apps Script (a separate key from the sync access key).</p>
+          <div class="label-row">
+            <p class="hint">Enter the admin key set on the Apps Script (a separate key from the sync access key).</p>
+          </div>
           <label for="admin-key-input" class="sr-only">Admin key</label>
           <input id="admin-key-input" type="password" autocomplete="off" placeholder="Admin key">
           <p id="admin-login-error" class="form-error" role="alert" hidden></p>
@@ -263,6 +273,23 @@
     </div>
     <div class="modal-actions">
       <button type="button" id="btn-help-close" class="btn">Close</button>
+    </div>
+  </dialog>
+
+    <dialog id="admin-help-modal" class="modal" aria-labelledby="admin-help-title">
+    <div class="modal-body">
+      <h2 id="admin-help-title">How to set the admin key</h2>
+      <ol class="steps">
+        <li>Open your Apps Script project (Extensions → Apps Script from the Sheet).</li>
+        <li>Click the gear icon (<b>Project Settings</b>) in the left sidebar.</li>
+        <li>Under <b>Script properties</b>, click <b>Add script property</b>.</li>
+        <li>Set <b>Property</b> to <code>ADMIN_KEY</code> (capital letters) and <b>Value</b> to a password you choose, then click <b>Save script properties</b>.</li>
+        <li>Type that same password into the <b>Admin key</b> field to unlock admin view.</li>
+      </ol>
+      <p class="hint">No redeploy needed. This is separate from the sync <code>ACCESS_KEY</code> — set both if you want the scanner and admin view each protected.</p>
+    </div>
+    <div class="modal-actions">
+      <button type="button" id="btn-admin-help-close" class="btn">Close</button>
     </div>
   </dialog>
 

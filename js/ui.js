@@ -66,7 +66,7 @@ export function showResult(kind, student, extra) {
 
   if (kind === 'ok') {
     r.classList.add('is-ok');
-    $('result-status').textContent = `${state.activeSession} recorded at ${clockTime()}`;
+    $('result-status').textContent = `Recorded at ${clockTime()}`;
     $('result-name').textContent = student.name || '(no name)';
     $('result-id').textContent = student.id;
     const cfg = state.config;

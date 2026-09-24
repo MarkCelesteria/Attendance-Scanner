@@ -15,6 +15,7 @@ function resetPanel() {
   $('admin-login-error').hidden = true;
   $('admin-key-input').value = '';
   $('btn-admin-qrpdf').hidden = true;
+  $('btn-admin-refresh').hidden = true;
 }
 
 function closePanel() {
@@ -76,6 +77,21 @@ function renderTable(data) {
   $('admin-table-meta').textContent = `${data.count} student${data.count === 1 ? '' : 's'}`;
 }
 
+async function onRefreshTable() {
+  const key = $('admin-key-input').value.trim();
+  const btn = $('btn-admin-refresh');
+  btn.classList.add('is-spinning'); btn.disabled = true;
+  try {
+    const data = await fetchAdminRoster(key);
+    renderTable(data);
+    $('btn-admin-qrpdf').onclick = () => downloadQrSheet(data.students);
+  } catch (e) {
+    toast(e.message, 5000);
+  } finally {
+    btn.classList.remove('is-spinning'); btn.disabled = false;
+  }
+}
+
 async function onSubmit() {
   const key = $('admin-key-input').value.trim();
   if (!key) { $('admin-login-error').textContent = 'Enter the admin key.'; $('admin-login-error').hidden = false; return; }
@@ -89,6 +105,7 @@ async function onSubmit() {
     $('admin-login-step').hidden = true;
     $('admin-table-step').hidden = false;
     $('btn-admin-qrpdf').hidden = false;
+    $('btn-admin-refresh').hidden = false;
     $('btn-admin-qrpdf').onclick = () => downloadQrSheet(data.students);
   } catch (e) {
     $('admin-login-error').textContent = e.message;
@@ -108,4 +125,5 @@ export function initAdmin() {
   $('btn-admin-close').addEventListener('click', closePanel);
   $('btn-admin-submit').addEventListener('click', onSubmit);
   $('admin-key-input').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); onSubmit(); } });
+  $('btn-admin-refresh').addEventListener('click', onRefreshTable);
 }

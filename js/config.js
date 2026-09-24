@@ -1,4 +1,3 @@
-/** Saved setup (localStorage) and setup-form validation. */
 import { LS_CONFIG, LS_ACTIVE, LS_ROSTER_T } from './constants.js';
 import { $, colToIndex, indexToCol } from './utils.js';
 

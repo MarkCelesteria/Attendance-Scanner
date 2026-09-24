@@ -34,7 +34,9 @@
 }
 .result-status { margin: 0 0 4px; font-weight: 700; color: var(--ink-2); }
 .result-name { margin: 0 0 12px; font-size: clamp(1.9rem, 8vw, 3rem); line-height: 1.05; letter-spacing: -.02em; overflow-wrap: anywhere; }
-.result-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px 16px; margin: 0; }
+.result-meta { display: flex; flex-wrap: wrap; gap: 10px 16px; margin: 0; }
+.result-meta > div { flex: 1 1 110px; min-width: 90px; }
+#fld-year { flex: 0 1 60px; min-width: 50px; }
 .result-meta dt { font-size: .85rem; color: var(--ink-2); }
 .result-meta dd { margin: 0; font-size: 1.35rem; font-weight: 700; overflow-wrap: anywhere; }
 .result-meta #result-id { font-family: var(--mono); }
@@ -43,13 +45,10 @@
 .result.is-idle .result-name { font-size: 1.3rem; color: var(--ink-2); font-weight: 600; }
 .result.is-idle .result-meta { display: none; }
 
-/* Green flood on success */
 .result.is-ok { background: var(--ok); border-color: var(--ok); color: #fff; animation: pop .22s ease-out; }
 .result.is-ok .result-status, .result.is-ok .result-meta dt, .result.is-ok .result-foot { color: rgba(255,255,255,.88); }
-/* After the flash: calm "last scanned" state */
 .result.is-last { background: var(--ok-soft); border-color: var(--ok); }
 .result.is-last .result-status { color: var(--ok); }
-/* Not found */
 .result.is-error { background: var(--bad); border-color: var(--bad); color: #fff; animation: shake .3s; }
 .result.is-error .result-status, .result.is-error .result-foot { color: rgba(255,255,255,.9); }
 .result.is-error .result-meta { display: none; }
@@ -98,8 +97,13 @@
 }
 .admin-panel-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
 .admin-panel-head h2 { margin: 0; font-size: 1.1rem; }
+.admin-panel-head .label-row { justify-content: flex-start; gap: 8px; }
+.admin-panel-actions { display: flex; align-items: center; gap: 4px; }
 @media (min-width: 1024px) {
   .dash-split { display: flex; gap: 20px; align-items: flex-start; }
-  .dash-main { flex: 1 1 0; min-width: 0; }
-  .admin-panel { flex: 0 0 420px; margin-top: 0; position: sticky; top: 12px; }
+  .dash-main { flex: 0 0 680px; margin-top: 0; }
+  .admin-panel { flex: 1 1 300px; min-width: 300px; margin-top: 0; position: sticky; top: 12px; }
 }
+#admin-login-step { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+#admin-key-input { flex: 1; min-width: 160px; }
+#admin-login-error { flex: 0 0 auto; width: fit-content; margin: 0; }

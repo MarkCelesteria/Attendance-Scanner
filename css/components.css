@@ -10,7 +10,7 @@
 .btn-xl { font-size: 1.25rem; padding: 16px 28px; }
 .btn[disabled] { opacity: .55; cursor: progress; }
 
-input[type="text"], input[type="url"], input[type="number"], input:not([type]) {
+input[type="text"], input[type="url"], input[type="number"], input[type="password"], input:not([type]) {
   width: 100%; font: inherit; padding: 12px 14px; min-height: 48px;
   border: 2px solid var(--line); border-radius: 10px; background: #fff; color: var(--ink);
 }

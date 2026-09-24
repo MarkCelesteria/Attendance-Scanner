@@ -215,8 +215,13 @@ function handleAdmin_(p) {
       .filter(Boolean);
     const minCol = Math.min.apply(null, used), maxCol = Math.max.apply(null, used);
     const block = sheet.getRange(firstRow, minCol, n, maxCol - minCol + 1).getValues();
-    const at = (i, col) => (col ? String(block[i][col - minCol]).trim() : '');
-
+    const tz = sheet.getParent().getSpreadsheetTimeZone();
+    const at = (i, col) => {
+      if (!col) return '';
+      const v = block[i][col - minCol];
+      if (v instanceof Date) return Utilities.formatDate(v, tz, 'yyyy-MM-dd HH:mm');
+      return String(v).trim();
+    };
     const skip = dividerRows_(sheet, firstRow, n, idCol);
 
     const students = [];

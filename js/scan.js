@@ -1,4 +1,3 @@
-/** What happens when an ID arrives (camera or keyboard). Must stay fast. */
 import { SCAN_COOLDOWN_MS } from './constants.js';
 import { state } from './state.js';
 import { $, normalizeId, toast } from './utils.js';
@@ -12,15 +11,14 @@ export function handleId(raw, source) {
   if (!key) return;
 
   const now = Date.now();
-  // The camera fires ~15x/sec while a code is in view: swallow repeats of the same code.
   if (source === 'camera' && key === state.lastKey && now - state.lastTime < SCAN_COOLDOWN_MS) {
-    state.lastTime = now;   // extend the window while the code stays in view
+    state.lastTime = now;
     return;
   }
   state.lastKey = key; state.lastTime = now;
 
   const t0 = performance.now();
-  const student = state.roster.get(key);            // O(1) Map lookup
+  const student = state.roster.get(key);
   const ms = performance.now() - t0;
 
   if (!student) {
@@ -32,7 +30,6 @@ export function handleId(raw, source) {
   showResult('ok', student, `Lookup ${ms.toFixed(2)} ms`);
   beep('ok');
 
-  // Queue for upload; the UI has already updated so the operator can scan the next person.
   enqueueScan({ id: student.id, session: state.activeSession, ts: now })
     .then(refreshPending)
     .then(syncNow)
