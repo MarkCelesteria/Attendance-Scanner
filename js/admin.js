@@ -4,6 +4,14 @@ import { downloadQrSheet, estimateQrPdfSize, formatBytes } from './qrpdf.js';
 
 const MIN_WIDTH = 1024
 
+const PAGE_SIZE = 100;
+
+let tableCols = [];
+let allStudents = [];
+let filteredStudents = [];
+let currentPage = 1;
+let searchTimer = null;
+
 export function renderAdminButton() {
   const btn = $('btn-admin');
   if (btn) btn.hidden = !(state.config && state.config.adminEnabled !== false);
@@ -14,8 +22,14 @@ function resetPanel() {
   $('admin-table-step').hidden = true;
   $('admin-login-error').hidden = true;
   $('admin-key-input').value = '';
+  $('admin-search-input').value = '';
   $('btn-admin-qrpdf').hidden = true;
   $('btn-admin-refresh').hidden = true;
+  clearTimeout(searchTimer);
+  tableCols = [];
+  allStudents = [];
+  filteredStudents = [];
+  currentPage = 1;
 }
 
 function closePanel() {
@@ -46,6 +60,59 @@ async function fetchAdminRoster(adminKey) {
   return data;
 }
 
+function renderRows(students) {
+  const body = $('admin-table-body');
+  body.textContent = '';
+  students.forEach((s) => {
+    const tr = document.createElement('tr');
+    tableCols.forEach((c) => {
+      const td = document.createElement('td');
+      td.textContent = (c.session ? s.sessions[c.session] : s[c.key]) || '';
+      tr.appendChild(td);
+    });
+    body.appendChild(tr);
+  });
+}
+
+function matchesQuery(student, q) {
+  return String(student.id || '').toLowerCase().includes(q) || String(student.name || '').toLowerCase().includes(q);
+}
+
+function renderPage() {
+  const total = allStudents.length;
+  const totalFiltered = filteredStudents.length;
+  const totalPages = Math.max(1, Math.ceil(totalFiltered / PAGE_SIZE));
+  currentPage = Math.min(Math.max(1, currentPage), totalPages);
+  const start = (currentPage - 1) * PAGE_SIZE;
+  renderRows(filteredStudents.slice(start, start + PAGE_SIZE));
+
+  $('admin-table-meta').textContent = totalFiltered === total
+    ? `${total} student${total === 1 ? '' : 's'}`
+    : `${totalFiltered} of ${total} student${total === 1 ? '' : 's'}`;
+
+  $('admin-page-label').textContent = `Page ${currentPage} of ${totalPages}`;
+  $('admin-page-prev').disabled = currentPage <= 1;
+  $('admin-page-next').disabled = currentPage >= totalPages;
+  $('admin-pagination').hidden = totalFiltered <= PAGE_SIZE;
+}
+
+function goToPage(delta) {
+  currentPage += delta;
+  renderPage();
+}
+
+function applySearch() {
+  const q = $('admin-search-input').value.trim().toLowerCase();
+  filteredStudents = q ? allStudents.filter((s) => matchesQuery(s, q)) : allStudents;
+  currentPage = 1;
+  renderPage();
+}
+
+function onSearchInput() {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(applySearch, 300);
+}
+
 function renderTable(data) {
   const cfg = state.config;
   const cols = [{ key: 'id', label: 'ID' }, { key: 'name', label: 'Name' }];
@@ -54,6 +121,7 @@ function renderTable(data) {
   if (cfg.collegeCol) cols.push({ key: 'college', label: 'College' });
   if (cfg.genderCol) cols.push({ key: 'gender', label: 'Gender' });
   data.sessions.forEach((name) => cols.push({ key: null, session: name, label: name }));
+  tableCols = cols;
 
   const head = $('admin-table-head');
   head.textContent = '';
@@ -63,19 +131,8 @@ function renderTable(data) {
     head.appendChild(th);
   });
 
-  const body = $('admin-table-body');
-  body.textContent = '';
-  data.students.forEach((s) => {
-    const tr = document.createElement('tr');
-    cols.forEach((c) => {
-      const td = document.createElement('td');
-      td.textContent = (c.session ? s.sessions[c.session] : s[c.key]) || '';
-      tr.appendChild(td);
-    });
-    body.appendChild(tr);
-  });
-
-  $('admin-table-meta').textContent = `${data.count} student${data.count === 1 ? '' : 's'}`;
+  allStudents = data.students;
+  applySearch();
 }
 
 function setLine(text) { $('qrpdf-line').textContent = text; }
@@ -183,6 +240,9 @@ export function initAdmin() {
   $('btn-admin-submit').addEventListener('click', onSubmit);
   $('admin-key-input').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); onSubmit(); } });
   $('btn-admin-refresh').addEventListener('click', onRefreshTable);
+  $('admin-search-input').addEventListener('input', onSearchInput);
+  $('admin-page-prev').addEventListener('click', () => goToPage(-1));
+  $('admin-page-next').addEventListener('click', () => goToPage(1));
   $('btn-qrpdf-cancel').addEventListener('click', () => $('qrpdf-confirm-modal').close());
   $('qrpdf-confirm-modal').addEventListener('click', (e) => { if (e.target === $('qrpdf-confirm-modal')) $('qrpdf-confirm-modal').close(); });
 }

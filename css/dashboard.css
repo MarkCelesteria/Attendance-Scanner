@@ -151,8 +151,19 @@
 /* ---------- Admin view ---------- */
 .admin-modal { width: min(900px, calc(100vw - 24px)); }
 .admin-toolbar { display: flex; gap: 8px; margin-bottom: 10px; }
+.admin-search-wrap { position: relative; flex: 1; display: flex; align-items: center; }
+.admin-search-icon { position: absolute; left: 12px; color: var(--ink-2); pointer-events: none; }
+.admin-search-wrap .admin-search { width: 100%; padding-left: 38px; }
 .admin-search { flex: 1; }
 .admin-table-wrap { max-height: 60vh; overflow: auto; border: 1px solid var(--line); border-radius: 10px; }
+.admin-table-footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+.admin-table-footer #admin-table-meta { margin: 0; }
+.admin-pagination { display: flex; align-items: center; gap: 10px; }
+.admin-pagination #admin-page-label { font-size: .9rem; color: var(--ink-2); white-space: nowrap; }
+.admin-pagination .btn {
+  padding: 0; width: 32px; height: 32px; min-height: 0; font-size: 1.3rem; line-height: 1; 
+  display: inline-flex; align-items: center; justify-content: center;
+}
 #admin-table { width: 100%; border-collapse: collapse; font-size: .9rem; white-space: nowrap; }
 #admin-table th, #admin-table td { padding: 6px 10px; border-bottom: 1px solid var(--paper); text-align: left; }
 #admin-table thead th { position: sticky; top: 0; background: var(--card); border-bottom: 1px solid var(--line); }
