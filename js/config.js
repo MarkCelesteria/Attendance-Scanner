@@ -22,6 +22,21 @@ export function clearLocalSettings() {
   [LS_CONFIG, LS_ACTIVE, LS_ROSTER_T].forEach((k) => localStorage.removeItem(k));
 }
 
+export function encodeShareCode(cfg) {
+  const { accessKey, ...shareable } = cfg;
+  return btoa(unescape(encodeURIComponent(JSON.stringify(shareable))));
+}
+
+export function decodeShareCode(code) {
+  let cfg;
+  try { cfg = JSON.parse(decodeURIComponent(escape(atob(code.trim())))); }
+  catch { throw new Error('Not a valid setup code.'); }
+  if (!cfg || typeof cfg !== 'object' || !cfg.scriptUrl || !Array.isArray(cfg.sessions)) {
+    throw new Error('Not a valid setup code.');
+  }
+  return cfg;
+}
+
 export function readForm() {
   const val = (id) => $(id).value.trim();
   const colRe = /^[A-Za-z]{1,3}$/;

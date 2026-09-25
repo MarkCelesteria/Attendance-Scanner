@@ -11,7 +11,7 @@ import { initHardwareScanner } from './barcode.js';
 import { showDashboard } from './dashboard.js';
 import { initHelp, initAdminHelp } from './help.js';
 import { initAdmin } from './admin.js';
-import { showSetup, initSessionEditor, initAdvancedToggles, onSetupSubmit, onReset, onRefreshRoster } from './setup.js';
+import { showSetup, initSessionEditor, initAdvancedToggles, onSetupSubmit, onReset, onRefreshRoster, onCopySetupCode, onApplySetupCode } from './setup.js';
 
 function registerServiceWorker() {
   if ('serviceWorker' in navigator) {
@@ -30,8 +30,9 @@ function bindEvents() {
   initAdvancedToggles();
   initAdmin();
   $('btn-setup-cancel').addEventListener('click', showDashboard);
+  $('btn-copy-setup-code').addEventListener('click', onCopySetupCode);
+  $('btn-apply-setup-code').addEventListener('click', onApplySetupCode);
   $('btn-reset').addEventListener('click', onReset);
-
   $('btn-settings').addEventListener('click', () => showSetup(true));
   $('btn-refresh').addEventListener('click', onRefreshRoster);
   $('btn-camera').addEventListener('click', () => (state.scanning ? stopScanner() : startScanner(onCameraCode)));

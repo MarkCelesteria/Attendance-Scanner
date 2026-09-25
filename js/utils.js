@@ -1,4 +1,19 @@
 export const $ = (id) => document.getElementById(id);
+
+export async function copyText(text) {
+  if (navigator.clipboard && window.isSecureContext) {
+    await navigator.clipboard.writeText(text);
+    return;
+  }
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.cssText = 'position:fixed;opacity:0';
+  document.body.appendChild(ta);
+  ta.select();
+  const ok = document.execCommand('copy');
+  ta.remove();
+  if (!ok) throw new Error('Copy was blocked');
+}
 export const normalizeId = (v) => String(v == null ? '' : v).trim().toUpperCase();
 export const colToIndex = (letters) =>
   letters.toUpperCase().split('').reduce((n, c) => n * 26 + c.charCodeAt(0) - 64, 0);

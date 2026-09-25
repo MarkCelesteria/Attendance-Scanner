@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION = 'v1.6.4';
+const VERSION = 'v1.6.5';
 const CACHE = `attendance-shell-${VERSION}`;
 
 const SHELL = [

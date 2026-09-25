@@ -1,4 +1,4 @@
-import { $ } from './utils.js';
+import { $, copyText } from './utils.js';
 
 const SCRIPT_PATH = 'backend/apps-script/Code.gs';
 let scriptPromise = null;
@@ -10,22 +10,6 @@ function getScript() {
       .catch((e) => { scriptPromise = null; throw e; }); 
   }
   return scriptPromise;
-}
-
-async function copyText(text) {
-  if (navigator.clipboard && window.isSecureContext) {
-    await navigator.clipboard.writeText(text);
-    return;
-  }
-
-  const ta = document.createElement('textarea');
-  ta.value = text;
-  ta.style.cssText = 'position:fixed;opacity:0';
-  document.body.appendChild(ta);
-  ta.select();
-  const ok = document.execCommand('copy');
-  ta.remove();
-  if (!ok) throw new Error('Copy was blocked');
 }
 
 async function onCopy() {

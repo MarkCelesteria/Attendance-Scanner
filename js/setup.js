@@ -1,7 +1,6 @@
-/** First-time / edit setup screen. */
 import { state } from './state.js';
 import { $, colToIndex, indexToCol, toast } from './utils.js';
-import { readForm, saveConfig, clearLocalSettings } from './config.js';
+import { readForm, saveConfig, clearLocalSettings, encodeShareCode, decodeShareCode } from './config.js';
 import { downloadRoster } from './roster.js';
 import { clearAllStores } from './db.js';
 import { stopScanner } from './scanner.js';
@@ -10,7 +9,6 @@ import { refreshPending } from './sync.js';
 import { clearRecent } from './history.js';
 import { showDashboard } from './dashboard.js';
 
-/** Column letter after the highest one already used (for the "+" button). */
 function nextColumn() {
   const used = [...document.querySelectorAll('#session-rows .s-col, #cfg-id, #cfg-name, #cfg-program, #cfg-year, #cfg-college, #cfg-gender')]
     .map((el) => el.value.trim())
@@ -99,36 +97,69 @@ function updatePolicyLabel() {
     : 'If a student is scanned twice in one session, the most recent time is kept.';
 }
 
+function fillFormFromConfig(c, { includeKey = true } = {}) {
+  $('cfg-url').value = c.scriptUrl || '';
+  if (includeKey) $('cfg-key').value = c.accessKey || '';
+  $('cfg-id').value = c.idCol || '';            $('cfg-name').value = c.nameCol || '';
+  $('cfg-program').value = c.programCol || '';  $('cfg-year').value = c.yearCol || '';
+  $('cfg-college').value = c.collegeCol || '';  $('cfg-gender').value = c.genderCol || '';
+  $('cfg-sheet-on').checked = !!c.sheetName;
+  $('cfg-sheet').value = c.sheetName || '';
+  $('cfg-sheet').hidden = !c.sheetName;
+  $('cfg-row-on').checked = c.firstRow !== 2;
+  $('cfg-row').value = c.firstRow || 2;
+  $('cfg-row').hidden = c.firstRow === 2;
+  $('cfg-policy-earliest').checked = (c.timePolicy || 'earliest') === 'earliest';
+  updatePolicyLabel();
+  $('cfg-super-on').checked = (c.timekeeperMode || 'off') !== 'off';
+  $('cfg-super-per-session').checked = c.timekeeperMode === 'per-session';
+  $('cfg-super-name').value = c.timekeeperName || '';
+  $('cfg-super-col').value = c.timekeeperMode === 'single' && c.sessions && c.sessions[0] ? c.sessions[0].supCol || '' : '';
+  $('cfg-admin-on').checked = c.adminEnabled !== false;
+  buildSessionRows(c.sessions);
+  updateSuperVisibility();
+}
+
 export function showSetup(isEditing) {
   stopScanner();
   $('view-dashboard').hidden = true;
   $('view-setup').hidden = false;
   $('btn-setup-cancel').hidden = !isEditing;
+  $('btn-copy-setup-code').hidden = !isEditing;
   $('btn-reset').hidden = !isEditing;
   $('setup-error').hidden = true;
 
   const c = state.config;
-  if (c) {
-    $('cfg-url').value = c.scriptUrl;       $('cfg-key').value = c.accessKey || '';
-    $('cfg-id').value = c.idCol;            $('cfg-name').value = c.nameCol;
-    $('cfg-program').value = c.programCol || '';  $('cfg-year').value = c.yearCol || '';
-    $('cfg-college').value = c.collegeCol || '';  $('cfg-gender').value = c.genderCol || '';
-    $('cfg-sheet-on').checked = !!c.sheetName;
-    $('cfg-sheet').value = c.sheetName || '';
-    $('cfg-sheet').hidden = !c.sheetName;
-    $('cfg-row-on').checked = c.firstRow !== 2;
-    $('cfg-row').value = c.firstRow || 2;
-    $('cfg-row').hidden = c.firstRow === 2;
-    $('cfg-policy-earliest').checked = (c.timePolicy || 'earliest') === 'earliest';
-    updatePolicyLabel();
-    $('cfg-super-on').checked = (c.timekeeperMode || 'off') !== 'off';
-    $('cfg-super-per-session').checked = c.timekeeperMode === 'per-session';
-    $('cfg-super-name').value = c.timekeeperName || '';
-    $('cfg-super-col').value = c.timekeeperMode === 'single' && c.sessions[0] ? c.sessions[0].supCol || '' : '';
-    $('cfg-admin-on').checked = c.adminEnabled !== false;
+  if (c) { fillFormFromConfig(c); }
+  else { buildSessionRows(null); updateSuperVisibility(); }
+}
+
+export async function onCopySetupCode() {
+  if (!state.config) return;
+  const code = encodeShareCode(state.config);
+  try {
+    const { copyText } = await import('./utils.js');
+    await copyText(code);
+    toast('Setup code copied. Share it with whoever needs the same setup.');
+  } catch {
+    toast('Could not copy automatically.', 5000);
   }
-  buildSessionRows(c ? c.sessions : null);
-  updateSuperVisibility();
+}
+
+export function onApplySetupCode() {
+  const errEl = $('setup-error');
+  errEl.hidden = true;
+  const raw = $('cfg-share-code').value.trim();
+  if (!raw) return;
+
+  let cfg;
+  try { cfg = decodeShareCode(raw); }
+  catch (e) { errEl.textContent = e.message; errEl.hidden = false; return; }
+
+  fillFormFromConfig(cfg, { includeKey: false });
+  $('cfg-key').value = '';
+  $('cfg-share-code').value = '';
+  toast('Setup applied. Enter the access key (if any), then save.');
 }
 
 export async function onSetupSubmit(ev) {
