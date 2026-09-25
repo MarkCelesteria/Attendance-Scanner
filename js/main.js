@@ -7,6 +7,7 @@ import { renderSyncPill } from './ui.js';
 import { syncNow } from './sync.js';
 import { startScanner, stopScanner } from './scanner.js';
 import { onCameraCode, onManualSubmit } from './scan.js';
+import { initHardwareScanner } from './barcode.js';
 import { showDashboard } from './dashboard.js';
 import { initHelp, initAdminHelp } from './help.js';
 import { initAdmin } from './admin.js';
@@ -21,7 +22,8 @@ function registerServiceWorker() {
 function bindEvents() {
   initHelp();
   initAdminHelp();
-
+  initHardwareScanner();
+  
   $('setup-form').addEventListener('submit', onSetupSubmit);
 
   initSessionEditor();
