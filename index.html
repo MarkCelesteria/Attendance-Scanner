@@ -242,6 +242,9 @@
             <button type="button" id="btn-admin-refresh" class="icon-btn" title="Refresh table" aria-label="Refresh table" hidden>
               <svg viewBox="0 -960 960 960" width="20" height="20" fill="currentColor"><path d="M480-160q-134 0-227-93t-93-227q0-134 93-227t227-93q69 0 132 28.5T720-690v-110h80v280H520v-80h168q-32-56-87.5-88T480-720q-100 0-170 70t-70 170q0 100 70 170t170 70q77 0 139-44t87-116h84q-28 106-114 173t-196 67Z"/></svg>
             </button>
+            <button type="button" id="btn-admin-qrpdf" class="icon-btn" title="Download QR codes (PDF)" aria-label="Download QR codes (PDF)" hidden>
+              <svg viewBox="0 -960 960 960" width="20" height="20" fill="currentColor"><path d="M200-400v-80h80v80h-80Zm-80-80v-80h80v80h-80Zm360-280v-80h80v80h-80ZM180-660h120v-120H180v120Zm-60 60v-240h240v240H120Zm60 420h120v-120H180v120Zm-60 60v-240h240v240H120Zm540-540h120v-120H660v120Zm-60 60v-240h240v240H600ZM360-400v-80h-80v-80h160v160h-80Zm40-200v-160h80v80h80v80H400Zm-190-90v-60h60v60h-60Zm0 480v-60h60v60h-60Zm480-480v-60h60v60h-60Zm-50 570v-120H520v-80h120v-120h80v120h120v80H720v120h-80Z"/></svg>
+            </button>
             <button type="button" id="btn-admin-close" class="icon-btn" title="Close admin view" aria-label="Close admin view">✕</button>
           </div>
         </div>
@@ -268,7 +271,6 @@
               <tbody id="admin-table-body"></tbody>
             </table>
           </div>
-          <button type="button" id="btn-admin-qrpdf" class="btn" hidden>Download QR codes (PDF)</button>
         </div>
       </aside>
     </div>
@@ -325,6 +327,21 @@
     </div>
     <div class="modal-actions">
       <button type="button" id="btn-admin-help-close" class="btn">Close</button>
+    </div>
+  </dialog>
+
+  <dialog id="qrpdf-confirm-modal" class="modal" aria-labelledby="qrpdf-confirm-title">
+    <div class="modal-body">
+      <h2 id="qrpdf-confirm-title">Download QR codes</h2>
+      <div class="qrpdf-terminal">
+        <p id="qrpdf-line" class="qrpdf-line"></p>
+        <div class="qrpdf-bar-track"><div id="qrpdf-bar-fill" class="qrpdf-bar-fill"></div></div>
+      </div>
+      <p id="qrpdf-summary" class="hint" hidden></p>
+    </div>
+    <div class="modal-actions">
+      <button type="button" id="btn-qrpdf-cancel" class="btn">Cancel</button>
+      <button type="button" id="btn-qrpdf-confirm" class="btn btn-primary">Download PDF</button>
     </div>
   </dialog>
 

@@ -95,15 +95,15 @@
 .result-foot { margin: 12px 0 0; font-size: .85rem; color: var(--ink-2); min-height: 1.2em; }
 .result-foot:empty { display: none; }
 
-.result-idle-view { display: none; align-items: center; gap: 14px; }
+.result-idle-view { display: none; flex-direction: column; align-items: center; text-align: center; gap: 10px; }
 .result.is-idle .result-idle-view { display: flex; }
 .result.is-idle .result-scan-view { display: none; }
 .result-idle-icon {
-  flex: none; width: 42px; height: 42px; border-radius: 12px;
+  flex: none; width: 48px; height: 48px; border-radius: 14px;
   background: var(--ok); color: #fff; display: flex; align-items: center; justify-content: center;
 }
-.result-idle-title { margin: 0; font-weight: 700; color: var(--ink); }
-.result-idle-sub { margin: 2px 0 0; font-size: .9rem; color: var(--ink-2); }
+.result-idle-title { margin: 0; font-size: 1.05rem; font-weight: 700; color: var(--ink); }
+.result-idle-sub { margin: 0; font-size: .9rem; color: var(--ink-2); }
 
 .result.is-ok { background: var(--ok); border-color: var(--ok); color: #fff; animation: pop .22s ease-out; }
 .result.is-ok .result-status, .result.is-ok .result-meta dt, .result.is-ok .result-foot { color: rgba(255,255,255,.88); }

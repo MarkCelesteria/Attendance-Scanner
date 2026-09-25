@@ -1,6 +1,6 @@
 import { state } from './state.js';
 import { $, toast } from './utils.js';
-import { downloadQrSheet } from './qrpdf.js';
+import { downloadQrSheet, estimateQrPdfSize, formatBytes } from './qrpdf.js';
 
 const MIN_WIDTH = 1024
 
@@ -21,6 +21,7 @@ function resetPanel() {
 function closePanel() {
   $('admin-panel').hidden = true;
   $('view-dashboard').classList.remove('admin-active');
+  if ($('qrpdf-confirm-modal').open) $('qrpdf-confirm-modal').close();
   resetPanel();
 }
 
@@ -77,6 +78,62 @@ function renderTable(data) {
   $('admin-table-meta').textContent = `${data.count} student${data.count === 1 ? '' : 's'}`;
 }
 
+function setLine(text) { $('qrpdf-line').textContent = text; }
+function setBar(pct) { $('qrpdf-bar-fill').style.width = `${Math.max(0, Math.min(100, pct))}%`; }
+
+async function openQrConfirm(students) {
+  const n = students.length;
+  $('qrpdf-summary').hidden = true;
+  $('btn-qrpdf-confirm').disabled = true;
+  $('btn-qrpdf-confirm').textContent = 'Download PDF';
+  $('btn-qrpdf-cancel').disabled = false;
+  setLine('Analyzing roster… 0%');
+  setBar(0);
+  $('btn-qrpdf-confirm').onclick = () => onDownloadQr(students);
+  $('qrpdf-confirm-modal').showModal();
+
+  try {
+    const { pages, bytes } = await estimateQrPdfSize(students, (frac) => {
+      const pct = Math.round(frac * 100);
+      setLine(`Analyzing roster… ${pct}%`);
+      setBar(pct);
+    });
+    setLine(`Ready — ${pages} page${pages === 1 ? '' : 's'}`);
+    $('qrpdf-summary').hidden = false;
+    $('qrpdf-summary').textContent = `${n} student${n === 1 ? '' : 's'} · ${pages} page${pages === 1 ? '' : 's'} · about ${formatBytes(bytes)}`;
+    $('btn-qrpdf-confirm').disabled = false;
+  } catch (e) {
+    setLine('Could not estimate size');
+    $('qrpdf-summary').hidden = false;
+    $('qrpdf-summary').textContent = 'Continuing will still generate the PDF.';
+    $('btn-qrpdf-confirm').disabled = false;
+  }
+}
+
+async function onDownloadQr(students) {
+  $('btn-qrpdf-confirm').disabled = true;
+  $('btn-qrpdf-cancel').disabled = true;
+  $('btn-qrpdf-confirm').textContent = 'Generating…';
+  setBar(0);
+  try {
+    await downloadQrSheet(students, 'qr-codes.pdf', (frac) => {
+      const pct = Math.round(frac * 100);
+      setLine(`Generating QR codes in PDF… ${pct}%`);
+      setBar(pct);
+    });
+    setLine('Done — check your downloads');
+    setBar(100);
+    setTimeout(() => $('qrpdf-confirm-modal').close(), 700);
+  } catch (e) {
+    toast('Could not generate the PDF: ' + (e && e.message ? e.message : e), 6000);
+    setLine('Failed');
+  } finally {
+    $('btn-qrpdf-confirm').disabled = false;
+    $('btn-qrpdf-cancel').disabled = false;
+    $('btn-qrpdf-confirm').textContent = 'Download PDF';
+  }
+}
+
 async function onRefreshTable() {
   const key = $('admin-key-input').value.trim();
   const btn = $('btn-admin-refresh');
@@ -84,7 +141,7 @@ async function onRefreshTable() {
   try {
     const data = await fetchAdminRoster(key);
     renderTable(data);
-    $('btn-admin-qrpdf').onclick = () => downloadQrSheet(data.students);
+    $('btn-admin-qrpdf').onclick = () => openQrConfirm(data.students);
   } catch (e) {
     toast(e.message, 5000);
   } finally {
@@ -106,7 +163,7 @@ async function onSubmit() {
     $('admin-table-step').hidden = false;
     $('btn-admin-qrpdf').hidden = false;
     $('btn-admin-refresh').hidden = false;
-    $('btn-admin-qrpdf').onclick = () => downloadQrSheet(data.students);
+    $('btn-admin-qrpdf').onclick = () => openQrConfirm(data.students);
   } catch (e) {
     $('admin-login-error').textContent = e.message;
     $('admin-login-error').hidden = false;
@@ -126,4 +183,6 @@ export function initAdmin() {
   $('btn-admin-submit').addEventListener('click', onSubmit);
   $('admin-key-input').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); onSubmit(); } });
   $('btn-admin-refresh').addEventListener('click', onRefreshTable);
+  $('btn-qrpdf-cancel').addEventListener('click', () => $('qrpdf-confirm-modal').close());
+  $('qrpdf-confirm-modal').addEventListener('click', (e) => { if (e.target === $('qrpdf-confirm-modal')) $('qrpdf-confirm-modal').close(); });
 }
