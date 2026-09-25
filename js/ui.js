@@ -1,7 +1,8 @@
-/** Pure rendering: session buttons, sync pill, roster line, result card. */
 import { LS_ACTIVE, LS_ROSTER_T, FLASH_MS } from './constants.js';
 import { state } from './state.js';
 import { $, clockTime } from './utils.js';
+
+const RESET_MS = 10000;
 
 export function renderSessions() {
   const group = $('session-group');
@@ -57,6 +58,15 @@ export function resetResultCard() {
   $('result-foot').textContent = '';
 }
 
+function fadeToIdle() {
+  const r = $('result');
+  r.style.opacity = '0';
+  setTimeout(() => {
+    resetResultCard();
+    requestAnimationFrame(() => { r.style.opacity = '1'; });
+  }, 300);
+}
+
 /** kind: 'ok' | 'error'. Green flood for FLASH_MS, then a calm "last scanned" look. */
 export function showResult(kind, student, extra) {
   const r = $('result');
@@ -76,12 +86,15 @@ export function showResult(kind, student, extra) {
     field('college', cfg.collegeCol, student.college);
     field('gender', cfg.genderCol, student.gender);
     $('result-foot').textContent = extra || '';
-    state.flashTimer = setTimeout(() => { r.classList.remove('is-ok'); r.classList.add('is-last'); }, FLASH_MS);
+    state.flashTimer = setTimeout(() => {
+      r.classList.remove('is-ok'); r.classList.add('is-last');
+      state.flashTimer = setTimeout(fadeToIdle, RESET_MS - FLASH_MS);
+    }, FLASH_MS);
   } else {
     r.classList.add('is-error');
     $('result-status').textContent = 'ID not found in roster';
     $('result-name').textContent = extra;   // the code that was read
     $('result-foot').textContent = 'Nothing was recorded. Check the ID or refresh the roster.';
-    state.flashTimer = setTimeout(resetResultCard, 3000);
+    state.flashTimer = setTimeout(fadeToIdle, 3000);
   }
 }

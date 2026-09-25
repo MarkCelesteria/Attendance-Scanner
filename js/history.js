@@ -25,24 +25,28 @@ function programLabel(id) {
   if (!s) return '—';
   return [s.year, s.program, s.college].filter(Boolean).join(' - ') || '—';
 }
-
-function fill(tbodyId, rows, emptyText) {
-  const body = $(tbodyId);
-  if (!body) return;
-  body.textContent = '';
+function fill(listId, rows, emptyText) {
+  const list = $(listId);
+  if (!list) return;
+  list.textContent = '';
   if (!rows.length) {
-    const tr = document.createElement('tr');
-    const td = document.createElement('td');
-    td.colSpan = 3; td.className = 'empty'; td.textContent = emptyText;
-    tr.appendChild(td); body.appendChild(tr);
+    const empty = document.createElement('div');
+    empty.className = 'tbl-empty';
+    empty.textContent = emptyText;
+    list.appendChild(empty);
     return;
   }
   for (const r of rows) {
-    const tr = document.createElement('tr');
-    const id = document.createElement('td'); id.textContent = r.id;
-    const prog = document.createElement('td'); prog.textContent = programLabel(r.id);
-    const time = document.createElement('td'); time.textContent = clockTime(new Date(r.ts));
-    tr.append(id, prog, time); body.appendChild(tr);
+    const row = document.createElement('div');
+    row.className = 'tbl-row';
+    const main = document.createElement('span');
+    main.className = 'tbl-row-main';
+    main.textContent = `${r.id} · ${programLabel(r.id)}`;
+    const time = document.createElement('span');
+    time.className = 'tbl-row-time';
+    time.textContent = clockTime(new Date(r.ts));
+    row.append(main, time);
+    list.appendChild(row);
   }
 }
 
@@ -51,6 +55,8 @@ export async function renderTables() {
   try { pending = await latestQueue(MAX_ROWS); } catch { /* ignore */ }
   fill('tbl-pending', pending, 'Nothing waiting');
   fill('tbl-recent', loadRecent(), 'Nothing synced yet');
+  const badge = $('pending-badge');
+  if (badge) badge.textContent = String(state.pending);
   const more = state.pending - pending.length;
   const note = $('pending-more');
   if (note) note.textContent = more > 0 ? `+${more} more waiting` : '';

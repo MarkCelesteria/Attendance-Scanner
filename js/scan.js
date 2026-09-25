@@ -17,9 +17,7 @@ export function handleId(raw, source) {
   }
   state.lastKey = key; state.lastTime = now;
 
-  const t0 = performance.now();
   const student = state.roster.get(key);
-  const ms = performance.now() - t0;
 
   if (!student) {
     showResult('error', null, String(raw).trim());
@@ -27,7 +25,7 @@ export function handleId(raw, source) {
     return;
   }
 
-  showResult('ok', student, `Lookup ${ms.toFixed(2)} ms`);
+  showResult('ok', student, '');
   beep('ok');
 
   enqueueScan({ id: student.id, session: state.activeSession, ts: now })
