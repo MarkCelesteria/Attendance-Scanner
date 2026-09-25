@@ -13,18 +13,66 @@
 /* ---------- Scanner ---------- */
 .scanner {
   position: relative; background: #0B1226; border-radius: var(--radius); overflow: hidden;
-  min-height: 300px; margin-bottom: 14px;
+  aspect-ratio: 4 / 3; margin-bottom: 14px;
 }
-#reader { width: 100%; }
-#reader video { width: 100% !important; display: block; }
+#reader, #reader video { position: absolute; inset: 0; width: 100%; height: 100%; }
+#reader video { object-fit: cover; display: block; }
 .scanner-idle {
   position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
   gap: 14px; color: #C7D0E6; text-align: center; padding: 16px;
 }
-.scanner-idle p { margin: 0; }
-.scanner.is-live .scanner-idle { inset: auto 12px 12px auto; flex-direction: row; padding: 0; }
-.scanner.is-live .scanner-idle p { display: none; }
-.scanner.is-live .btn-xl { font-size: .9rem; padding: 8px 14px; min-height: 40px; background: rgba(255,255,255,.92); color: var(--ink); border-color: transparent; }
+.scanner-idle-icon {
+  width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  background: rgba(18,161,80,.15); color: var(--ok);
+}
+.scanner-idle-title { margin: 0; font-size: 1.3rem; color: #fff; }
+.scanner-idle-sub { margin: -6px 0 0; max-width: 280px; font-size: .9rem; color: #A9B4CC; }
+.btn-camera-start {
+  display: flex; align-items: center; gap: 8px; appearance: none; border: none; cursor: pointer;
+  font: inherit; font-weight: 700; font-size: 1rem; padding: 12px 24px; min-height: 48px;
+  border-radius: 999px; background: var(--ok); color: #fff; touch-action: manipulation;
+}
+.btn-camera-start:active { transform: translateY(1px); }
+
+.scanner.is-live .scanner-idle {
+  inset: auto 0 0 0; flex-direction: row; align-items: center; justify-content: space-between;
+  padding: 12px; gap: 10px;
+}
+.scanner.is-live .scanner-idle-icon,
+.scanner.is-live .scanner-idle-title,
+.scanner.is-live .scanner-idle-sub { display: none; }
+.scanner.is-live .btn-camera-start {
+  font-size: .9rem; padding: 8px 14px; min-height: 40px; background: rgba(255,255,255,.92); color: var(--ink);
+}
+.scanner-quality { display: none; }
+.scanner.is-live .scanner-quality { display: block; }
+.qsel { position: relative; }
+.qsel-btn {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px; appearance: none; border: 2px solid transparent;
+  min-height: 40px; min-width: 220px; padding: 6px 12px; font: inherit; font-size: .85rem; font-weight: 600; cursor: pointer;
+  border-radius: 8px; background: rgba(255,255,255,.92); color: var(--ink);
+}
+.qsel-btn:focus-visible { border-color: #7C8CB0; outline: none; box-shadow: 0 0 0 3px rgba(124,140,176,.25); }
+.qsel-arrow { flex: none; transition: transform .15s; }
+.qsel-btn[aria-expanded="true"] .qsel-arrow { transform: rotate(180deg); }
+.qsel-list {
+  position: absolute; left: 0; bottom: calc(100% + 6px); min-width: 240px; max-height: 260px; overflow-y: auto;
+  background: #fff; border-radius: 10px; box-shadow: 0 12px 30px rgba(0,0,0,.25); padding: 4px;
+  scrollbar-width: thin; scrollbar-color: var(--line) transparent;
+}
+.qsel-list::-webkit-scrollbar { width: 6px; }
+.qsel-list::-webkit-scrollbar-track { background: transparent; }
+.qsel-list::-webkit-scrollbar-thumb { background: var(--line); border-radius: 999px; }
+.qsel-list::-webkit-scrollbar-thumb:hover { background: var(--ink-2); }
+.qsel-group-label {
+  font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .03em;
+  color: var(--ink); background: var(--paper); padding: 6px 10px; margin: 4px -4px 2px; border-radius: 6px;
+}
+.qsel-group-label:first-child { margin-top: -4px; }
+.qsel-group-label:not(:first-child) { margin-top: 10px; border-top: 1px solid var(--line); padding-top: 10px; }
+.qsel-option { padding: 5px 10px; margin: 1px 0; border-radius: 6px; font-size: .88rem; line-height: 1.3; color: var(--ink); cursor: pointer; }
+.qsel-option.is-focused { background: rgba(124,140,176,.18); }
+.qsel-option[aria-selected="true"] { background: var(--brand); color: #fff; font-weight: 700; }
 
 /* ---------- Result card ---------- */
 .result {

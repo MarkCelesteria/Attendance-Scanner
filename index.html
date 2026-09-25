@@ -153,8 +153,26 @@
         <section class="scanner" aria-label="Camera scanner">
           <div id="reader"></div>
           <div id="scanner-idle" class="scanner-idle">
-            <button id="btn-camera" class="btn btn-primary btn-xl">Start camera</button>
-            <p>Point at a QR code</p>
+            <div id="scanner-quality" class="scanner-quality">
+              <div class="qsel" id="qsel">
+                <button type="button" id="qsel-btn" class="qsel-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Camera quality">
+                  <span id="qsel-label"></span>
+                  <svg class="qsel-arrow" viewBox="0 0 14 9" width="14" height="9"><path d="M1 1l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <div id="qsel-list" class="qsel-list" role="listbox" aria-label="Camera quality" hidden></div>
+              </div>
+            </div>
+
+            <div class="scanner-idle-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" height="28" viewBox="0 -960 960 960" width="28" fill="currentColor"><path d="M80-680v-200h200v80H160v120H80Zm0 600v-200h80v120h120v80H80Zm600 0v-80h120v-120h80v200H680Zm120-600v-120H680v-80h200v200h-80ZM700-260h60v60h-60v-60Zm0-120h60v60h-60v-60Zm-60 60h60v60h-60v-60Zm-60 60h60v60h-60v-60Zm-60-60h60v60h-60v-60Zm120-120h60v60h-60v-60Zm-60 60h60v60h-60v-60Zm-60-60h60v60h-60v-60Zm240-320v240H520v-240h240ZM440-440v240H200v-240h240Zm0-320v240H200v-240h240Zm-60 500v-120H260v120h120Zm0-320v-120H260v120h120Zm320 0v-120H580v120h120Z"/></svg>
+            </div>
+            <h3 class="scanner-idle-title">Ready to scan?</h3>
+            <p class="scanner-idle-sub">Capture a student QR code to record attendance.</p>
+
+            <button id="btn-camera" type="button" class="btn-camera-start">
+              <svg class="btn-camera-icon" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20" fill="currentColor"><path d="M480-440Zm346-240q0-78-54-132t-132-54v-54q100 0 170 70t70 170h-54Zm-106 0q0-33-23.5-56.5T640-760v-54q55 0 93.5 39t40.5 95h-54ZM160-120q-33 0-56.5-23.5T80-200v-480q0-33 23.5-56.5T160-760h126l74-80h240v80H395l-73 80H160v480h640v-440h80v440q0 33-23.5 56.5T800-120H160Zm320-140q75 0 127.5-52.5T660-440q0-75-52.5-127.5T480-620q-75 0-127.5 52.5T300-440q0 75 52.5 127.5T480-260Zm0-80q-42 0-71-29t-29-71q0-42 29-71t71-29q42 0 71 29t29 71q0 42-29 71t-71 29Z"/></svg>
+              <span id="btn-camera-label">Start camera</span>
+            </button>
           </div>
         </section>
 
