@@ -1,6 +1,6 @@
 import { state } from './state.js';
 import { $, toast } from './utils.js';
-import { downloadQrSheet, estimateQrPdfSize, formatBytes } from './qrpdf.js';
+import { downloadQrSheet, downloadQrPackage, estimateQrPdfSize, formatBytes } from './qrpdf.js';
 
 const MIN_WIDTH = 1024
 
@@ -293,8 +293,17 @@ function renderTable(data) {
 function setLine(text) { $('qrpdf-line').textContent = text; }
 function setBar(pct) { $('qrpdf-bar-fill').style.width = `${Math.max(0, Math.min(100, pct))}%`; }
 
+function toggleSplitOption(wrapId, inputId, available) {
+  $(wrapId).hidden = !available;
+  if (!available) $(inputId).checked = false;
+}
+
 async function openQrConfirm(students) {
   const n = students.length;
+  const cfg = state.config;
+  toggleSplitOption('qrpdf-college-opt', 'qrpdf-by-college', !!cfg.collegeCol);
+  toggleSplitOption('qrpdf-program-opt', 'qrpdf-by-program', !!cfg.programCol);
+  toggleSplitOption('qrpdf-year-opt', 'qrpdf-by-year', !!cfg.yearCol);
   $('qrpdf-summary').hidden = true;
   $('btn-qrpdf-confirm').disabled = true;
   $('btn-qrpdf-confirm').textContent = 'Download PDF';
@@ -323,21 +332,36 @@ async function openQrConfirm(students) {
 }
 
 async function onDownloadQr(students) {
+  const opts = {
+    byCollege: $('qrpdf-by-college').checked,
+    byProgram: $('qrpdf-by-program').checked,
+    byYear: $('qrpdf-by-year').checked,
+  };
+  const split = opts.byCollege || opts.byProgram || opts.byYear;
+
   $('btn-qrpdf-confirm').disabled = true;
   $('btn-qrpdf-cancel').disabled = true;
   $('btn-qrpdf-confirm').textContent = 'Generating…';
   setBar(0);
   try {
-    await downloadQrSheet(students, 'qr-codes.pdf', (frac) => {
-      const pct = Math.round(frac * 100);
-      setLine(`Generating QR codes in PDF… ${pct}%`);
-      setBar(pct);
-    });
+    if (split) {
+      await downloadQrPackage(students, opts, 'qrcode.zip', (frac) => {
+        const pct = Math.round(frac * 100);
+        setLine(`Building PDFs and zipping… ${pct}%`);
+        setBar(pct);
+      });
+    } else {
+      await downloadQrSheet(students, 'qr-codes.pdf', (frac) => {
+        const pct = Math.round(frac * 100);
+        setLine(`Generating QR codes in PDF… ${pct}%`);
+        setBar(pct);
+      });
+    }
     setLine('Done — check your downloads');
     setBar(100);
     setTimeout(() => $('qrpdf-confirm-modal').close(), 700);
   } catch (e) {
-    toast('Could not generate the PDF: ' + (e && e.message ? e.message : e), 6000);
+    toast('Could not generate the file: ' + (e && e.message ? e.message : e), 6000);
     setLine('Failed');
   } finally {
     $('btn-qrpdf-confirm').disabled = false;

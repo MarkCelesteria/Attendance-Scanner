@@ -418,6 +418,23 @@
   <dialog id="qrpdf-confirm-modal" class="modal" aria-labelledby="qrpdf-confirm-title">
     <div class="modal-body">
       <h2 id="qrpdf-confirm-title">Download QR codes</h2>
+      <div class="qrpdf-split-options">
+        <label class="qrpdf-chip" id="qrpdf-college-opt">
+          <input type="checkbox" id="qrpdf-by-college" class="qrpdf-chip-input">
+          <span class="qrpdf-chip-icon" aria-hidden="true"></span>
+          <span>Separate by College</span>
+        </label>
+        <label class="qrpdf-chip" id="qrpdf-program-opt">
+          <input type="checkbox" id="qrpdf-by-program" class="qrpdf-chip-input">
+          <span class="qrpdf-chip-icon" aria-hidden="true"></span>
+          <span>Separate by Program</span>
+        </label>
+        <label class="qrpdf-chip" id="qrpdf-year-opt">
+          <input type="checkbox" id="qrpdf-by-year" class="qrpdf-chip-input">
+          <span class="qrpdf-chip-icon" aria-hidden="true"></span>
+          <span>Separate by Year</span>
+        </label>
+      </div>
       <div class="qrpdf-terminal">
         <p id="qrpdf-line" class="qrpdf-line"></p>
         <div class="qrpdf-bar-track"><div id="qrpdf-bar-fill" class="qrpdf-bar-fill"></div></div>
@@ -436,5 +453,6 @@
   <script type="module" src="js/main.js"></script>
   <script src="assets/vendor/qrcode.js" defer></script>
   <script src="assets/vendor/jspdf.umd.min.js" defer></script>
+  <script src="assets/vendor/jszip.min.js" defer></script>
 </body>
 </html>

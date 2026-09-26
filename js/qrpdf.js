@@ -15,6 +15,26 @@ function extraLine(s) {
   return [s.program, s.year, s.college].filter(Boolean).join(' - ');
 }
 
+function sanitizeName(s) {
+  return String(s || 'Unspecified').replace(/[\\/:*?"<>|]+/g, ' ').trim() || 'Unspecified';
+}
+
+function groupStudents(students, levels) {
+  if (!levels.length) return [{ path: [], students }];
+  const [field, ...rest] = levels;
+  const buckets = new Map();
+  for (const s of students) {
+    const key = (s[field] || '').trim() || 'Unspecified';
+    if (!buckets.has(key)) buckets.set(key, []);
+    buckets.get(key).push(s);
+  }
+  const groups = [];
+  for (const [key, list] of [...buckets.entries()].sort((a, b) => a[0].localeCompare(b[0]))) {
+    for (const sub of groupStudents(list, rest)) groups.push({ path: [key, ...sub.path], students: sub.students });
+  }
+  return groups;
+}
+
 function pdfDims() {
   const cellW = (PAGE_W - MARGIN * 2) / COLS;
   const cellH = (PAGE_H - MARGIN * 2) / ROWS;
@@ -99,4 +119,46 @@ export async function downloadQrSheet(students, filename = 'qr-codes.pdf', onPro
   }
 
   doc.save(filename);
+}
+
+export async function downloadQrPackage(students, opts, filename = 'qrcode.zip', onProgress) {
+  const levels = [];
+  if (opts.byCollege) levels.push('college');
+  if (opts.byProgram) levels.push('program');
+  if (opts.byYear) levels.push('year');
+
+  if (!levels.length) return downloadQrSheet(students, 'qr-codes.pdf', onProgress);
+
+  const groups = groupStudents(students, levels);
+  const zip = new window.JSZip();
+  const root = zip.folder('qrcode');
+  const dims = pdfDims();
+  const total = students.length || 1;
+  let done = 0;
+
+  for (const g of groups) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+    for (let i = 0; i < g.students.length; i++) {
+      drawStudent(doc, g.students[i], i, dims);
+      done++;
+      if (onProgress) onProgress((done / total) * 0.9);
+      if (i % PAGE_SIZE === PAGE_SIZE - 1) await nextFrame();
+    }
+    let folder = root;
+    for (let i = 0; i < g.path.length - 1; i++) folder = folder.folder(sanitizeName(g.path[i]));
+    const leafName = g.path.length ? sanitizeName(g.path[g.path.length - 1]) : 'qr-codes';
+    folder.file(`${leafName}.pdf`, doc.output('arraybuffer'));
+    await nextFrame();
+  }
+
+  const blob = await zip.generateAsync({ type: 'blob' }, (meta) => {
+    if (onProgress) onProgress(0.9 + (meta.percent / 100) * 0.1);
+  });
+
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
 }

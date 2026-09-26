@@ -49,6 +49,31 @@
 .copy-msg.err { color: var(--bad); }
 .modal-actions { display: flex; justify-content: flex-end; gap: 10px; }
 
+.qrpdf-split-options {
+  display: flex; flex-wrap: nowrap; gap: 8px; margin: 0 0 12px;
+  overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 2px;
+}
+.qrpdf-chip {
+  display: inline-flex; align-items: center; gap: 6px; flex: none;
+  padding: 6px 10px; border-radius: 999px; border: 2px solid var(--line);
+  background: var(--card); font-size: .88rem; font-weight: 600; color: var(--ink-2); white-space: nowrap;
+  cursor: pointer; user-select: none; transition: background .15s, border-color .15s, color .15s;
+}
+.qrpdf-chip-input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.qrpdf-chip-icon {
+  width: 14px; height: 14px; border-radius: 50%; flex: none;
+  border: 2px solid var(--line); display: inline-flex; align-items: center; justify-content: center;
+  transition: background .15s, border-color .15s;
+}
+.qrpdf-chip-icon::after {
+  content: ''; width: 6px; height: 4px; margin-top: -1px;
+  border-left: 2px solid #fff; border-bottom: 2px solid #fff;
+  transform: rotate(-45deg); opacity: 0; transition: opacity .1s;
+}
+.qrpdf-chip-input:checked + .qrpdf-chip-icon { background: var(--focus); border-color: var(--focus); }
+.qrpdf-chip-input:checked + .qrpdf-chip-icon::after { opacity: 1; }
+.qrpdf-chip:has(.qrpdf-chip-input:checked) { background: rgba(43, 91, 255, .1); border-color: var(--focus); color: var(--ink); }
+.qrpdf-chip-input:focus-visible + .qrpdf-chip-icon { outline: 2px solid var(--focus); outline-offset: 2px; }
 .qrpdf-terminal { margin: 4px 0 12px; }
 .qrpdf-line { margin: 0 0 8px; font-size: .95rem; font-weight: 600; color: var(--ink); min-height: 1.3em; }
 .qrpdf-bar-track { height: 8px; background: var(--paper); border-radius: 999px; overflow: hidden; }
