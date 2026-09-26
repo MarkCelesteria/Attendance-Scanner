@@ -11,6 +11,11 @@ export function loadConfig() {
     delete c.startCol;
     saveConfig(c);
   }
+  if (!Array.isArray(c.sheetNames)) {
+    c.sheetNames = c.sheetName ? [c.sheetName] : [];
+    delete c.sheetName;
+    saveConfig(c);
+  }
   return c;
 }
 
@@ -97,7 +102,9 @@ export function readForm() {
     firstRow = parseInt(val('cfg-row'), 10);
     if (!(firstRow >= 1)) throw new Error('First student row must be 1 or higher.');
   }
-  const sheetName = $('cfg-sheet-on').checked ? val('cfg-sheet') : '';
+  const sheetNames = $('cfg-sheet-on').checked
+    ? val('cfg-sheet').split(',').map((s) => s.trim()).filter(Boolean)
+    : [];
 
   const superOn = $('cfg-super-on').checked;
   let timekeeperMode = 'off', timekeeperName = '';
@@ -131,7 +138,7 @@ export function readForm() {
     }
   }
 
-  return { scriptUrl, accessKey: val('cfg-key'), sessions, ...infoCols, sheetName, firstRow,
+  return { scriptUrl, accessKey: val('cfg-key'), sessions, ...infoCols, sheetNames, firstRow,
     timePolicy: $('cfg-policy-earliest').checked ? 'earliest' : 'latest', timekeeperMode, timekeeperName,
     adminEnabled: $('cfg-admin-on').checked, sessionLockEnabled: $('cfg-session-lock-on').checked,
     soundOnScan: $('cfg-sound-on').checked };

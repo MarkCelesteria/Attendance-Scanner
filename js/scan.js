@@ -28,7 +28,7 @@ export function handleId(raw, source) {
   showResult('ok', student, '');
   beep('ok');
 
-  enqueueScan({ id: student.id, session: state.activeSession, ts: now })
+  enqueueScan({ id: student.id, session: state.activeSession, ts: now, sheet: student.sheet || '' })
     .then(refreshPending)
     .then(syncNow)
     .catch(() => toast('Could not save this scan on the device. Storage may be full.', 6000));

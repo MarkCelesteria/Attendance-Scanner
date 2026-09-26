@@ -61,7 +61,7 @@ async function fetchAdminRoster(adminKey) {
     idCol: c.idCol, nameCol: c.nameCol,
     programCol: c.programCol || '', yearCol: c.yearCol || '',
     collegeCol: c.collegeCol || '', genderCol: c.genderCol || '',
-    firstRow: String(c.firstRow), sheet: c.sheetName || '',
+    firstRow: String(c.firstRow), sheets: JSON.stringify(c.sheetNames || []),
     sessions: JSON.stringify(c.sessions.map((s) => ({ name: s.name, col: s.col }))),
   });
   const url = c.scriptUrl + (c.scriptUrl.includes('?') ? '&' : '?') + q.toString();
@@ -438,6 +438,7 @@ export function initAdmin() {
     applyFilters();
   });
   $('filter-time-from').addEventListener('change', () => { timeFrom = $('filter-time-from').value; applyFilters(); });
+  $('filter-time-to').addEventListener('change', () => { timeTo = $('filter-time-to').value; applyFilters(); });
   $('filter-time-presence').addEventListener('click', (e) => {
     const btn = e.target.closest('.filter-chip');
     if (!btn) return;

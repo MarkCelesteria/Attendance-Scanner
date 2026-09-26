@@ -1,15 +1,13 @@
-/** Roster download (Apps Script doGet) into IndexedDB + memory. */
 import { LS_ROSTER_T } from './constants.js';
 import { state } from './state.js';
 import { normalizeId } from './utils.js';
 import { saveRoster, loadRoster } from './db.js';
 
-/** Fetch students, replace the local roster, refresh the in-memory Map. */
 export async function downloadRoster(cfg) {
   const q = new URLSearchParams({
     idCol: cfg.idCol, nameCol: cfg.nameCol, programCol: cfg.programCol || '', yearCol: cfg.yearCol || '',
     collegeCol: cfg.collegeCol || '', genderCol: cfg.genderCol || '',
-    firstRow: String(cfg.firstRow), sheet: cfg.sheetName || '', key: cfg.accessKey || '',
+    firstRow: String(cfg.firstRow), sheets: JSON.stringify(cfg.sheetNames || []), key: cfg.accessKey || '',
   });
   const url = cfg.scriptUrl + (cfg.scriptUrl.includes('?') ? '&' : '?') + q.toString();
 
@@ -32,6 +30,7 @@ export async function downloadRoster(cfg) {
     key: normalizeId(s.id), id: String(s.id).trim(),
     name: String(s.name || '').trim(), program: String(s.program || '').trim(), year: String(s.year || '').trim(),
     college: String(s.college || '').trim(), gender: String(s.gender || '').trim(),
+    sheet: String(s.sheet || '').trim(),
   })).filter((s) => s.key);
 
   await saveRoster(list);

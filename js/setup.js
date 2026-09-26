@@ -103,9 +103,9 @@ function fillFormFromConfig(c, { includeKey = true } = {}) {
   $('cfg-id').value = c.idCol || '';            $('cfg-name').value = c.nameCol || '';
   $('cfg-program').value = c.programCol || '';  $('cfg-year').value = c.yearCol || '';
   $('cfg-college').value = c.collegeCol || '';  $('cfg-gender').value = c.genderCol || '';
-  $('cfg-sheet-on').checked = !!c.sheetName;
-  $('cfg-sheet').value = c.sheetName || '';
-  $('cfg-sheet').hidden = !c.sheetName;
+  $('cfg-sheet-on').checked = c.sheetNames && c.sheetNames.length > 0;
+  $('cfg-sheet').value = (c.sheetNames || []).join(', ');
+  $('cfg-sheet').hidden = !(c.sheetNames && c.sheetNames.length);
   $('cfg-row-on').checked = c.firstRow !== 2;
   $('cfg-row').value = c.firstRow || 2;
   $('cfg-row').hidden = c.firstRow === 2;

@@ -43,8 +43,8 @@ async function postBatch(batch) {
   const c = state.config;
   const payload = {
     key: c.accessKey || '',
-    config: { sheet: c.sheetName || '', idCol: c.idCol, sessions: c.sessions.map((s) => (s.supCol ? { name: s.name, col: s.col, supName: s.supName, supCol: s.supCol } : { name: s.name, col: s.col })), firstRow: c.firstRow, timePolicy: c.timePolicy || 'earliest' },
-    entries: batch.map((e) => ({ qid: e.qid, id: e.id, session: e.session, ts: e.ts })),
+    config: { idCol: c.idCol, sessions: c.sessions.map((s) => (s.supCol ? { name: s.name, col: s.col, supName: s.supName, supCol: s.supCol } : { name: s.name, col: s.col })), firstRow: c.firstRow, timePolicy: c.timePolicy || 'earliest' },
+    entries: batch.map((e) => ({ qid: e.qid, id: e.id, session: e.session, ts: e.ts, sheet: e.sheet || '' })),
   };
 
   const ctrl = new AbortController();
