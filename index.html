@@ -275,7 +275,7 @@
               <svg class="admin-search-icon" viewBox="0 -960 960 960" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
               <input type="text" id="admin-search-input" class="admin-search" placeholder="Search by ID or name" autocomplete="off">
             </div>
-            <button type="button" class="btn admin-filter" disabled>Filter</button>
+            <button type="button" id="btn-admin-filter" class="btn admin-filter">Filter</button>
           </div>
           <div class="admin-table-wrap">
             <table id="admin-table">
@@ -333,7 +333,43 @@
     </div>
   </dialog>
 
-    <dialog id="admin-help-modal" class="modal" aria-labelledby="admin-help-title">
+  <dialog id="admin-filter-modal" class="modal admin-filter-modal" aria-labelledby="admin-filter-title">
+    <div class="modal-body">
+      <div class="filter-modal-head">
+        <h2 id="admin-filter-title">Filter</h2>
+        <button type="button" id="btn-filter-x" class="icon-btn" aria-label="Close">&times;</button>
+      </div>
+      <div class="filter-section">
+        <h3>Show columns</h3>
+        <div id="filter-columns-buttons" class="filter-btn-group"></div>
+      </div>
+      <div id="filter-categories"></div>
+      <div class="filter-section filter-section-box">
+        <h3>Time range</h3>
+        <div class="filter-time-row">
+          <div class="filter-time-field">
+            <div class="filter-time-field-inner">
+              <span class="filter-time-label">From</span>
+              <input type="time" id="filter-time-from">
+            </div>
+          </div>
+          <span class="filter-time-divider">→</span>
+          <div class="filter-time-field">
+            <div class="filter-time-field-inner">
+              <span class="filter-time-label">To</span>
+              <input type="time" id="filter-time-to">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button type="button" id="btn-filter-reset" class="btn">Reset</button>
+      <button type="button" id="btn-filter-close" class="btn btn-primary">Done</button>
+    </div>
+  </dialog>
+
+  <dialog id="admin-help-modal" class="modal" aria-labelledby="admin-help-title">
     <div class="modal-body">
       <h2 id="admin-help-title">How to set the admin key</h2>
       <ol class="steps">
