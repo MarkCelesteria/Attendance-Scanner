@@ -74,6 +74,12 @@
 .qsel-option.is-focused { background: rgba(124,140,176,.18); }
 .qsel-option[aria-selected="true"] { background: var(--brand); color: #fff; font-weight: 700; }
 
+@media (max-width: 600px) {
+  .scanner.is-live .scanner-idle { padding: 8px; gap: 6px; }
+  .qsel-btn { min-width: 0; flex: 1 1 auto; padding: 5px 8px; font-size: .75rem; min-height: 34px; gap: 6px; }
+  .scanner.is-live .btn-camera-start { padding: 6px 10px; font-size: .75rem; min-height: 34px; gap: 4px; flex: none; }
+}
+
 /* ---------- Result card ---------- */
 .result {
   border-radius: var(--radius); padding: 18px 18px 16px; margin-bottom: 14px;
@@ -209,10 +215,41 @@
 .admin-panel-head .label-row { justify-content: flex-start; gap: 8px; }
 .admin-panel-actions { display: flex; align-items: center; gap: 4px; }
 @media (min-width: 1024px) {
-  .dash-split { display: flex; gap: 20px; align-items: flex-start; }
-  .dash-main { flex: 0 0 680px; margin-top: 0; }
+  #view-dashboard.admin-active .dash-split { display: flex; gap: 20px; align-items: flex-start; }
+  #view-dashboard.admin-active .dash-main { flex: 0 0 680px; margin-top: 0; }
   .admin-panel { flex: 1 1 300px; min-width: 300px; margin-top: 0; position: sticky; top: 12px; }
 }
 #admin-login-step { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 #admin-key-input { flex: 1; min-width: 160px; }
 #admin-login-error { flex: 0 0 auto; width: fit-content; margin: 0; }
+
+@media (min-width: 1024px) and (max-width: 1360px) {
+  #view-dashboard.admin-active .dash-main { flex: 0 0 460px; }
+  #view-dashboard.admin-active .scanner { aspect-ratio: 4 / 3; }
+}
+
+@media (max-width: 600px) {
+  .result { min-height: 130px; padding: 14px 14px 12px; }
+  .result-name { font-size: clamp(1.5rem, 9vw, 2.2rem); margin-bottom: 8px; }
+  .result-meta dt { font-size: .75rem; }
+  .result-meta dd { font-size: 1.1rem; }
+  .result-status { font-size: .85rem; }
+  .result-foot { font-size: .78rem; }
+
+  .session-btn { padding: 8px 10px; min-height: 50px; }
+  .session-btn .s-name { font-size: .92rem; }
+  .session-btn .s-col { font-size: .72rem; }
+
+  .scanner-idle-title { font-size: 1.05rem; }
+  .scanner-idle-sub { font-size: .8rem; }
+  .scanner-idle-icon { width: 48px; height: 48px; }
+  .btn-camera-start { font-size: .85rem; padding: 10px 18px; min-height: 42px; }
+
+  .manual-input-wrap input { font-size: .95rem; }
+
+  .tbl-card-head h3 { font-size: .9rem; }
+  .tbl-row { font-size: .82rem; }
+  .tbl-row-time { font-size: .75rem; }
+
+  .roster-meta { font-size: .72rem; }
+}

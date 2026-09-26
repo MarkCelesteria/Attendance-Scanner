@@ -386,7 +386,7 @@ async function onSubmit() {
 
 export function initAdmin() {
   $('btn-admin').addEventListener('click', () => {
-    if (window.innerWidth < MIN_WIDTH) { toast('Admin view needs a wider screen — try a tablet or PC.', 5000); return; }
+    if (window.innerWidth < MIN_WIDTH) { toast('Admin view needs a wider screen — try a laptop or PC.', 5000); return; }
     resetPanel();
     $('admin-panel').hidden = false;
     $('view-dashboard').classList.add('admin-active');

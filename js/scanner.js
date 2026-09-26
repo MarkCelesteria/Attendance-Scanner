@@ -20,10 +20,10 @@ let selectedQuality = DEFAULT_QUALITY;
 let optionEls = [];
 let focusIdx = -1;
 
-function qualityLabel(value) {
+function qualityLabel(value, short) {
   for (const g of QUALITY_GROUPS) {
     for (const fps of g.fps) {
-      if (`${g.w}x${g.h}x${fps}` === value) return `${g.w}×${g.h} · ${fps} fps${g.recommendedFps === fps ? ' (Recommended)' : ''}`;
+      if (`${g.w}x${g.h}x${fps}` === value) return `${g.w}×${g.h} · ${fps} fps${(!short && g.recommendedFps === fps) ? ' (Recommended)' : ''}`;
     }
   }
   return value;
@@ -64,7 +64,7 @@ function openList() {
 
 function selectValue(value) {
   selectedQuality = value;
-  $('qsel-label').textContent = qualityLabel(value);
+  $('qsel-label').textContent = qualityLabel(value, true);
   optionEls.forEach((el) => el.setAttribute('aria-selected', String(el.dataset.value === value)));
   closeList();
   $('qsel-btn').focus();
@@ -96,7 +96,7 @@ function buildQualityOptions() {
     });
   });
 
-  $('qsel-label').textContent = qualityLabel(selectedQuality);
+  $('qsel-label').textContent = qualityLabel(selectedQuality, true);
   $('qsel-btn').addEventListener('click', () => { $('qsel-list').hidden ? openList() : closeList(); });
   $('qsel-btn').addEventListener('keydown', (e) => {
     if ($('qsel-list').hidden && (e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === 'Enter' || e.key === ' ')) {
@@ -198,7 +198,7 @@ export async function startScanner(onCode) {
 
   state.scanning = true;
   $('scanner-idle').closest('.scanner').classList.add('is-live');
-  $('btn-camera-label').textContent = 'Stop camera';
+  $('btn-camera-label').textContent = 'Close camera';
   timer = setInterval(tick, Math.round(1000 / fps));
   requestWakeLock();
 }
@@ -213,7 +213,7 @@ export async function stopScanner() {
   const box = document.querySelector('.scanner');
   if (box) box.classList.remove('is-live');
   const label = $('btn-camera-label');
-  if (label) label.textContent = 'Start camera';
+  if (label) label.textContent = 'Open camera';
   releaseWakeLock();
 }
 
