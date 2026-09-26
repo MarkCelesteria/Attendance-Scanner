@@ -160,6 +160,8 @@
 .admin-table-footer #admin-table-meta { margin: 0; }
 .admin-pagination { display: flex; align-items: center; gap: 10px; }
 .admin-pagination #admin-page-label { font-size: .9rem; color: var(--ink-2); white-space: nowrap; }
+.admin-filter { display: inline-flex; align-items: center; justify-content: center; gap: 6px; line-height: 1; }
+.admin-filter-icon { flex: none; display: block; }
 
 .admin-filter-modal { width: min(640px, calc(100vw - 24px)); }
 .filter-modal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }

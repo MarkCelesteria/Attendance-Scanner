@@ -17,6 +17,7 @@ let categoryDefs = [];
 let excluded = {};
 let timeFrom = '';
 let timeTo = '';
+let timePresence = 'all';
 
 export function renderAdminButton() {
   const btn = $('btn-admin');
@@ -40,7 +41,7 @@ function resetPanel() {
   categoryDefs = [];
   excluded = {};
   hiddenCols.clear();
-  timeFrom = ''; timeTo = '';
+  timeFrom = ''; timeTo = ''; timePresence = 'all';
   if ($('admin-filter-modal').open) $('admin-filter-modal').close();
   $('filter-time-from').value = '';
   $('filter-time-to').value = '';
@@ -91,6 +92,16 @@ function renderRows(students) {
   const cols = visibleCols();
   const body = $('admin-table-body');
   body.textContent = '';
+  if (!students.length) {
+    const tr = document.createElement('tr');
+    const td = document.createElement('td');
+    td.colSpan = cols.length;
+    td.className = 'admin-table-empty';
+    td.textContent = 'No students match the current filters.';
+    tr.appendChild(td);
+    body.appendChild(tr);
+    return;
+  }
   students.forEach((s) => {
     const tr = document.createElement('tr');
     cols.forEach((c) => {
@@ -101,14 +112,23 @@ function renderRows(students) {
     body.appendChild(tr);
   });
 }
-
 function matchesQuery(student, q) {
   return String(student.id || '').toLowerCase().includes(q) || String(student.name || '').toLowerCase().includes(q);
 }
 
+function visibleSessionNames() {
+  return sessionNames.filter((name) => !hiddenCols.has('session:' + name));
+}
+
+function hasAnySessionTime(s) {
+  return visibleSessionNames().some((name) => !!(s.sessions && s.sessions[name]));
+}
+
 function matchesTimeRange(s) {
+  if (timePresence === 'none') return !hasAnySessionTime(s);
+  if (timePresence === 'has' && !hasAnySessionTime(s)) return false;
   if (!timeFrom && !timeTo) return true;
-  return sessionNames.some((name) => {
+  return visibleSessionNames().some((name) => {
     const v = s.sessions && s.sessions[name];
     if (!v) return false;
     const hm = String(v).split(' ')[1];
@@ -177,7 +197,7 @@ function buildColumnButtons() {
       if (hiddenCols.has(id)) hiddenCols.delete(id); else hiddenCols.add(id);
       btn.classList.toggle('is-on', !hiddenCols.has(id));
       renderHead();
-      renderPage();
+      applyFilters();
     });
     wrap.appendChild(btn);
   });
@@ -385,15 +405,22 @@ export function initAdmin() {
   $('btn-filter-reset').addEventListener('click', () => {
     hiddenCols.clear();
     categoryDefs.forEach((d) => excluded[d.id].clear());
-    timeFrom = ''; timeTo = '';
+    timeFrom = ''; timeTo = ''; timePresence = 'all';
     $('filter-time-from').value = ''; $('filter-time-to').value = '';
+    $('filter-time-presence').querySelectorAll('.filter-chip').forEach((b) => b.classList.toggle('is-on', b.dataset.val === 'all'));
     buildColumnButtons();
     renderCategoryButtons();
     renderHead();
     applyFilters();
   });
   $('filter-time-from').addEventListener('change', () => { timeFrom = $('filter-time-from').value; applyFilters(); });
-  $('filter-time-to').addEventListener('change', () => { timeTo = $('filter-time-to').value; applyFilters(); });
+  $('filter-time-presence').addEventListener('click', (e) => {
+    const btn = e.target.closest('.filter-chip');
+    if (!btn) return;
+    timePresence = btn.dataset.val;
+    $('filter-time-presence').querySelectorAll('.filter-chip').forEach((b) => b.classList.toggle('is-on', b === btn));
+    applyFilters();
+  });
   $('btn-qrpdf-cancel').addEventListener('click', () => $('qrpdf-confirm-modal').close());
   $('qrpdf-confirm-modal').addEventListener('click', (e) => { if (e.target === $('qrpdf-confirm-modal')) $('qrpdf-confirm-modal').close(); });
 }
