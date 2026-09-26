@@ -2,7 +2,7 @@
 .btn {
   appearance: none; border: 2px solid var(--ink); background: var(--card); color: var(--ink);
   font: inherit; font-weight: 600; padding: 12px 18px; border-radius: 10px; cursor: pointer;
-  min-height: 48px; touch-action: manipulation;
+  min-height: 48px; touch-action: manipulation; white-space: nowrap;
 }
 .btn:active { transform: translateY(1px); }
 .btn-primary { background: var(--brand); color: #fff; }
@@ -21,8 +21,10 @@ input:focus { border-color: var(--focus); outline: none; box-shadow: 0 0 0 3px r
   font-size: 1.6rem; width: 48px; height: 48px; border-radius: 10px; cursor: pointer;
   display: inline-flex; align-items: center; justify-content: center;
 }
-.icon-btn:hover { background: rgba(20, 33, 61, .08); }
-.icon-btn.is-spinning { animation: spin 1s linear infinite; }
+@media (hover: hover) {
+  .icon-btn:hover { background: rgba(20, 33, 61, .08); }
+}
+.icon-btn.is-spinning svg { animation: spin 1s linear infinite; }
 .icon-btn { display: inline-flex; align-items: center; justify-content: center; }
 @keyframes spin { to { transform: rotate(360deg); } }
 

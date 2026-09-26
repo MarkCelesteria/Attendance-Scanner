@@ -133,5 +133,6 @@ export function readForm() {
 
   return { scriptUrl, accessKey: val('cfg-key'), sessions, ...infoCols, sheetName, firstRow,
     timePolicy: $('cfg-policy-earliest').checked ? 'earliest' : 'latest', timekeeperMode, timekeeperName,
-    adminEnabled: $('cfg-admin-on').checked };
+    adminEnabled: $('cfg-admin-on').checked, sessionLockEnabled: $('cfg-session-lock-on').checked,
+    soundOnScan: $('cfg-sound-on').checked };
 }

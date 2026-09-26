@@ -115,6 +115,14 @@
           <span class="toggle-text">Enable Admin Access<br><span class="opt">Adds an admin button on the scanner screen</span></span>
           <label class="switch"><input type="checkbox" id="cfg-admin-on" checked><span class="slider"></span></label>
         </div>
+        <div class="toggle-row">
+          <span class="toggle-text">Require access key to switch sessions<br><span class="opt">Off lets anyone switch sessions freely</span></span>
+          <label class="switch"><input type="checkbox" id="cfg-session-lock-on" checked><span class="slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <span class="toggle-text">Sound on scan<br><span class="opt">Plays a beep for a successful or failed scan</span></span>
+          <label class="switch"><input type="checkbox" id="cfg-sound-on" checked><span class="slider"></span></label>
+        </div>
       </details>
 
       <p id="setup-error" class="form-error" role="alert" hidden></p>
@@ -391,6 +399,19 @@
     </div>
     <div class="modal-actions">
       <button type="button" id="btn-admin-help-close" class="btn">Close</button>
+    </div>
+  </dialog>
+
+  <dialog id="session-key-modal" class="modal" aria-labelledby="session-key-title">
+    <div class="modal-body">
+      <h2 id="session-key-title">Enter access key</h2>
+      <p class="hint">This session is locked. Enter the access key to switch.</p>
+      <input id="session-key-input" type="password" placeholder="Access key" autocomplete="off">
+      <p id="session-key-error" class="form-error" role="alert" hidden></p>
+    </div>
+    <div class="modal-actions">
+      <button type="button" id="btn-session-key-cancel" class="btn">Cancel</button>
+      <button type="button" id="btn-session-key-confirm" class="btn btn-primary">Confirm</button>
     </div>
   </dialog>
 

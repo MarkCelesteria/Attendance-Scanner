@@ -4,6 +4,53 @@ import { $, clockTime } from './utils.js';
 
 const RESET_MS = 10000;
 
+function switchToSession(name, btn, group) {
+  state.activeSession = name;
+  localStorage.setItem(LS_ACTIVE, name);
+  group.querySelectorAll('.session-btn').forEach((el) => el.setAttribute('aria-checked', String(el === btn)));
+}
+
+function askSessionKey() {
+  return new Promise((resolve) => {
+    const modal = $('session-key-modal');
+    const input = $('session-key-input');
+    const err = $('session-key-error');
+    const confirmBtn = $('btn-session-key-confirm');
+    const cancelBtn = $('btn-session-key-cancel');
+
+    err.hidden = true;
+    input.value = '';
+    modal.showModal();
+    input.focus();
+
+    const cleanup = () => {
+      confirmBtn.removeEventListener('click', onConfirm);
+      cancelBtn.removeEventListener('click', onCancel);
+      input.removeEventListener('keydown', onKeydown);
+      modal.removeEventListener('close', onCancel);
+    };
+    const onConfirm = () => {
+      if (input.value.trim() !== (state.config.accessKey || '')) {
+        err.textContent = 'Incorrect access key.';
+        err.hidden = false;
+        input.value = '';
+        input.focus();
+        return;
+      }
+      cleanup();
+      modal.close();
+      resolve(true);
+    };
+    const onCancel = () => { cleanup(); if (modal.open) modal.close(); resolve(false); };
+    const onKeydown = (e) => { if (e.key === 'Enter') { e.preventDefault(); onConfirm(); } };
+
+    confirmBtn.addEventListener('click', onConfirm);
+    cancelBtn.addEventListener('click', onCancel);
+    input.addEventListener('keydown', onKeydown);
+    modal.addEventListener('close', onCancel);
+  });
+}
+
 export function renderSessions() {
   const group = $('session-group');
   group.textContent = '';
@@ -17,10 +64,13 @@ export function renderSessions() {
     const n = document.createElement('span'); n.className = 's-name'; n.textContent = name;
     const c = document.createElement('span'); c.className = 's-col'; c.textContent = `Column ${col}`;
     b.append(n, c);
-    b.addEventListener('click', () => {
-      state.activeSession = name;
-      localStorage.setItem(LS_ACTIVE, name);
-      group.querySelectorAll('.session-btn').forEach((el) => el.setAttribute('aria-checked', String(el === b)));
+    b.addEventListener('click', async () => {
+      if (name === state.activeSession) return;
+      if (state.config.sessionLockEnabled && state.config.accessKey) {
+        const ok = await askSessionKey();
+        if (!ok) return;
+      }
+      switchToSession(name, b, group);
     });
     group.appendChild(b);
   });
@@ -67,12 +117,11 @@ function fadeToIdle() {
   }, 300);
 }
 
-/** kind: 'ok' | 'error'. Green flood for FLASH_MS, then a calm "last scanned" look. */
 export function showResult(kind, student, extra) {
   const r = $('result');
   clearTimeout(state.flashTimer);
   r.className = 'result';
-  void r.offsetWidth;   // re-trigger the CSS animation
+  void r.offsetWidth;
 
   if (kind === 'ok') {
     r.classList.add('is-ok');

@@ -20,6 +20,7 @@
 .form-error { background: var(--bad-soft); color: var(--bad); border: 1px solid var(--bad); padding: 10px 12px; border-radius: 10px; font-weight: 600; }
 .setup-actions { display: flex; flex-wrap: wrap; gap: 10px; }
 .setup-actions .btn-primary { flex: 1 1 220px; }
+.setup-actions .btn-danger { flex: 1 1 auto; }
 
 /* ---------- Help "?" and modal ---------- */
 .label-row { display: flex; align-items: center; justify-content: space-between; margin: 4px 0 6px; }

@@ -116,6 +116,8 @@ function fillFormFromConfig(c, { includeKey = true } = {}) {
   $('cfg-super-name').value = c.timekeeperName || '';
   $('cfg-super-col').value = c.timekeeperMode === 'single' && c.sessions && c.sessions[0] ? c.sessions[0].supCol || '' : '';
   $('cfg-admin-on').checked = c.adminEnabled !== false;
+  $('cfg-session-lock-on').checked = c.sessionLockEnabled !== false;
+  $('cfg-sound-on').checked = c.soundOnScan !== false;
   buildSessionRows(c.sessions);
   updateSuperVisibility();
 }

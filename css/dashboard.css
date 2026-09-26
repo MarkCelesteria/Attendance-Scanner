@@ -74,12 +74,6 @@
 .qsel-option.is-focused { background: rgba(124,140,176,.18); }
 .qsel-option[aria-selected="true"] { background: var(--brand); color: #fff; font-weight: 700; }
 
-@media (max-width: 600px) {
-  .scanner.is-live .scanner-idle { padding: 8px; gap: 6px; }
-  .qsel-btn { min-width: 0; flex: 1 1 auto; padding: 5px 8px; font-size: .75rem; min-height: 34px; gap: 6px; }
-  .scanner.is-live .btn-camera-start { padding: 6px 10px; font-size: .75rem; min-height: 34px; gap: 4px; flex: none; }
-}
-
 /* ---------- Result card ---------- */
 .result {
   border-radius: var(--radius); padding: 18px 18px 16px; margin-bottom: 14px;
@@ -137,7 +131,6 @@
 
 /* ---------- Activity tables ---------- */
 .tables { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
-@media (max-width: 560px) { .tables { grid-template-columns: 1fr; } }
 .tbl-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; }
 .tbl-card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
 .tbl-card-head h3 { margin: 0; font-size: 1rem; }
@@ -214,6 +207,11 @@
 .admin-panel-head h2 { margin: 0; font-size: 1.1rem; }
 .admin-panel-head .label-row { justify-content: flex-start; gap: 8px; }
 .admin-panel-actions { display: flex; align-items: center; gap: 4px; }
+
+/* ---------- Media ---------- */
+
+@media (max-width: 560px) { .tables { grid-template-columns: 1fr; } }
+
 @media (min-width: 1024px) {
   #view-dashboard.admin-active .dash-split { display: flex; gap: 20px; align-items: flex-start; }
   #view-dashboard.admin-active .dash-main { flex: 0 0 680px; margin-top: 0; }
@@ -229,6 +227,10 @@
 }
 
 @media (max-width: 600px) {
+  .scanner.is-live .scanner-idle { padding: 8px; gap: 6px; }
+  .scanner.is-live .btn-camera-start { padding: 6px 10px; font-size: .75rem; min-height: 34px; gap: 4px; flex: none; }
+  .qsel-btn { min-width: 0; flex: 1 1 auto; padding: 5px 8px; font-size: .75rem; min-height: 34px; gap: 6px; }
+
   .result { min-height: 130px; padding: 14px 14px 12px; }
   .result-name { font-size: clamp(1.5rem, 9vw, 2.2rem); margin-bottom: 8px; }
   .result-meta dt { font-size: .75rem; }

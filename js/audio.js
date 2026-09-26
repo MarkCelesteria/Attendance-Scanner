@@ -8,6 +8,7 @@ export function unlockAudio() {
 }
 
 export function beep(kind) {
+  if (state.config && state.config.soundOnScan === false) return;
   try {
     unlockAudio();
     const ctx = state.audioCtx;
