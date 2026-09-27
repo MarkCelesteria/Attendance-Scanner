@@ -118,10 +118,21 @@ function fadeToIdle() {
   }, 300);
 }
 
-function confirmUndo(onUndo) {
+function startResultTimer() {
+  const r = $('result');
+  state.flashTimer = setTimeout(() => {
+    r.classList.remove('is-ok'); r.classList.add('is-last');
+    state.flashTimer = setTimeout(fadeToIdle, RESET_MS - FLASH_MS);
+  }, FLASH_MS);
+}
+
+function confirmUndo(onUndo, onResume) {
   const modal = $('undo-confirm-modal');
   const confirmBtn = $('btn-undo-confirm');
   const cancelBtn = $('btn-undo-cancel');
+
+  clearTimeout(state.flashTimer);
+  clearTimeout(state.pendingTimer);
 
   const cleanup = () => {
     confirmBtn.removeEventListener('click', onConfirm);
@@ -129,7 +140,12 @@ function confirmUndo(onUndo) {
     modal.removeEventListener('close', onCancel);
   };
   const onConfirm = () => { cleanup(); modal.close(); onUndo(); };
-  const onCancel = () => { cleanup(); if (modal.open) modal.close(); };
+  const onCancel = () => {
+    cleanup();
+    if (modal.open) modal.close();
+    startResultTimer();
+    if (onResume) onResume();
+  };
 
   confirmBtn.addEventListener('click', onConfirm);
   cancelBtn.addEventListener('click', onCancel);
@@ -137,7 +153,7 @@ function confirmUndo(onUndo) {
   modal.showModal();
 }
 
-export function showResult(kind, student, extra, onUndo) {
+export function showResult(kind, student, extra, onUndo, onResume) {
   const r = $('result');
   clearTimeout(state.flashTimer);
   r.className = 'result';
@@ -157,11 +173,8 @@ export function showResult(kind, student, extra, onUndo) {
     field('gender', cfg.genderCol, student.gender);
     $('result-foot').textContent = extra || '';
     undoBtn.hidden = false;
-    undoBtn.onclick = onUndo ? () => confirmUndo(onUndo) : null;
-    state.flashTimer = setTimeout(() => {
-      r.classList.remove('is-ok'); r.classList.add('is-last');
-      state.flashTimer = setTimeout(fadeToIdle, RESET_MS - FLASH_MS);
-    }, FLASH_MS);
+    undoBtn.onclick = onUndo ? () => confirmUndo(onUndo, onResume) : null;
+    startResultTimer();
   } else {
     undoBtn.hidden = true;
     undoBtn.onclick = null;

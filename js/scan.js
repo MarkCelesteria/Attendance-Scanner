@@ -26,6 +26,11 @@ function undoPendingScan() {
   state.lastKey = ''; state.lastTime = 0;
 }
 
+function resumePendingScan() {
+  if (!state.pendingScan) return;
+  state.pendingTimer = setTimeout(commitPendingScan, RESULT_DISPLAY_MS);
+}
+
 export function handleId(raw, source) {
   const key = normalizeId(raw);
   if (!key) return;
@@ -47,7 +52,7 @@ export function handleId(raw, source) {
     return;
   }
 
-  showResult('ok', student, '', undoPendingScan);
+  showResult('ok', student, '', undoPendingScan, resumePendingScan);
   beep('ok');
 
   state.pendingScan = { id: student.id, session: state.activeSession, ts: now, sheet: student.sheet || '' };
