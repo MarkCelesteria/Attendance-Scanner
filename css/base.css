@@ -1,29 +1,45 @@
-/* ==========================================================================
-   Attendance Scanner — styles
-   Design notes:
-   - Light, high-contrast "clipboard" palette: readable in bright hallways.
-   - System fonts only (no network dependency, works offline).
-   - The result card is the one loud element: it floods green on a good scan.
-   ========================================================================== */
-
 :root {
-  --paper:   #EEF1F5;   /* page background */
+  --paper:   #EEF1F5;
   --card:    #FFFFFF;
-  --ink:     #14213D;   /* primary text / brand navy */
-  --ink-2:   #4A5877;   /* secondary text */
+  --ink:     #14213D;
+  --ink-2:   #4A5877;
   --line:    #CBD3E1;
   --brand:   #14213D;
-  --ok:      #12A150;   /* success flood */
+  --ok:      #12A150;
   --ok-soft: #DDF5E7;
   --warn:    #B7791F;
   --warn-soft:#FFF3D6;
   --bad:     #C62F3E;
   --bad-soft:#FBE3E6;
   --focus:   #2B5BFF;
+  --ok-border: #8FD1AB;
+  --toast-bg: #14213D;
+  --toast-fg: #FFFFFF;
+  --overlay-fg: #14213D;
   --radius:  14px;
   --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 }
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper:   #121317;
+  --card:    #1B1C22;
+  --ink:     #ECEDF2;
+  --ink-2:   #9B9EAC;
+  --line:    #303239;
+  --brand:   #4B5A86;
+  --ok:      #279E5B;
+  --ok-soft: #172219;
+  --ok-border: #3C6B4E;
+  --warn:    #D69A1F;
+  --warn-soft:#26200F;
+  --bad:     #D9636F;
+  --bad-soft:#271A1C;
+  --focus:   #5D79D6;
+}
+
+:root[data-theme="dark"] .icon-btn:hover { background: rgba(255,255,255,.1); }
 
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }

@@ -6,6 +6,16 @@
   <meta name="theme-color" content="#14213D">
   <meta name="description" content="Offline-capable attendance scanner that logs to Google Sheets.">
   <title>Attendance Scanner</title>
+  <script>
+    (function () {
+      try {
+        var v = localStorage.getItem('attendance.theme.v1');
+        var pref = (v === 'light' || v === 'dark' || v === 'device') ? v : 'device';
+        var dark = pref === 'dark' || (pref === 'device' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+      } catch (e) {}
+    })();
+  </script>
 
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="assets/icons/logo.png">
@@ -72,6 +82,15 @@
 
       <details class="advanced">
         <summary>Advanced</summary>
+
+        <div class="toggle-row">
+          <span class="toggle-text">Appearance<br><span class="opt">Choose how the app looks on this device</span></span>
+          <div class="theme-seg" role="radiogroup" aria-label="Appearance">
+            <button type="button" class="theme-opt" data-value="light">Light</button>
+            <button type="button" class="theme-opt" data-value="dark">Dark</button>
+            <button type="button" class="theme-opt" data-value="device">Device</button>
+          </div>
+        </div>
 
         <div class="toggle-row">
           <span class="toggle-text">Custom sheet tab(s)<br><span class="opt">Off uses the first tab. List several, comma-separated, to combine them into one roster.</span></span>

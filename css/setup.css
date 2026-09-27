@@ -143,3 +143,11 @@
 
 .single-super-grid { display: grid; grid-template-columns: 1fr 84px; gap: 10px; align-items: end; }
 #cfg-super-col { text-align: center; text-transform: uppercase; font-family: var(--mono); font-weight: 700; }
+
+.theme-seg { display: flex; border: 2px solid var(--line); border-radius: 999px; padding: 2px; gap: 2px; flex: none; }
+.theme-opt {
+  appearance: none; border: 0; background: transparent; color: var(--ink-2); font: inherit; font-weight: 600;
+  font-size: .85rem; padding: 6px 14px; border-radius: 999px; cursor: pointer; touch-action: manipulation;
+}
+.theme-opt[aria-checked="true"] { background: var(--brand); color: #fff; }
+.theme-opt:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }

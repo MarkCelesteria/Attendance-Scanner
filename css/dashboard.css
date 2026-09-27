@@ -42,7 +42,7 @@
 .scanner.is-live .scanner-idle-title,
 .scanner.is-live .scanner-idle-sub { display: none; }
 .scanner.is-live .btn-camera-start {
-  font-size: .9rem; padding: 8px 14px; min-height: 40px; background: rgba(255,255,255,.92); color: var(--ink);
+  font-size: .9rem; padding: 8px 14px; min-height: 40px; background: rgba(255,255,255,.92); color: var(--overlay-fg);
 }
 .scanner-quality { display: none; }
 .scanner.is-live .scanner-quality { display: block; }
@@ -50,7 +50,7 @@
 .qsel-btn {
   display: flex; align-items: center; justify-content: space-between; gap: 10px; appearance: none; border: 2px solid transparent;
   min-height: 40px; min-width: 220px; padding: 6px 12px; font: inherit; font-size: .85rem; font-weight: 600; cursor: pointer;
-  border-radius: 8px; background: rgba(255,255,255,.92); color: var(--ink);
+  border-radius: 8px; background: rgba(255,255,255,.92); color: var(--overlay-fg);
 }
 .qsel-btn:focus-visible { border-color: #7C8CB0; outline: none; box-shadow: 0 0 0 3px rgba(124,140,176,.25); }
 .qsel-arrow { flex: none; transition: transform .15s; }
@@ -84,7 +84,7 @@
 }
 .result:not(.is-idle) { justify-content: flex-start; }
 .result.is-error { justify-content: center; }
-.result.is-idle { background: var(--ok-soft); border-color: #8FD1AB; }
+.result.is-idle { background: var(--ok-soft); border-color: var(--ok-border); }
 .result-status { margin: 0 0 4px; font-weight: 700; color: var(--ink-2); }
 .result-name { margin: 0 0 12px; font-size: clamp(1.9rem, 8vw, 3rem); line-height: 1.05; letter-spacing: -.02em; overflow-wrap: anywhere; }
 .result-meta { display: flex; flex-wrap: wrap; gap: 10px 16px; margin: 0; }
@@ -112,7 +112,7 @@
 
 .result.is-ok { background: var(--ok); border-color: var(--ok); color: #fff; animation: pop .22s ease-out; }
 .result.is-ok .result-status, .result.is-ok .result-meta dt, .result.is-ok .result-foot { color: rgba(255,255,255,.88); }
-.result.is-last { background: var(--ok-soft); border-color: #8FD1AB; }
+.result.is-last { background: var(--ok-soft); border-color: var(--ok-border); }
 .result.is-last .result-status { color: var(--ok); }
 .result.is-error { background: var(--bad); border-color: var(--bad); color: #fff; animation: shake .3s; }
 .result.is-error .result-status, .result.is-error .result-foot { color: rgba(255,255,255,.9); }
@@ -176,7 +176,7 @@
 .filter-time-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 .filter-time-field {
   flex: 1; min-width: 140px; display: flex; align-items: center;
-  background: #fff; border: 2px solid var(--line); border-radius: 12px; padding: 8px 14px;
+  background: var(--card); border: 2px solid var(--line); border-radius: 12px; padding: 8px 14px;
   transition: border-color .15s, box-shadow .15s;
 }
 .filter-time-field:focus-within { border-color: var(--focus); box-shadow: 0 0 0 3px rgba(43,91,255,.15); }

@@ -12,6 +12,7 @@ import { showDashboard } from './dashboard.js';
 import { initHelp, initAdminHelp } from './help.js';
 import { initAdmin } from './admin.js';
 import { showSetup, initSessionEditor, initAdvancedToggles, onSetupSubmit, onReset, onRefreshRoster, onCopySetupCode, onApplySetupCode } from './setup.js';
+import { initTheme } from './theme.js';
 
 function registerServiceWorker() {
   if ('serviceWorker' in navigator) {
@@ -23,6 +24,7 @@ function bindEvents() {
   initHelp();
   initAdminHelp();
   initHardwareScanner();
+  initTheme();
   
   $('setup-form').addEventListener('submit', onSetupSubmit);
 
