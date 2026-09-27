@@ -32,10 +32,12 @@ function doGet(e) {
         if (skip.has(i)) continue;
         const id = at(i, idCol);
         if (!id) continue;
-        students.push({
-          id: id, name: at(i, nameCol), program: at(i, progCol), year: at(i, yearCol),
-          college: at(i, collegeCol), gender: at(i, genderCol), sheet: sheet.getName(),
-        });
+        const student = { id: id, name: at(i, nameCol), sheet: sheet.getName() };
+        if (progCol) student.program = at(i, progCol);
+        if (yearCol) student.year = at(i, yearCol);
+        if (collegeCol) student.college = at(i, collegeCol);
+        if (genderCol) student.gender = at(i, genderCol);
+        students.push(student);
       }
     });
 
@@ -219,7 +221,9 @@ function handleAdmin_(p) {
       .filter((s) => s && s.name && s.col)
       .map((s) => ({ name: String(s.name), col: colIndex_(s.col) }));
 
-    const students = [];
+    const byId = new Map();
+    const order = [];
+
     getSheetNames_(p).forEach((name) => {
       const sheet = getSheet_(name);
       const lastRow = sheet.getLastRow();
@@ -244,15 +248,27 @@ function handleAdmin_(p) {
         if (skip.has(i)) continue;
         const id = at(i, idCol);
         if (!id) continue;
-        const row = {
-          id: id, name: at(i, nameCol), program: at(i, progCol), year: at(i, yearCol),
-          college: at(i, collegeCol), gender: at(i, genderCol), sheet: sheet.getName(), sessions: {},
-        };
-        sessionCols.forEach((s) => { row.sessions[s.name] = at(i, s.col); });
-        students.push(row);
+        const key = norm_(id);
+        let row = byId.get(key);
+        if (!row) {
+          row = { id: id, name: '', program: '', year: '', college: '', gender: '', sheet: sheet.getName(), sessions: {} };
+          byId.set(key, row);
+          order.push(key);
+        }
+        const fill = (field, value) => { if (!row[field] && value) row[field] = value; };
+        fill('name', at(i, nameCol));
+        fill('program', at(i, progCol));
+        fill('year', at(i, yearCol));
+        fill('college', at(i, collegeCol));
+        fill('gender', at(i, genderCol));
+        sessionCols.forEach((s) => {
+          const v = at(i, s.col);
+          if (v && !row.sessions[s.name]) row.sessions[s.name] = v;
+        });
       }
     });
 
+    const students = order.map((key) => byId.get(key));
     return json_({ ok: true, count: students.length, sessions: sessionCols.map((s) => s.name), students: students });
   } catch (err) {
     return json_({ ok: false, error: message_(err) });
