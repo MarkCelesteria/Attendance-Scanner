@@ -11,6 +11,8 @@ export const state = {
   lastKey: '',
   lastTime: 0,
   flashTimer: null,
+  pendingScan: null,
+  pendingTimer: null,
   wakeLock: null,
   audioCtx: null,
 };

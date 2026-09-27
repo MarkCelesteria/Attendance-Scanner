@@ -6,7 +6,7 @@ import { loadRoster } from './db.js';
 import { renderSyncPill } from './ui.js';
 import { syncNow } from './sync.js';
 import { startScanner, stopScanner } from './scanner.js';
-import { onCameraCode, onManualSubmit } from './scan.js';
+import { onCameraCode, onManualSubmit, commitPendingScan } from './scan.js';
 import { initHardwareScanner } from './barcode.js';
 import { showDashboard } from './dashboard.js';
 import { initHelp, initAdminHelp } from './help.js';
@@ -44,6 +44,7 @@ function bindEvents() {
 
   document.addEventListener('visibilitychange', async () => {
     if (document.hidden) {
+      commitPendingScan();
       state.resumeScanOnShow = state.scanning;
       await stopScanner();
     } else {

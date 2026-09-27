@@ -15,6 +15,13 @@
 
 `backend/apps-script/appsscript.json` is included for [clasp](https://github.com/google/clasp) users; it is not needed for copy-paste.
 
+### Vendored libraries
+
+The app loads a few libraries locally (for offline use) rather than from a CDN, under `assets/vendor/`:
+`zxing-reader.iife.js`, `qrcode.js`, `jspdf.umd.min.js`, and `jszip.min.js` (used only when downloading
+QR codes split by college/program/year, which zips several PDFs together). If any is missing, that one
+feature fails while the rest of the app keeps working.
+
 ## 2. GitHub Pages
 
 1. Create a repo and push this folder's contents (the `backend/`, `docs/` and `tests/` folders are harmless to publish).
@@ -47,5 +54,7 @@ Change files, bump `VERSION` in `sw.js`, push. Devices fetch the update in the b
 | "The script did not return data" | Redeploy as Web App with access **Anyone**; use the `/exec` URL |
 | "Invalid access key" | App key must equal the `ACCESS_KEY` script property |
 | Camera won't start | Needs HTTPS (GitHub Pages is) and camera permission |
-| Scans skipped: ID/session not found | Roster is stale (refresh it) or session names changed |
+| Scans skipped: ID/session not found | Roster is stale (refresh it), session names changed, or `Code.gs` wasn't redeployed as a **new version** after an update |
+| Scan recorded on-device but missing from the sheet | Usually a stale `Code.gs` deployment when using multiple sheet tabs — redeploy a new version |
+| Admin login says "Admin access is not set up" | Add the `ADMIN_KEY` script property (separate from `ACCESS_KEY`) |
 | Changes not showing | Bump `VERSION` in `sw.js`, reload twice |

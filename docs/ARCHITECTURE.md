@@ -23,10 +23,14 @@ constants, state, utils ◄── db, config, audio ◄── ui ◄── sync 
 
 ## API contract
 
-**GET** `?idCol=A&nameCol=B&programCol=C&yearCol=D&firstRow=2[&sheet=Tab][&key=…]`
+**GET** `?idCol=A&nameCol=B&programCol=C&yearCol=D&firstRow=2[&sheets=["Tab1","Tab2"]][&key=…]`
+
+Reads every tab named in `sheets` (a JSON array) and merges them into one list. `sheets` defaults to
+`[""]` (the spreadsheet's first tab) when omitted, so older single-sheet configs still work unchanged.
+Each returned student is tagged with the tab it came from:
 
 ```json
-{ "ok": true, "count": 2, "students": [{ "id": "S001", "name": "Ann", "program": "BSCS", "year": "2" }] }
+{ "ok": true, "count": 2, "students": [{ "id": "S001", "name": "Ann", "program": "BSCS", "year": "2", "sheet": "Tab1" }] }
 ```
 
 **POST** (`Content-Type: text/plain` to avoid a CORS preflight)
@@ -34,13 +38,24 @@ constants, state, utils ◄── db, config, audio ◄── ui ◄── sync 
 ```json
 {
   "key": "",
-  "config": { "sheet": "", "idCol": "A", "startCol": "E", "sessions": ["Morning In", "Morning Out"], "firstRow": 2 },
-  "entries": [{ "qid": 1, "id": "S001", "session": "Morning In", "ts": 1790000000000 }]
+  "config": { "idCol": "A", "startCol": "E", "sessions": ["Morning In", "Morning Out"], "firstRow": 2 },
+  "entries": [{ "qid": 1, "id": "S001", "session": "Morning In", "ts": 1790000000000, "sheet": "Tab1" }]
 }
 ```
 
+`config` no longer carries a sheet name — each entry carries its own `sheet` (copied from the roster
+record the device matched at scan time), and the backend groups entries by that tag before writing, so
+a single sync batch can correctly update several tabs at once. Entries with no `sheet` (older clients)
+fall back to the spreadsheet's first tab.
+
 Response: `{ "ok": true, "results": [{ "qid": 1, "status": "written" }] }`
 Status values: `written`, `duplicate`, `not_found`, `bad_session`. The script never adds rows.
+
+**Admin GET** `?action=admin&adminKey=…&sheets=[...]&sessions=[{"name":"Morning In","col":"E"}]&…`
+
+Same multi-tab merge as the roster endpoint, but keyed by student ID: if the same ID appears on more
+than one tab, the rows are combined into a single result with every non-blank session time kept
+(rather than returning one row per tab).
 
 ## Design decisions
 

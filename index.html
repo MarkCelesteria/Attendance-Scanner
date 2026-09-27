@@ -217,6 +217,9 @@
             </dl>
             <p id="result-foot" class="result-foot"></p>
           </div>
+          <button type="button" id="btn-result-undo" class="icon-btn result-undo-btn" aria-label="Undo this scan" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M280-200v-80h284q63 0 109.5-40T720-420q0-60-46.5-100T564-560H312l104 104-56 56-200-200 200-200 56 56-104 104h252q97 0 166.5 63T800-420q0 94-69.5 157T564-200H280Z"/></svg>
+          </button>
         </section>
 
         <!-- Manual entry -->
@@ -358,11 +361,12 @@
       <div class="filter-section filter-section-box">
         <h3>Time range</h3>
         <div id="filter-time-presence" class="filter-btn-group" style="margin-bottom:10px;">
-          <button type="button" class="filter-chip is-on" data-val="all">All</button>
           <button type="button" class="filter-chip" data-val="has">Has time</button>
           <button type="button" class="filter-chip" data-val="none">No time</button>
+          <button type="button" class="filter-chip" data-val="include">Include time range</button>
+          <button type="button" class="filter-chip" data-val="exclude">Exclude time range</button>
         </div>
-        <div class="filter-time-row">
+        <div class="filter-time-row" id="filter-time-row" hidden>
           <div class="filter-time-field">
             <div class="filter-time-field-inner">
               <span class="filter-time-label">From</span>
@@ -412,6 +416,17 @@
     <div class="modal-actions">
       <button type="button" id="btn-session-key-cancel" class="btn">Cancel</button>
       <button type="button" id="btn-session-key-confirm" class="btn btn-primary">Confirm</button>
+    </div>
+  </dialog>
+
+  <dialog id="undo-confirm-modal" class="modal" aria-labelledby="undo-confirm-title">
+    <div class="modal-body">
+      <h2 id="undo-confirm-title">Undo this scan?</h2>
+      <p class="hint">This scan hasn't been saved yet — undoing it discards it completely.</p>
+    </div>
+    <div class="modal-actions">
+      <button type="button" id="btn-undo-cancel" class="btn">Keep it</button>
+      <button type="button" id="btn-undo-confirm" class="btn btn-danger">Undo scan</button>
     </div>
   </dialog>
 

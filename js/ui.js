@@ -1,8 +1,8 @@
-import { LS_ACTIVE, LS_ROSTER_T, FLASH_MS } from './constants.js';
+import { LS_ACTIVE, LS_ROSTER_T, FLASH_MS, RESULT_DISPLAY_MS } from './constants.js';
 import { state } from './state.js';
 import { $, clockTime } from './utils.js';
 
-const RESET_MS = 10000;
+const RESET_MS = RESULT_DISPLAY_MS;
 
 function switchToSession(name, btn, group) {
   state.activeSession = name;
@@ -106,6 +106,7 @@ export function resetResultCard() {
   $('result-status').textContent = 'Ready for the next scan';
   $('result-name').textContent = '';
   $('result-foot').textContent = '';
+  $('btn-result-undo').hidden = true;
 }
 
 function fadeToIdle() {
@@ -117,11 +118,31 @@ function fadeToIdle() {
   }, 300);
 }
 
-export function showResult(kind, student, extra) {
+function confirmUndo(onUndo) {
+  const modal = $('undo-confirm-modal');
+  const confirmBtn = $('btn-undo-confirm');
+  const cancelBtn = $('btn-undo-cancel');
+
+  const cleanup = () => {
+    confirmBtn.removeEventListener('click', onConfirm);
+    cancelBtn.removeEventListener('click', onCancel);
+    modal.removeEventListener('close', onCancel);
+  };
+  const onConfirm = () => { cleanup(); modal.close(); onUndo(); };
+  const onCancel = () => { cleanup(); if (modal.open) modal.close(); };
+
+  confirmBtn.addEventListener('click', onConfirm);
+  cancelBtn.addEventListener('click', onCancel);
+  modal.addEventListener('close', onCancel);
+  modal.showModal();
+}
+
+export function showResult(kind, student, extra, onUndo) {
   const r = $('result');
   clearTimeout(state.flashTimer);
   r.className = 'result';
   void r.offsetWidth;
+  const undoBtn = $('btn-result-undo');
 
   if (kind === 'ok') {
     r.classList.add('is-ok');
@@ -135,11 +156,15 @@ export function showResult(kind, student, extra) {
     field('college', cfg.collegeCol, student.college);
     field('gender', cfg.genderCol, student.gender);
     $('result-foot').textContent = extra || '';
+    undoBtn.hidden = false;
+    undoBtn.onclick = onUndo ? () => confirmUndo(onUndo) : null;
     state.flashTimer = setTimeout(() => {
       r.classList.remove('is-ok'); r.classList.add('is-last');
       state.flashTimer = setTimeout(fadeToIdle, RESET_MS - FLASH_MS);
     }, FLASH_MS);
   } else {
+    undoBtn.hidden = true;
+    undoBtn.onclick = null;
     r.classList.add('is-error');
     $('result-status').textContent = 'ID not found in roster';
     $('result-name').textContent = extra;   // the code that was read

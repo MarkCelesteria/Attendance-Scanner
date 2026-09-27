@@ -17,7 +17,7 @@ let categoryDefs = [];
 let excluded = {};
 let timeFrom = '';
 let timeTo = '';
-let timePresence = 'all';
+let timePresence = '';
 
 export function renderAdminButton() {
   const btn = $('btn-admin');
@@ -124,10 +124,7 @@ function hasAnySessionTime(s) {
   return visibleSessionNames().some((name) => !!(s.sessions && s.sessions[name]));
 }
 
-function matchesTimeRange(s) {
-  if (timePresence === 'none') return !hasAnySessionTime(s);
-  if (timePresence === 'has' && !hasAnySessionTime(s)) return false;
-  if (!timeFrom && !timeTo) return true;
+function anySessionTimeInRange(s) {
   return visibleSessionNames().some((name) => {
     const v = s.sessions && s.sessions[name];
     if (!v) return false;
@@ -138,6 +135,18 @@ function matchesTimeRange(s) {
     if (timeTo && t > timeTo) return false;
     return true;
   });
+}
+
+function matchesTimeRange(s) {
+  if (timePresence === 'has') return hasAnySessionTime(s);
+  if (timePresence === 'none') return !hasAnySessionTime(s);
+  if (timePresence === 'include') return anySessionTimeInRange(s);
+  if (timePresence === 'exclude') return !anySessionTimeInRange(s);
+  return true;
+}
+
+function updateTimeRangeVisibility() {
+  $('filter-time-row').hidden = !(timePresence === 'include' || timePresence === 'exclude');
 }
 
 function rowPassesFilters(s) {
@@ -245,7 +254,12 @@ function renderCategoryButtons() {
     allBtn.type = 'button';
     allBtn.className = 'filter-chip' + (ex.size === 0 ? ' is-on' : '');
     allBtn.textContent = 'All';
-    allBtn.addEventListener('click', () => { ex.clear(); renderCategoryButtons(); applyFilters(); });
+    allBtn.addEventListener('click', () => {
+      if (ex.size === 0) values.forEach((v) => ex.add(v));
+      else ex.clear();
+      renderCategoryButtons();
+      applyFilters();
+    });
     group.appendChild(allBtn);
 
     values.forEach((v) => {
@@ -429,9 +443,10 @@ export function initAdmin() {
   $('btn-filter-reset').addEventListener('click', () => {
     hiddenCols.clear();
     categoryDefs.forEach((d) => excluded[d.id].clear());
-    timeFrom = ''; timeTo = ''; timePresence = 'all';
+    timeFrom = ''; timeTo = ''; timePresence = '';
     $('filter-time-from').value = ''; $('filter-time-to').value = '';
-    $('filter-time-presence').querySelectorAll('.filter-chip').forEach((b) => b.classList.toggle('is-on', b.dataset.val === 'all'));
+    $('filter-time-presence').querySelectorAll('.filter-chip').forEach((b) => b.classList.remove('is-on'));
+    updateTimeRangeVisibility();
     buildColumnButtons();
     renderCategoryButtons();
     renderHead();
@@ -442,8 +457,9 @@ export function initAdmin() {
   $('filter-time-presence').addEventListener('click', (e) => {
     const btn = e.target.closest('.filter-chip');
     if (!btn) return;
-    timePresence = btn.dataset.val;
-    $('filter-time-presence').querySelectorAll('.filter-chip').forEach((b) => b.classList.toggle('is-on', b === btn));
+    timePresence = timePresence === btn.dataset.val ? '' : btn.dataset.val;
+    $('filter-time-presence').querySelectorAll('.filter-chip').forEach((b) => b.classList.toggle('is-on', b.dataset.val === timePresence));
+    updateTimeRangeVisibility();
     applyFilters();
   });
   $('btn-qrpdf-cancel').addEventListener('click', () => $('qrpdf-confirm-modal').close());

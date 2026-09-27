@@ -76,6 +76,7 @@
 
 /* ---------- Result card ---------- */
 .result {
+  position: relative;
   border-radius: var(--radius); padding: 18px 18px 16px; margin-bottom: 14px;
   border: 3px solid var(--line); background: var(--card);
   transition: background-color .25s ease, border-color .25s ease, color .25s ease, opacity .3s ease;
@@ -94,6 +95,10 @@
 .result-meta #result-id { font-family: var(--mono); }
 .result-foot { margin: 12px 0 0; font-size: .85rem; color: var(--ink-2); min-height: 1.2em; }
 .result-foot:empty { display: none; }
+.result-undo-btn { position: absolute; top: 10px; right: 10px; width: 36px; height: 36px; font-size: 1.1rem; z-index: 1; }
+.result.is-ok .result-undo-btn { color: #fff; }
+.result.is-ok .result-undo-btn:hover { background: rgba(255,255,255,.18); }
+.result.is-last .result-undo-btn:hover { background: rgba(20,33,61,.08); }
 
 .result-idle-view { display: none; flex-direction: column; align-items: center; text-align: center; gap: 10px; }
 .result.is-idle .result-idle-view { display: flex; }

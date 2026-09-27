@@ -3,4 +3,4 @@ node_modules/
 .clasp.json
 *.log
 
-tests/
+test.html
