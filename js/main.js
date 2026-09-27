@@ -9,7 +9,7 @@ import { startScanner, stopScanner } from './scanner.js';
 import { onCameraCode, onManualSubmit, commitPendingScan } from './scan.js';
 import { initHardwareScanner } from './barcode.js';
 import { showDashboard } from './dashboard.js';
-import { initHelp, initAdminHelp } from './help.js';
+import { initHelp, initAdminHelp, initBigScansHelp, initAdminFeatureHelp } from './help.js';
 import { initAdmin } from './admin.js';
 import { showSetup, initSessionEditor, initAdvancedToggles, onSetupSubmit, onReset, onRefreshRoster, onCopySetupCode, onApplySetupCode } from './setup.js';
 import { initTheme } from './theme.js';
@@ -23,6 +23,8 @@ function registerServiceWorker() {
 function bindEvents() {
   initHelp();
   initAdminHelp();
+  initBigScansHelp();
+  initAdminFeatureHelp();
   initHardwareScanner();
   initTheme();
   

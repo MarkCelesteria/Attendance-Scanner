@@ -133,7 +133,10 @@
         </div>
         <div class="toggle-row">
           <span class="toggle-text">Enable Admin Access<br><span class="opt">Adds an admin button on the scanner screen</span></span>
-          <label class="switch"><input type="checkbox" id="cfg-admin-on" checked><span class="slider"></span></label>
+          <div class="toggle-controls">
+            <button type="button" id="btn-adminfeature-help" class="help-btn" aria-label="What can an admin do?" title="What can an admin do?">?</button>
+            <label class="switch"><input type="checkbox" id="cfg-admin-on" checked><span class="slider"></span></label>
+          </div>
         </div>
         <div class="toggle-row">
           <span class="toggle-text">Require access key to switch sessions<br><span class="opt">Off lets anyone switch sessions freely</span></span>
@@ -161,8 +164,25 @@
             <option value="600000">10 minutes</option>
           </select>
         </div>
-      </details>
 
+        <div class="toggle-row">
+          <span class="toggle-text">Large-scale scanning<br><span class="opt">For very high daily scan volumes — batches more scans per upload to use less of the sheet's daily quota</span></span>
+          <div class="toggle-controls">
+            <button type="button" id="btn-bigscans-help" class="help-btn" aria-label="Why is this needed?" title="Why is this needed?">?</button>
+            <label class="switch"><input type="checkbox" id="cfg-bigscans-on"><span class="slider"></span></label>
+          </div>
+        </div>
+        <div id="bigscans-options" class="idle-select-wrap" hidden>
+          <label for="cfg-bigscans-profile">Sync batching profile</label>
+          <select id="cfg-bigscans-profile" class="idle-select bigscans-select">
+            <option value="safe">Safe — 10 scans or 45s (~3,600 scans/day)</option>
+            <option value="standard">Standard — 15 scans or 90s (~5,400 scans/day)</option>
+            <option value="large">Large — 30 scans or 3 min (~10,800 scans/day)</option>
+            <option value="extreme">Extreme — 60 scans or 6 min (~21,600 scans/day)</option>
+            <option value="colossal">Colossal — 300 scans or 20 min (~108,000 scans/day)</option>
+          </select>
+        </div>
+      </details>
       <p id="setup-error" class="form-error" role="alert" hidden></p>
 
       <div class="setup-actions">
@@ -427,6 +447,50 @@
     <div class="modal-actions">
       <button type="button" id="btn-filter-reset" class="btn">Reset</button>
       <button type="button" id="btn-filter-close" class="btn btn-primary">Done</button>
+    </div>
+  </dialog>
+
+  <dialog id="bigscans-help-modal" class="modal" aria-labelledby="bigscans-help-title">
+    <div class="modal-body">
+      <h2 id="bigscans-help-title">Why does this matter?</h2>
+      <p class="hint">Free Google accounts give Apps Script about <b>90 minutes of total script runtime per day</b>, shared by everyone syncing to this sheet. Each upload takes a couple of seconds no matter how many scans are inside it, so many small uploads burn through that budget far faster than a few bigger ones.</p>
+      <p class="hint">Turning this on groups more scans into each upload and waits longer between uploads, so the same number of scans costs a lot less of the daily budget. The numbers next to each profile are rough estimates of how many scans per day that batching keeps comfortably under the cap.</p>
+      <p class="hint"><b>Trade-off:</b> scans sit on this device longer before they reach the sheet. If the device loses power, is closed, or has its storage cleared before syncing, unsynced scans are the ones at risk. Admin views reading from the sheet also refresh less often. The <b>Sync now</b> button in the scanner header always uploads immediately, regardless of this setting.</p>
+      <p class="hint">Actual capacity varies with how many people are scanning into the same sheet at once and Google's performance that day — treat these numbers as a guide, not a guarantee.</p>
+      <p class="hint"><b>On a paid Google Workspace account</b>, the daily runtime budget is several times larger than a free personal account, so the same profile goes noticeably further — or a lower, safer profile can be used while still covering the same scan volume.</p>
+    </div>
+    <div class="modal-actions">
+      <button type="button" id="btn-bigscans-help-close" class="btn">Close</button>
+    </div>
+  </dialog>
+
+  <dialog id="adminfeature-help-modal" class="modal" aria-labelledby="adminfeature-help-title">
+    <div class="modal-body">
+      <h2 id="adminfeature-help-title">What can an admin do?</h2>
+      <p class="hint">This adds an admin button on the scanner screen, unlocked with a separate <code>ADMIN_KEY</code> (different from the sync access key). Anyone who enters it can:</p>
+      <ol class="steps">
+        <li><b>View the full roster</b> as a table — every student, every column you've set up (ID, name, program, year, college, gender), plus every session's recorded time.</li>
+        <li><b>Search</b> the roster by student ID or name.</li>
+        <li><b>Filter</b> by category (college, program, year, gender), by whether a session time is present, or by a time-of-day range.</li>
+        <li><b>Show or hide columns</b> in the table view.</li>
+        <li><b>Refresh</b> the table live from the Google Sheet, bypassing this device's saved roster.</li>
+        <li><b>Download QR codes</b> for the whole roster as a PDF, optionally split into a ZIP by college, program, or year.</li>
+      </ol>
+      <p class="hint">The admin view only reads from the sheet — it doesn't record scans or edit attendance data itself. It requires a wider screen (laptop/PC) and won't open on narrow devices.</p>
+      <details class="key-help">
+        <summary>How to set up the admin key</summary>
+        <ol class="steps">
+          <li>Open your Apps Script project (Extensions → Apps Script from the Sheet).</li>
+          <li>Click the gear icon (<b>Project Settings</b>) in the left sidebar.</li>
+          <li>Under <b>Script properties</b>, click <b>Add script property</b>.</li>
+          <li>Set <b>Property</b> to <code>ADMIN_KEY</code> (capital letters) and <b>Value</b> to a password you choose, then click <b>Save script properties</b>.</li>
+          <li>Type that same password into the admin login screen's key field to unlock admin view.</li>
+        </ol>
+        <p class="hint">No redeploy needed. This is separate from the sync <code>ACCESS_KEY</code> — set both if you want the scanner and admin view each protected. Without an <code>ADMIN_KEY</code> set, the admin button still shows but login will fail with an error.</p>
+      </details>
+    </div>
+    <div class="modal-actions">
+      <button type="button" id="btn-adminfeature-help-close" class="btn">Close</button>
     </div>
   </dialog>
 

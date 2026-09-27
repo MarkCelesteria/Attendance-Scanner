@@ -91,6 +91,7 @@ export function initAdvancedToggles() {
     $('camera-idle-wrap').hidden = !e.target.checked;
     if (e.target.checked) $('cfg-camera-idle').value = '60000';
   });
+  $('cfg-bigscans-on').addEventListener('change', (e) => { $('bigscans-options').hidden = !e.target.checked; });
 }
 
 function updatePolicyLabel() {
@@ -126,6 +127,9 @@ function fillFormFromConfig(c, { includeKey = true } = {}) {
   $('cfg-camera-idle-on').checked = c.cameraIdleMs > 0;
   $('cfg-camera-idle').value = String(c.cameraIdleMs || 60000);
   $('camera-idle-wrap').hidden = !(c.cameraIdleMs > 0);
+  $('cfg-bigscans-on').checked = !!c.bigScansEnabled;
+  $('cfg-bigscans-profile').value = c.syncProfile || 'standard';
+  $('bigscans-options').hidden = !c.bigScansEnabled;
   buildSessionRows(c.sessions);
   updateSuperVisibility();
 }

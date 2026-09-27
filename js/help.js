@@ -44,3 +44,17 @@ export function initAdminHelp() {
   $('btn-admin-help-close').addEventListener('click', () => dlg.close());
   dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
 }
+
+export function initBigScansHelp() {
+  const dlg = $('bigscans-help-modal');
+  $('btn-bigscans-help').addEventListener('click', () => dlg.showModal());
+  $('btn-bigscans-help-close').addEventListener('click', () => dlg.close());
+  dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+}
+
+export function initAdminFeatureHelp() {
+  const dlg = $('adminfeature-help-modal');
+  $('btn-adminfeature-help').addEventListener('click', () => dlg.showModal());
+  $('btn-adminfeature-help-close').addEventListener('click', () => dlg.close());
+  dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+}

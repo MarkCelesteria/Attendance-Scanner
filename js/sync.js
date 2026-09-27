@@ -1,4 +1,4 @@
-import { SYNC_BATCH_SIZE, PENDING_SYNC_THRESHOLD, IDLE_SYNC_MS } from './constants.js';
+import { SYNC_BATCH_SIZE, SYNC_PROFILES } from './constants.js';
 import { state } from './state.js';
 import { toast } from './utils.js';
 import { queueCount, peekQueue, removeFromQueue } from './db.js';
@@ -13,13 +13,20 @@ export async function refreshPending() {
 
 let idleSyncTimer = null;
 
+function activeSyncProfile() {
+  const cfg = state.config;
+  if (cfg && cfg.bigScansEnabled && SYNC_PROFILES[cfg.syncProfile]) return SYNC_PROFILES[cfg.syncProfile];
+  return SYNC_PROFILES.standard;
+}
+
 export function scheduleSync() {
   clearTimeout(idleSyncTimer);
-  if (state.pending >= PENDING_SYNC_THRESHOLD) {
+  const profile = activeSyncProfile();
+  if (state.pending >= profile.threshold) {
     syncNow();
     return;
   }
-  idleSyncTimer = setTimeout(syncNow, IDLE_SYNC_MS);
+  idleSyncTimer = setTimeout(syncNow, profile.idleMs);
 }
 
 export async function forceSyncNow() {
