@@ -121,6 +121,7 @@ function fillFormFromConfig(c, { includeKey = true } = {}) {
   $('cfg-super-col').value = c.timekeeperMode === 'single' && c.sessions && c.sessions[0] ? c.sessions[0].supCol || '' : '';
   $('cfg-admin-on').checked = c.adminEnabled !== false;
   $('cfg-session-lock-on').checked = c.sessionLockEnabled !== false;
+  $('cfg-undo-lock-on').checked = c.undoLockEnabled !== false;
   $('cfg-sound-on').checked = c.soundOnScan !== false;
   $('cfg-camera-idle-on').checked = c.cameraIdleMs > 0;
   $('cfg-camera-idle').value = String(c.cameraIdleMs || 60000);

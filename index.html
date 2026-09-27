@@ -46,7 +46,7 @@
         <input id="cfg-url" type="url" inputmode="url" placeholder="https://script.google.com/…/exec" required>
 
         <label for="cfg-key">Access key <span class="opt">(optional)</span></label>
-        <input id="cfg-key" type="text" placeholder="Only if you set on the script">
+        <input id="cfg-key" type="password" placeholder="Only if you set on the script" autocomplete="off">
       </fieldset>
 
       <fieldset>
@@ -118,6 +118,10 @@
         <div class="toggle-row">
           <span class="toggle-text">Require access key to switch sessions<br><span class="opt">Off lets anyone switch sessions freely</span></span>
           <label class="switch"><input type="checkbox" id="cfg-session-lock-on" checked><span class="slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <span class="toggle-text">Require access key to undo a scan<br><span class="opt">Stops a student from undoing the previous student's scan</span></span>
+          <label class="switch"><input type="checkbox" id="cfg-undo-lock-on" checked><span class="slider"></span></label>
         </div>
         <div class="toggle-row">
           <span class="toggle-text">Sound on scan<br><span class="opt">Plays a beep for a successful or failed scan</span></span>
@@ -423,7 +427,7 @@
   <dialog id="session-key-modal" class="modal" aria-labelledby="session-key-title">
     <div class="modal-body">
       <h2 id="session-key-title">Enter access key</h2>
-      <p class="hint">This session is locked. Enter the access key to switch.</p>
+      <p id="session-key-hint" class="hint">This session is locked. Enter the access key to switch.</p>
       <input id="session-key-input" type="password" placeholder="Access key" autocomplete="off">
       <p id="session-key-error" class="form-error" role="alert" hidden></p>
     </div>
@@ -437,6 +441,11 @@
     <div class="modal-body">
       <h2 id="undo-confirm-title">Undo this scan?</h2>
       <p class="hint">This scan hasn't been saved yet — undoing it discards it completely.</p>
+      <div id="undo-key-wrap" hidden>
+        <label for="undo-key-input" class="sr-only">Access key</label>
+        <input id="undo-key-input" type="password" placeholder="Access key" autocomplete="off">
+        <p id="undo-key-error" class="form-error" role="alert" hidden></p>
+      </div>
     </div>
     <div class="modal-actions">
       <button type="button" id="btn-undo-cancel" class="btn">Keep it</button>

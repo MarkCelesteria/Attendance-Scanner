@@ -126,31 +126,51 @@ function startResultTimer() {
   }, FLASH_MS);
 }
 
-function confirmUndo(onUndo, onResume) {
+function confirmUndo(onUndo, onResume, needsKey) {
   const modal = $('undo-confirm-modal');
   const confirmBtn = $('btn-undo-confirm');
   const cancelBtn = $('btn-undo-cancel');
+  const keyWrap = $('undo-key-wrap');
+  const keyInput = $('undo-key-input');
+  const keyErr = $('undo-key-error');
 
   clearTimeout(state.flashTimer);
   clearTimeout(state.pendingTimer);
 
+  keyWrap.hidden = !needsKey;
+  keyErr.hidden = true;
+  keyInput.value = '';
+
   const cleanup = () => {
     confirmBtn.removeEventListener('click', onConfirm);
     cancelBtn.removeEventListener('click', onCancel);
+    keyInput.removeEventListener('keydown', onKeydown);
     modal.removeEventListener('close', onCancel);
   };
-  const onConfirm = () => { cleanup(); modal.close(); onUndo(); };
+  const onConfirm = () => {
+    if (needsKey && keyInput.value.trim() !== (state.config.accessKey || '')) {
+      keyErr.textContent = 'Incorrect access key.';
+      keyErr.hidden = false;
+      keyInput.value = '';
+      keyInput.focus();
+      return;
+    }
+    cleanup(); modal.close(); onUndo();
+  };
   const onCancel = () => {
     cleanup();
     if (modal.open) modal.close();
     startResultTimer();
     if (onResume) onResume();
   };
+  const onKeydown = (e) => { if (e.key === 'Enter') { e.preventDefault(); onConfirm(); } };
 
   confirmBtn.addEventListener('click', onConfirm);
   cancelBtn.addEventListener('click', onCancel);
+  if (needsKey) keyInput.addEventListener('keydown', onKeydown);
   modal.addEventListener('close', onCancel);
   modal.showModal();
+  if (needsKey) keyInput.focus();
 }
 
 export function showResult(kind, student, extra, onUndo, onResume) {
@@ -173,14 +193,17 @@ export function showResult(kind, student, extra, onUndo, onResume) {
     field('gender', cfg.genderCol, student.gender);
     $('result-foot').textContent = extra || '';
     undoBtn.hidden = false;
-    undoBtn.onclick = onUndo ? () => confirmUndo(onUndo, onResume) : null;
+    undoBtn.onclick = onUndo ? () => {
+      const needsKey = !!(state.config.undoLockEnabled !== false && state.config.accessKey);
+      confirmUndo(onUndo, onResume, needsKey);
+    } : null;
     startResultTimer();
   } else {
     undoBtn.hidden = true;
     undoBtn.onclick = null;
     r.classList.add('is-error');
     $('result-status').textContent = 'ID not found in roster';
-    $('result-name').textContent = extra;   // the code that was read
+    $('result-name').textContent = extra;
     $('result-foot').textContent = 'Nothing was recorded. Check the ID or refresh the roster.';
     state.flashTimer = setTimeout(fadeToIdle, 3000);
   }
