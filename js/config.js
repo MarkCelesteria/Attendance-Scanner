@@ -105,6 +105,12 @@ export function readForm() {
   const sheetNames = $('cfg-sheet-on').checked
     ? val('cfg-sheet').split(',').map((s) => s.trim()).filter(Boolean)
     : [];
+  const seenSheets = new Set();
+  for (const name of sheetNames) {
+    const key = name.toLowerCase();
+    if (seenSheets.has(key)) throw new Error(`Sheet tab "${name}" is listed twice.`);
+    seenSheets.add(key);
+  }
 
   const superOn = $('cfg-super-on').checked;
   let timekeeperMode = 'off', timekeeperName = '';

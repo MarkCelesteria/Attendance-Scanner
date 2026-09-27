@@ -86,6 +86,7 @@
         <div class="toggle-row">
           <span class="toggle-text">Appearance<br><span class="opt">Choose how the app looks on this device</span></span>
           <div class="theme-seg" role="radiogroup" aria-label="Appearance">
+            <span class="theme-seg-thumb" aria-hidden="true"></span>
             <button type="button" class="theme-opt" data-value="light">Light</button>
             <button type="button" class="theme-opt" data-value="dark">Dark</button>
             <button type="button" class="theme-opt" data-value="device">Device</button>
@@ -93,7 +94,7 @@
         </div>
 
         <div class="toggle-row">
-          <span class="toggle-text">Custom sheet tab(s)<br><span class="opt">Off uses the first tab. List several, comma-separated, to combine them into one roster.</span></span>
+          <span class="toggle-text">Custom sheet tab(s)<br><span class="opt">Off uses the first tab. List several, comma-separated, to combine them into one roster. Tab names can't contain a comma.</span></span>
           <label class="switch"><input type="checkbox" id="cfg-sheet-on"><span class="slider"></span></label>
         </div>
         <input id="cfg-sheet" type="text" placeholder="Sheet1, Sheet2, Sheet3" hidden>

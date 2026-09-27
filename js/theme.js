@@ -21,6 +21,13 @@ export function setTheme(pref) {
   applyTheme(pref);
 }
 
+function positionThumb(btn) {
+  const thumb = document.querySelector('.theme-seg-thumb');
+  if (!thumb || !btn) return;
+  thumb.style.width = `${btn.offsetWidth}px`;
+  thumb.style.transform = `translateX(${btn.offsetLeft - 2}px)`;
+}
+
 export function initTheme() {
   const pref = loadThemePref();
   applyTheme(pref);
@@ -30,11 +37,18 @@ export function initTheme() {
   });
 
   const buttons = [...document.querySelectorAll('.theme-opt')];
+  const activeBtn = () => buttons.find((b) => b.dataset.value === loadThemePref());
+
   buttons.forEach((b) => {
     b.setAttribute('aria-checked', String(b.dataset.value === pref));
     b.addEventListener('click', () => {
       buttons.forEach((x) => x.setAttribute('aria-checked', String(x === b)));
       setTheme(b.dataset.value);
+      positionThumb(b);
     });
   });
+
+  const advanced = document.querySelector('.advanced');
+  if (advanced) advanced.addEventListener('toggle', () => { if (advanced.open) positionThumb(activeBtn()); });
+  window.addEventListener('resize', () => positionThumb(activeBtn()));
 }

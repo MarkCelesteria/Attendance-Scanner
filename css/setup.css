@@ -119,9 +119,9 @@
 .add-session:hover, .add-session:focus-visible { border-color: var(--focus); color: var(--focus); outline: none; }
 
 /* ---------- Toggle switches (Advanced settings) ---------- */
-.toggle-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; }
+.toggle-row { display: flex; align-items: center; justify-content: space-between; gap: 80px; padding: 10px 0; }
 .toggle-row ~ .toggle-row { border-top: 1px solid var(--paper); }
-.toggle-text { font-size: .95rem; line-height: 1.4; }
+.toggle-text { flex: 1 1 auto; min-width: 0; padding-right: 24px; font-size: .95rem; line-height: 1.4; }
 .toggle-text .opt { font-size: .8rem; color: var(--ink-2); font-weight: 400; }
 .switch { position: relative; display: inline-block; width: 46px; height: 26px; flex: none; }
 .switch input { position: absolute; opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
@@ -144,10 +144,16 @@
 .single-super-grid { display: grid; grid-template-columns: 1fr 84px; gap: 10px; align-items: end; }
 #cfg-super-col { text-align: center; text-transform: uppercase; font-family: var(--mono); font-weight: 700; }
 
-.theme-seg { display: flex; border: 2px solid var(--line); border-radius: 999px; padding: 2px; gap: 2px; flex: none; }
-.theme-opt {
-  appearance: none; border: 0; background: transparent; color: var(--ink-2); font: inherit; font-weight: 600;
-  font-size: .85rem; padding: 6px 14px; border-radius: 999px; cursor: pointer; touch-action: manipulation;
+.theme-seg { position: relative; display: flex; border: 2px solid var(--line); border-radius: 999px; padding: 2px; gap: 2px; flex: none; }
+.theme-seg-thumb {
+  position: absolute; top: 2px; bottom: 2px; left: 2px; width: 0; border-radius: 999px; background: var(--brand);
+  transition: transform .25s cubic-bezier(.4,0,.2,1), width .25s cubic-bezier(.4,0,.2,1);
+  z-index: 0;
 }
-.theme-opt[aria-checked="true"] { background: var(--brand); color: #fff; }
+.theme-opt {
+  position: relative; z-index: 1; appearance: none; border: 0; background: transparent; color: var(--ink-2); font: inherit; font-weight: 600;
+  font-size: .85rem; padding: 6px 14px; border-radius: 999px; cursor: pointer; touch-action: manipulation;
+  transition: color .18s ease;
+}
+.theme-opt[aria-checked="true"] { color: #fff; }
 .theme-opt:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
