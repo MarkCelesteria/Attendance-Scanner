@@ -87,6 +87,10 @@ export function initAdvancedToggles() {
     if (!e.target.checked) $('cfg-row').value = 2;
   });
   $('cfg-policy-earliest').addEventListener('change', updatePolicyLabel);
+  $('cfg-camera-idle-on').addEventListener('change', (e) => {
+    $('camera-idle-wrap').hidden = !e.target.checked;
+    if (e.target.checked) $('cfg-camera-idle').value = '60000';
+  });
 }
 
 function updatePolicyLabel() {
@@ -118,6 +122,9 @@ function fillFormFromConfig(c, { includeKey = true } = {}) {
   $('cfg-admin-on').checked = c.adminEnabled !== false;
   $('cfg-session-lock-on').checked = c.sessionLockEnabled !== false;
   $('cfg-sound-on').checked = c.soundOnScan !== false;
+  $('cfg-camera-idle-on').checked = c.cameraIdleMs > 0;
+  $('cfg-camera-idle').value = String(c.cameraIdleMs || 60000);
+  $('camera-idle-wrap').hidden = !(c.cameraIdleMs > 0);
   buildSessionRows(c.sessions);
   updateSuperVisibility();
 }

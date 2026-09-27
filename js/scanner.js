@@ -8,6 +8,17 @@ const CROP_H = 0.7;
 
 let stream = null, video = null, canvas = null, ctx = null, timer = null;
 let busy = false, decoderReady = false, onCodeCb = null;
+let idleTimer = null;
+
+function resetIdleTimer() {
+  clearTimeout(idleTimer);
+  const ms = state.config && state.config.cameraIdleMs > 0 ? state.config.cameraIdleMs : 0;
+  if (!ms) return;
+  idleTimer = setTimeout(() => {
+    toast('Camera closed after being idle.', 4000);
+    stopScanner();
+  }, ms);
+}
 
 const QUALITY_GROUPS = [
   { label: '320×240 (Low)',       w: 320,  h: 240,  fps: [5, 10, 15, 20] },
@@ -120,17 +131,6 @@ function ensureDecoder() {
   return true;
 }
 
-// function debug(msg) {
-//   let el = document.getElementById('scan-debug');
-//   if (!el) {
-//     el = document.createElement('p');
-//     el.id = 'scan-debug';
-//     el.style.cssText = 'margin:6px 0 0;font:12px/1.4 monospace;color:#64748b;word-break:break-all';
-//     $('reader').parentElement.after(el);
-//   }
-//   el.textContent = msg;
-// }
-
 async function tick() {
   if (busy || !video || video.readyState < 2 || !video.videoWidth) return;
   busy = true;
@@ -143,11 +143,8 @@ async function tick() {
     const results = await window.ZXingWASM.readBarcodes(ctx.getImageData(0, 0, cw, ch), {
       formats: FORMATS, tryHarder: false, tryRotate: false, tryInvert: false, maxNumberOfSymbols: 1,
     });
-    // frames++;
-    // debug(`${vw}x${vh} · frames ${frames} · ${results.length ? 'found: ' + results[0].text : 'no code'}`);
-    if (results.length && results[0].text && onCodeCb) onCodeCb(results[0].text);
+    if (results.length && results[0].text && onCodeCb) { onCodeCb(results[0].text); resetIdleTimer(); }
   } catch (e) {
-    // debug('decode error: ' + (e && e.message ? e.message : e));
     console.warn('decode error', e);
   } finally {
     busy = false;
@@ -201,10 +198,12 @@ export async function startScanner(onCode) {
   $('btn-camera-label').textContent = 'Close camera';
   timer = setInterval(tick, Math.round(1000 / fps));
   requestWakeLock();
+  resetIdleTimer();
 }
 
 export async function stopScanner() {
   clearInterval(timer); timer = null;
+  clearTimeout(idleTimer); idleTimer = null;
   if (stream) stream.getTracks().forEach((t) => t.stop());
   stream = null; video = null;
   const reader = $('reader');

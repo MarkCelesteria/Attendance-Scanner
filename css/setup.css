@@ -137,5 +137,9 @@
 .switch input:focus-visible + .slider { outline: 2px solid var(--focus); outline-offset: 2px; }
 .advanced input[type="text"], .advanced input[type="number"] { margin: 0 0 4px; }
 
+.idle-select-wrap { margin: -4px 0 14px; padding-left: 2px; }
+.idle-select-wrap label { display: block; font-size: .85rem; color: var(--ink-2); margin: 0 0 6px; }
+.idle-select { max-width: 220px; }
+
 .single-super-grid { display: grid; grid-template-columns: 1fr 84px; gap: 10px; align-items: end; }
 #cfg-super-col { text-align: center; text-transform: uppercase; font-family: var(--mono); font-weight: 700; }

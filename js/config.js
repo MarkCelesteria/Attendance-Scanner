@@ -138,8 +138,10 @@ export function readForm() {
     }
   }
 
+  const cameraIdleMs = $('cfg-camera-idle-on').checked ? parseInt($('cfg-camera-idle').value, 10) : 0;
+
   return { scriptUrl, accessKey: val('cfg-key'), sessions, ...infoCols, sheetNames, firstRow,
     timePolicy: $('cfg-policy-earliest').checked ? 'earliest' : 'latest', timekeeperMode, timekeeperName,
     adminEnabled: $('cfg-admin-on').checked, sessionLockEnabled: $('cfg-session-lock-on').checked,
-    soundOnScan: $('cfg-sound-on').checked };
+    soundOnScan: $('cfg-sound-on').checked, cameraIdleMs };
 }

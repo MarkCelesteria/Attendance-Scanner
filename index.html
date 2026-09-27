@@ -123,6 +123,20 @@
           <span class="toggle-text">Sound on scan<br><span class="opt">Plays a beep for a successful or failed scan</span></span>
           <label class="switch"><input type="checkbox" id="cfg-sound-on" checked><span class="slider"></span></label>
         </div>
+        <div class="toggle-row">
+          <span class="toggle-text">Automatically close camera if unused<br><span class="opt">Closes the camera after no scans for a while, to save battery</span></span>
+          <label class="switch"><input type="checkbox" id="cfg-camera-idle-on"><span class="slider"></span></label>
+        </div>
+        <div id="camera-idle-wrap" class="idle-select-wrap" hidden>
+          <label for="cfg-camera-idle" class="opt">Close after</label>
+          <select id="cfg-camera-idle" class="idle-select">
+            <option value="30000">30 seconds</option>
+            <option value="60000" selected>1 minute</option>
+            <option value="120000">2 minutes</option>
+            <option value="300000">5 minutes</option>
+            <option value="600000">10 minutes</option>
+          </select>
+        </div>
       </details>
 
       <p id="setup-error" class="form-error" role="alert" hidden></p>
