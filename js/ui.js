@@ -82,7 +82,6 @@ export function renderRosterMeta() {
   $('roster-meta').textContent = `${state.roster.size} students · updated ${when}`;
 }
 
-/** "Cloud Synced" / "Syncing... (X remaining)" / "Offline - X pending" */
 export function renderSyncPill() {
   const pill = $('sync-pill'), text = $('sync-text');
   if (!pill) return;
@@ -99,6 +98,17 @@ export function renderSyncPill() {
   }
   pill.className = `pill ${cls}`;
   text.textContent = msg;
+
+  const latencyEl = $('sync-latency');
+  if (latencyEl) {
+    const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    if (cls === 'pill-synced' && conn && conn.rtt != null) {
+      latencyEl.textContent = ` · ${conn.rtt}ms`;
+      latencyEl.hidden = false;
+    } else {
+      latencyEl.hidden = true;
+    }
+  }
 }
 
 export function resetResultCard() {

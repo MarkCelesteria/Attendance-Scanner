@@ -35,6 +35,7 @@ input:focus { border-color: var(--focus); outline: none; box-shadow: 0 0 0 3px r
 .roster-meta { margin: 4px 2px 0; font-size: .8rem; color: var(--ink-2); }
 .pill { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; font-size: .95rem; color: var(--ink); }
 .pill .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--ink-2); flex: none; }
+.latency { font-weight: 400; font-size: .8rem; color: var(--ink-2); }
 .pill-synced  .dot { background: var(--ok); }
 .pill-syncing .dot { background: var(--warn); animation: pulse 1s ease-in-out infinite; }
 .pill-offline .dot { background: var(--bad); }
