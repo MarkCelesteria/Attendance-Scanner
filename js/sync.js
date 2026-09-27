@@ -1,4 +1,4 @@
-import { SYNC_BATCH_SIZE } from './constants.js';
+import { SYNC_BATCH_SIZE, PENDING_SYNC_THRESHOLD, IDLE_SYNC_MS } from './constants.js';
 import { state } from './state.js';
 import { toast } from './utils.js';
 import { queueCount, peekQueue, removeFromQueue } from './db.js';
@@ -9,6 +9,24 @@ export async function refreshPending() {
   try { state.pending = await queueCount(); } catch { /* ignore */ }
   renderSyncPill();
   renderTables();
+}
+
+let idleSyncTimer = null;
+
+export function scheduleSync() {
+  clearTimeout(idleSyncTimer);
+  if (state.pending >= PENDING_SYNC_THRESHOLD) {
+    syncNow();
+    return;
+  }
+  idleSyncTimer = setTimeout(syncNow, IDLE_SYNC_MS);
+}
+
+export async function forceSyncNow() {
+  clearTimeout(idleSyncTimer);
+  const count = await queueCount();
+  if (!count) { toast('Nothing to sync.', 2500); return; }
+  syncNow();
 }
 
 export async function syncNow() {

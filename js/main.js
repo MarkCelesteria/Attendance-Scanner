@@ -3,8 +3,8 @@ import { state } from './state.js';
 import { $ } from './utils.js';
 import { loadConfig } from './config.js';
 import { loadRoster } from './db.js';
-import { renderSyncPill } from './ui.js';
-import { syncNow } from './sync.js';
+import { renderSyncPill, resetResultCard } from './ui.js';
+import { syncNow, forceSyncNow } from './sync.js';
 import { startScanner, stopScanner } from './scanner.js';
 import { onCameraCode, onManualSubmit, commitPendingScan } from './scan.js';
 import { initHardwareScanner } from './barcode.js';
@@ -37,12 +37,18 @@ function bindEvents() {
   $('btn-reset').addEventListener('click', onReset);
   $('btn-settings').addEventListener('click', () => showSetup(true));
   $('btn-refresh').addEventListener('click', onRefreshRoster);
+  $('btn-sync-now').addEventListener('click', async () => {
+    clearTimeout(state.flashTimer);
+    resetResultCard();
+    await commitPendingScan();
+    forceSyncNow();
+  });
   $('btn-camera').addEventListener('click', () => (state.scanning ? stopScanner() : startScanner(onCameraCode)));
   $('manual-form').addEventListener('submit', onManualSubmit);
 
   window.addEventListener('online',  () => { renderSyncPill(); syncNow(); });
   window.addEventListener('offline', renderSyncPill);
-  setInterval(syncNow, SYNC_INTERVAL_MS);
+  setInterval(() => { if (state.syncFailed) syncNow(); }, SYNC_INTERVAL_MS);
 
   document.addEventListener('visibilitychange', async () => {
     if (document.hidden) {

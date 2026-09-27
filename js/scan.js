@@ -4,16 +4,16 @@ import { $, normalizeId, toast } from './utils.js';
 import { enqueueScan } from './db.js';
 import { beep } from './audio.js';
 import { showResult, resetResultCard } from './ui.js';
-import { refreshPending, syncNow } from './sync.js';
+import { refreshPending, scheduleSync } from './sync.js';
 
 export function commitPendingScan() {
-  if (!state.pendingScan) return;
+  if (!state.pendingScan) return Promise.resolve();
   clearTimeout(state.pendingTimer);
   const entry = state.pendingScan;
   state.pendingScan = null;
-  enqueueScan(entry)
+  return enqueueScan(entry)
     .then(refreshPending)
-    .then(syncNow)
+    .then(scheduleSync)
     .catch(() => toast('Could not save this scan on the device. Storage may be full.', 6000));
 }
 
