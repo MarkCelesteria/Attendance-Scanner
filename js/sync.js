@@ -5,6 +5,8 @@ import { queueCount, peekQueue, removeFromQueue } from './db.js';
 import { renderSyncPill } from './ui.js';
 import { addRecent, renderTables } from './history.js';
 
+class AuthError extends Error {}
+
 export async function refreshPending() {
   try { state.pending = await queueCount(); } catch { /* ignore */ }
   renderSyncPill();
@@ -33,11 +35,12 @@ export async function forceSyncNow() {
   clearTimeout(idleSyncTimer);
   const count = await queueCount();
   if (!count) { toast('Nothing to sync.', 2500); return; }
+  if (state.authFailed) { toast('Access key was changed. Open Settings and enter the new key.', 6000); return; }
   syncNow();
 }
 
 export async function syncNow() {
-  if (state.syncing || !navigator.onLine || !state.config) return;
+  if (state.syncing || state.authFailed || !navigator.onLine || !state.config) return;
   state.syncing = true; state.syncFailed = false;
   let skipped = 0;
 
@@ -55,7 +58,12 @@ export async function syncNow() {
       await refreshPending();
     }
   } catch (e) {
-    state.syncFailed = true;
+    if (e instanceof AuthError) {
+      state.authFailed = true;
+      toast(`The access key was changed. ${state.pending} scan(s) are saved on this device. Open Settings and enter the new key to upload them.`, 12000);
+    } else {
+      state.syncFailed = true;
+    }
     console.warn('Sync failed:', e);
   } finally {
     state.syncing = false;
@@ -88,6 +96,9 @@ async function postBatch(batch) {
     clearTimeout(timer);
   }
   const data = JSON.parse(text);
-  if (!data.ok) throw new Error(data.error || 'Script error');
+  if (!data.ok) {
+    if (data.code === 'bad_key' || /invalid access key/i.test(data.error || '')) throw new AuthError(data.error);
+    throw new Error(data.error || 'Script error');
+  }
   return data.results || [];
 }

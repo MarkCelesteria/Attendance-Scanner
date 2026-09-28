@@ -92,7 +92,7 @@ function doPost(e) {
 
     return json_({ ok: true, results: results });
   } catch (err) {
-    return json_({ ok: false, error: message_(err) });
+    return json_({ ok: false, error: message_(err), code: (err && err.code) || '' });
   } finally {
     try { lock.releaseLock(); } catch (ignore) {  }
   }
@@ -191,7 +191,9 @@ function writeToSheet_(sheetName, entries, ctx, results) {
 
 function authorize_(provided) {
   const expected = PropertiesService.getScriptProperties().getProperty('ACCESS_KEY');
-  if (expected && String(provided || '') !== expected) throw new Error('Invalid access key.');
+  if (expected && String(provided || '') !== expected) {
+    const e = new Error('Invalid access key.'); e.code = 'bad_key'; throw e;
+  }
 }
 
 function authorizeAdmin_(provided) {

@@ -7,6 +7,7 @@ export const state = {
   resumeScanOnShow: false,
   syncing: false,
   syncFailed: false,
+  authFailed: false,
   pending: 0,
   lastKey: '',
   lastTime: 0,

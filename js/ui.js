@@ -88,11 +88,13 @@ export function renderSyncPill() {
   let cls, msg;
   if (!navigator.onLine) {
     cls = 'pill-offline';  msg = `Offline - ${state.pending} pending`;
+  } else if (state.authFailed) {
+    cls = 'pill-offline';  msg = `Access key changed - ${state.pending} pending`;
   } else if (state.syncing) {
     cls = 'pill-syncing';  msg = `Syncing... (${state.pending} remaining)`;
   } else if (state.pending > 0) {
-    cls = state.syncFailed ? 'pill-offline' : 'pill-syncing';
-    msg = state.syncFailed ? `Sync failed - ${state.pending} pending` : `Syncing... (${state.pending} remaining)`;
+    if (state.syncFailed) { cls = 'pill-offline'; msg = `Sync failed - ${state.pending} pending`; }
+    else { cls = 'pill-waiting'; msg = `Waiting to sync - ${state.pending} pending`; }
   } else {
     cls = 'pill-synced';   msg = 'Cloud Synced';
   }

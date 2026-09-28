@@ -39,6 +39,7 @@ input:focus { border-color: var(--focus); outline: none; box-shadow: 0 0 0 3px r
 .pill-synced  .dot { background: var(--ok); }
 .pill-syncing .dot { background: var(--warn); animation: pulse 1s ease-in-out infinite; }
 .pill-offline .dot { background: var(--bad); }
+.pill-waiting .dot { background: var(--warn); }
 @keyframes pulse { 50% { opacity: .25; } }
 
 /* ---------- Toast ---------- */

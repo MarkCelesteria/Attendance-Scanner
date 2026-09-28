@@ -188,8 +188,9 @@ export async function onSetupSubmit(ev) {
   btn.disabled = true;
   btn.textContent = 'Downloading roster…';
   try {
-    await downloadRoster(cfg);   // only save the config if the sheet is reachable
+    await downloadRoster(cfg);
     state.config = cfg;
+    state.authFailed = false;
     saveConfig(cfg);
     showDashboard();
   } catch (e) {
