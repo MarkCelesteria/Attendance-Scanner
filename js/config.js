@@ -29,6 +29,7 @@ export function clearLocalSettings() {
 
 export function encodeShareCode(cfg) {
   const { accessKey, ...shareable } = cfg;
+  if (cfg.restrictShare) shareable.locked = true;
   return btoa(unescape(encodeURIComponent(JSON.stringify(shareable))));
 }
 
@@ -74,7 +75,6 @@ export function readForm() {
     infoCols[key] = letters;
   }
 
-  // One row per session: name on the left, sheet column on the right.
   const rows = [...document.querySelectorAll('#session-rows .session-row')];
   if (!rows.length) throw new Error('Add at least one session.');
   const sessions = rows.map((row, i) => {
@@ -83,8 +83,25 @@ export function readForm() {
     const col = row.querySelector('.s-col').value.trim().toUpperCase();
     if (!name) throw new Error(`Session ${n}: enter a name, or remove the row with ×.`);
     if (!colRe.test(col)) throw new Error(`Session ${n} (${name}): enter a column letter like E or AB.`);
-    return { name, col };
+    const s = { name, col };
+    const start = row.querySelector('.s-start').value;
+    const end = row.querySelector('.s-end').value;
+    if (start || end) {
+      if (!start || !end) throw new Error(`Session ${n} (${name}): set both a start and end time, or leave both blank.`);
+      if (start >= end) throw new Error(`Session ${n} (${name}): the end time must be after the start time.`);
+      s.start = start; s.end = end;
+    }
+    return s;
   });
+
+  const timed = sessions.filter((s) => s.start);
+  for (let i = 0; i < timed.length; i++) {
+    for (let j = i + 1; j < timed.length; j++) {
+      if (timed[i].start < timed[j].end && timed[j].start < timed[i].end) {
+        throw new Error(`"${timed[i].name}" and "${timed[j].name}" have overlapping time windows.`);
+      }
+    }
+  }
 
   const seenNames = new Set(), seenCols = new Set();
   for (const s of sessions) {
@@ -146,9 +163,10 @@ export function readForm() {
 
   const cameraIdleMs = $('cfg-camera-idle-on').checked ? parseInt($('cfg-camera-idle').value, 10) : 0;
 
-  return { scriptUrl, accessKey: val('cfg-key'), sessions, ...infoCols, sheetNames, firstRow,
+  return { scriptUrl, sessions, ...infoCols, sheetNames, firstRow,
     timePolicy: $('cfg-policy-earliest').checked ? 'earliest' : 'latest', timekeeperMode, timekeeperName,
     adminEnabled: $('cfg-admin-on').checked, sessionLockEnabled: $('cfg-session-lock-on').checked,
     soundOnScan: $('cfg-sound-on').checked, cameraIdleMs, undoLockEnabled: $('cfg-undo-lock-on').checked,
-    bigScansEnabled: $('cfg-bigscans-on').checked, syncProfile: $('cfg-bigscans-profile').value };
+    bigScansEnabled: $('cfg-bigscans-on').checked, syncProfile: $('cfg-bigscans-profile').value,
+    restrictShare: $('cfg-restrict-share-on').checked };
 }

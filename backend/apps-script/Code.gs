@@ -43,7 +43,7 @@ function doGet(e) {
 
     return json_({ ok: true, count: students.length, students: students });
   } catch (err) {
-    return json_({ ok: false, error: message_(err) });
+    return json_({ ok: false, error: message_(err), code: (err && err.code) || '' });
   }
 }
 

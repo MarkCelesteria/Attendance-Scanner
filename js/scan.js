@@ -32,6 +32,7 @@ function resumePendingScan() {
 }
 
 export function handleId(raw, source) {
+  if (state.scheduleLocked) { toast('Scanning is closed right now.', 3000); return; }
   const key = normalizeId(raw);
   if (!key) return;
 

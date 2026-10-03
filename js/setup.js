@@ -5,6 +5,7 @@ import { readForm, saveConfig, clearLocalSettings, encodeShareCode, decodeShareC
 import { downloadRoster } from './roster.js';
 import { clearAllStores } from './db.js';
 import { stopScanner } from './scanner.js';
+import { stopScheduler } from './scheduler.js';
 import { renderRosterMeta } from './ui.js';
 import { refreshPending } from './sync.js';
 import { clearRecent } from './history.js';
@@ -23,7 +24,7 @@ function updateRemoveButtons() {
   rows.forEach((r) => { r.querySelector('.row-del').disabled = rows.length < 2; });
 }
 
-function addSessionRow(name = '', col = '', supName = '', supCol = '') {
+function addSessionRow(name = '', col = '', supName = '', supCol = '', start = '', end = '') {
   const row = document.createElement('div');
   row.className = 'session-row';
 
@@ -51,7 +52,23 @@ function addSessionRow(name = '', col = '', supName = '', supCol = '') {
   supColEl.placeholder = 'Z'; supColEl.autocomplete = 'off';
   supColEl.setAttribute('aria-label', 'Timekeeper column letter for this session');
 
-  row.append(nameEl, colEl, del, supNameEl, supColEl);
+  const scheduleWrap = document.createElement('div');
+  scheduleWrap.className = 'schedule-fields';
+
+  const startEl = document.createElement('input');
+  startEl.type = 'time'; startEl.className = 's-start'; startEl.value = start;
+  startEl.setAttribute('aria-label', 'Session start time');
+
+  const toLabel = document.createElement('span');
+  toLabel.className = 'schedule-to'; toLabel.textContent = '–';
+
+  const endEl = document.createElement('input');
+  endEl.type = 'time'; endEl.className = 's-end'; endEl.value = end;
+  endEl.setAttribute('aria-label', 'Session end time');
+
+  scheduleWrap.append(startEl, toLabel, endEl);
+
+  row.append(nameEl, colEl, del, supNameEl, supColEl, scheduleWrap);
   $('session-rows').appendChild(row);
   updateRemoveButtons();
   return nameEl;
@@ -59,7 +76,8 @@ function addSessionRow(name = '', col = '', supName = '', supCol = '') {
 
 function buildSessionRows(list) {
   $('session-rows').textContent = '';
-  (list && list.length ? list : [{ name: '', col: 'E' }]).forEach((s) => addSessionRow(s.name, s.col, s.supName || '', s.supCol || ''));
+  (list && list.length ? list : [{ name: '', col: 'E' }]).forEach((s) =>
+    addSessionRow(s.name, s.col, s.supName || '', s.supCol || '', s.start || '', s.end || ''));
 }
 
 export function initSessionEditor() {
@@ -99,6 +117,7 @@ export function initAdvancedToggles() {
     if (e.target.checked) $('cfg-camera-idle').value = '60000';
   });
   $('cfg-bigscans-on').addEventListener('change', (e) => { $('bigscans-options').hidden = !e.target.checked; });
+  $('cfg-schedule-on').addEventListener('change', (e) => { $('session-rows').classList.toggle('show-schedule', e.target.checked); });
 }
 
 function updatePolicyLabel() {
@@ -109,9 +128,8 @@ function updatePolicyLabel() {
     : 'If a student is scanned twice in one session, the most recent time is kept.';
 }
 
-function fillFormFromConfig(c, { includeKey = true } = {}) {
+function fillFormFromConfig(c) {
   $('cfg-url').value = c.scriptUrl || '';
-  if (includeKey) $('cfg-key').value = c.accessKey || '';
   $('cfg-id').value = c.idCol || '';            $('cfg-name').value = c.nameCol || '';
   $('cfg-program').value = c.programCol || '';  $('cfg-year').value = c.yearCol || '';
   $('cfg-college').value = c.collegeCol || '';  $('cfg-gender').value = c.genderCol || '';
@@ -137,12 +155,18 @@ function fillFormFromConfig(c, { includeKey = true } = {}) {
   $('cfg-bigscans-on').checked = !!c.bigScansEnabled;
   $('cfg-bigscans-profile').value = c.syncProfile || 'standard';
   $('bigscans-options').hidden = !c.bigScansEnabled;
+  $('cfg-restrict-share-on').checked = !!c.restrictShare;
+  const hasSchedule = (c.sessions || []).some((s) => s.start && s.end);
+  $('cfg-schedule-on').checked = hasSchedule;
+  $('session-rows').classList.toggle('show-schedule', hasSchedule);
   buildSessionRows(c.sessions);
   updateSuperVisibility();
 }
 
 export function showSetup(isEditing) {
+  if (isEditing && state.config && state.config.locked) { beginJoinFlow(state.config); return; }
   stopScanner();
+  stopScheduler();
   $('view-dashboard').hidden = true;
   $('view-setup').hidden = false;
   $('btn-setup-cancel').hidden = !isEditing;
@@ -153,6 +177,110 @@ export function showSetup(isEditing) {
   const c = state.config;
   if (c) { fillFormFromConfig(c); }
   else { buildSessionRows(null); updateSuperVisibility(); }
+}
+
+async function downloadWithKeyRetry(cfg, reportError) {
+  let keyErrorMsg = '';
+  for (;;) {
+    try { await downloadRoster(cfg); return true; }
+    catch (e) {
+      if (e.code !== 'bad_key') { reportError(e.message); return false; }
+      const key = await askSetupKey(keyErrorMsg);
+      if (key === null) { reportError('An access key is required to save this setup.'); return false; }
+      cfg.accessKey = key;
+      keyErrorMsg = 'Incorrect access key.';
+    }
+  }
+}
+
+function namesNeeded(cfg) {
+  if (cfg.timekeeperMode === 'per-session') return cfg.sessions.map((s) => s.name);
+  if (cfg.timekeeperMode === 'single') return ['__single__'];
+  return [];
+}
+
+function openJoinModal(cfg) {
+  return new Promise((resolve) => {
+    const modal = $('join-setup-modal');
+    const wrap = $('join-names');
+    const err = $('join-setup-error');
+    const confirmBtn = $('btn-join-confirm');
+    const cancelBtn = $('btn-join-cancel');
+    const resetBtn = $('btn-join-reset');
+    err.hidden = true;
+    wrap.textContent = '';
+
+    const needed = namesNeeded(cfg);
+    const inputs = [];
+    if (!needed.length) {
+      const p = document.createElement('p');
+      p.className = 'hint';
+      p.textContent = 'No extra info needed from you — just confirm to continue.';
+      wrap.appendChild(p);
+    }
+    needed.forEach((label) => {
+      const row = document.createElement('div');
+      row.className = 'join-row';
+      const lbl = document.createElement('label');
+      lbl.textContent = label === '__single__' ? "Timekeeper's name" : `Timekeeper for "${label}"`;
+      const inp = document.createElement('input');
+      inp.type = 'text';
+      inp.placeholder = 'Enter name';
+      inp.value = label === '__single__'
+        ? (cfg.timekeeperName || '')
+        : ((cfg.sessions.find((x) => x.name === label) || {}).supName || '');
+      row.append(lbl, inp);
+      wrap.appendChild(row);
+      inputs.push({ key: label, el: inp });
+    });
+
+    modal.showModal();
+
+    const cleanup = () => {
+      confirmBtn.removeEventListener('click', onConfirm);
+      cancelBtn.removeEventListener('click', onCancel);
+      resetBtn.removeEventListener('click', onResetClick);
+      modal.removeEventListener('close', onCancel);
+    };
+    const onConfirm = () => {
+      for (const { el } of inputs) {
+        if (!el.value.trim()) { err.textContent = 'Enter a name for every field.'; err.hidden = false; return; }
+      }
+      cleanup(); modal.close();
+      const result = { ...cfg };
+      if (inputs.length && inputs[0].key === '__single__') {
+        result.timekeeperName = inputs[0].el.value.trim();
+        result.sessions = result.sessions.map((s) => ({ ...s, supName: result.timekeeperName }));
+      } else if (inputs.length) {
+        result.sessions = result.sessions.map((s) => {
+          const found = inputs.find((i) => i.key === s.name);
+          return found ? { ...s, supName: found.el.value.trim() } : s;
+        });
+      }
+      resolve(result);
+    };
+    const onCancel = () => { cleanup(); if (modal.open) modal.close(); resolve(null); };
+    const onResetClick = async () => { cleanup(); if (modal.open) modal.close(); await onReset(); resolve(null); };
+
+    confirmBtn.addEventListener('click', onConfirm);
+    cancelBtn.addEventListener('click', onCancel);
+    resetBtn.addEventListener('click', onResetClick);
+    modal.addEventListener('close', onCancel);
+  });
+}
+
+async function beginJoinFlow(cfg) {
+  stopScanner();
+  const result = await openJoinModal(cfg);
+  if (!result) return;
+  result.accessKey = (state.config && state.config.scriptUrl === result.scriptUrl) ? (state.config.accessKey || '') : '';
+  const ok = await downloadWithKeyRetry(result, (msg) => toast(msg, 6000));
+  if (!ok) return;
+  state.config = result;
+  state.authFailed = false;
+  saveConfig(result);
+  toast('Setup applied.');
+  showDashboard();
 }
 
 export async function onCopySetupCode() {
@@ -177,10 +305,46 @@ export function onApplySetupCode() {
   try { cfg = decodeShareCode(raw); }
   catch (e) { errEl.textContent = e.message; errEl.hidden = false; return; }
 
-  fillFormFromConfig(cfg, { includeKey: false });
-  $('cfg-key').value = '';
   $('cfg-share-code').value = '';
-  toast('Setup applied. Enter the access key (if any), then save.');
+
+  if (cfg.locked) { beginJoinFlow(cfg); return; }
+
+  fillFormFromConfig(cfg);
+  toast('Setup applied. You\'ll be asked for the access key when you save, if the sheet needs one.');
+}
+
+function askSetupKey(initialError) {
+  return new Promise((resolve) => {
+    const modal = $('setup-key-modal');
+    const input = $('setup-key-input');
+    const err = $('setup-key-error');
+    const confirmBtn = $('btn-setup-key-confirm');
+    const cancelBtn = $('btn-setup-key-cancel');
+
+    if (initialError) { err.textContent = initialError; err.hidden = false; } else { err.hidden = true; }
+    input.value = '';
+    modal.showModal();
+    input.focus();
+
+    const cleanup = () => {
+      confirmBtn.removeEventListener('click', onConfirm);
+      cancelBtn.removeEventListener('click', onCancel);
+      input.removeEventListener('keydown', onKeydown);
+      modal.removeEventListener('close', onCancel);
+    };
+    const onConfirm = () => {
+      const v = input.value.trim();
+      if (!v) { err.textContent = 'Enter the access key.'; err.hidden = false; return; }
+      cleanup(); modal.close(); resolve(v);
+    };
+    const onCancel = () => { cleanup(); if (modal.open) modal.close(); resolve(null); };
+    const onKeydown = (e) => { if (e.key === 'Enter') { e.preventDefault(); onConfirm(); } };
+
+    confirmBtn.addEventListener('click', onConfirm);
+    cancelBtn.addEventListener('click', onCancel);
+    input.addEventListener('keydown', onKeydown);
+    modal.addEventListener('close', onCancel);
+  });
 }
 
 export async function onSetupSubmit(ev) {
@@ -191,18 +355,19 @@ export async function onSetupSubmit(ev) {
   let cfg;
   try { cfg = readForm(); } catch (e) { errEl.textContent = e.message; errEl.hidden = false; return; }
 
+  cfg.accessKey = (state.config && state.config.scriptUrl === cfg.scriptUrl) ? (state.config.accessKey || '') : '';
+
   const btn = $('btn-setup-save');
   btn.disabled = true;
   btn.textContent = 'Downloading roster…';
+
   try {
-    await downloadRoster(cfg);
+    const ok = await downloadWithKeyRetry(cfg, (msg) => { errEl.textContent = msg; errEl.hidden = false; });
+    if (!ok) return;
     state.config = cfg;
     state.authFailed = false;
     saveConfig(cfg);
     showDashboard();
-  } catch (e) {
-    errEl.textContent = e.message;
-    errEl.hidden = false;
   } finally {
     btn.disabled = false;
     btn.textContent = 'Save and download roster';

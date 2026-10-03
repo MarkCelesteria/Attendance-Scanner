@@ -1,6 +1,7 @@
 import { LS_ACTIVE, LS_ROSTER_T, FLASH_MS, RESULT_DISPLAY_MS } from './constants.js';
 import { state } from './state.js';
-import { $, clockTime } from './utils.js';
+import { $, clockTime, toast } from './utils.js';
+import { isSessionOpen, hasWindow, formatWindow } from './scheduler.js';
 
 const RESET_MS = RESULT_DISPLAY_MS;
 let idleClockTimer = null;
@@ -56,17 +57,25 @@ export function renderSessions() {
   const group = $('session-group');
   group.textContent = '';
 
-  state.config.sessions.forEach(({ name, col }) => {
+  state.config.sessions.forEach((session) => {
+    const { name, col } = session;
+    const open = isSessionOpen(session);
     const b = document.createElement('button');
     b.type = 'button';
-    b.className = 'session-btn';
+    b.className = 'session-btn' + (open ? '' : ' is-locked');
+    b.dataset.name = name;
     b.setAttribute('role', 'radio');
     b.setAttribute('aria-checked', String(name === state.activeSession));
     const n = document.createElement('span'); n.className = 's-name'; n.textContent = name;
-    const c = document.createElement('span'); c.className = 's-col'; c.textContent = `Column ${col}`;
+    const c = document.createElement('span'); c.className = 's-col';
+    c.textContent = hasWindow(session) ? formatWindow(session) : `Column ${col}`;
     b.append(n, c);
     b.addEventListener('click', async () => {
       if (name === state.activeSession) return;
+      if (!isSessionOpen(session)) {
+        toast(`"${name}" opens at ${session.start} and closes at ${session.end}.`, 4000);
+        return;
+      }
       if (state.config.sessionLockEnabled && state.config.accessKey) {
         const ok = await askSessionKey();
         if (!ok) return;
@@ -75,6 +84,35 @@ export function renderSessions() {
     });
     group.appendChild(b);
   });
+}
+
+export function autoSwitchSession(name) {
+  state.activeSession = name;
+  localStorage.setItem(LS_ACTIVE, name);
+  const group = $('session-group');
+  if (group) group.querySelectorAll('.session-btn').forEach((el) => el.setAttribute('aria-checked', String(el.dataset.name === name)));
+}
+
+export function renderScheduleLock(locked, session) {
+  state.scheduleLocked = locked;
+  const r = $('result');
+  const cameraBtn = $('btn-camera');
+  const manualInput = $('manual-id');
+  const manualBtn = document.querySelector('#manual-form button[type="submit"]');
+
+  cameraBtn.disabled = locked;
+  manualInput.disabled = locked;
+  if (manualBtn) manualBtn.disabled = locked;
+
+  if (locked) {
+    clearTimeout(state.flashTimer);
+    r.className = 'result is-locked';
+    $('locked-sub').textContent = session
+      ? `"${session.name}" opens at ${session.start} and closes at ${session.end}.`
+      : 'No session is open right now.';
+  } else if (r.classList.contains('is-locked')) {
+    resetResultCard();
+  }
 }
 
 export function renderRosterMeta() {

@@ -23,6 +23,9 @@ export async function downloadRoster(cfg) {
     if (/Invalid column letter: ""/.test(data.error || '')) {
       throw new Error('Your Apps Script is out of date. Paste the newest Code.gs, then Deploy → Manage deployments → Edit → New version.');
     }
+    if (data.code === 'bad_key' || /invalid access key/i.test(data.error || '')) {
+      const e = new Error(data.error || 'Invalid access key.'); e.code = 'bad_key'; throw e;
+    }
     throw new Error(data.error || 'The script reported an error.');
   }
 

@@ -9,6 +9,7 @@
 .session-btn .s-col { display: block; font-size: .8rem; color: var(--ink-2); font-family: var(--mono); }
 .session-btn[aria-checked="true"] { background: var(--brand); border-color: var(--brand); color: #fff; }
 .session-btn[aria-checked="true"] .s-col { color: #B9C4E0; }
+.session-btn.is-locked { opacity: .5; cursor: not-allowed; }
 
 /* ---------- Scanner ---------- */
 .scanner {
@@ -105,6 +106,10 @@
 .result.is-idle .result-scan-view { display: none; }
 .result-idle-title { margin: 0; font-size: 1.05rem; font-weight: 700; color: var(--ink); }
 .result-idle-sub { margin: 0; font-size: .9rem; color: var(--ink-2); }
+.result-locked-view { display: none; flex-direction: column; align-items: center; text-align: center; gap: 10px; }
+.result.is-locked .result-locked-view { display: flex; }
+.result.is-locked .result-idle-view,
+.result.is-locked .result-scan-view { display: none; }
 #idle-clock { font-size: 1.8rem; font-weight: 700; color: var(--ink); font-family: var(--mono); margin-top: 4px; }
 
 .result.is-ok { background: var(--ok); border-color: var(--ok); color: #fff; animation: pop .22s ease-out; }

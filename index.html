@@ -54,9 +54,6 @@
           <button type="button" id="btn-help" class="help-btn" aria-label="How do I get this URL?" title="How do I get this URL?">?</button>
         </div>
         <input id="cfg-url" type="url" inputmode="url" placeholder="https://script.google.com/…/exec" required>
-
-        <label for="cfg-key">Access key <span class="opt">(optional)</span></label>
-        <input id="cfg-key" type="password" placeholder="Only if you set on the script" autocomplete="off">
       </fieldset>
 
       <fieldset>
@@ -144,6 +141,16 @@
             </div>
           </div>
           <p class="hint" id="super-hint">Enter each session's timekeeper next to that session above.</p>
+        </div>
+
+        <div class="toggle-row">
+          <span class="toggle-text">Restrict shared setup codes<br><span class="opt">People who use your setup code can only enter their name and access key — nothing else is shown or editable</span></span>
+          <label class="switch"><input type="checkbox" id="cfg-restrict-share-on"><span class="slider"></span></label>
+        </div>
+
+        <div class="toggle-row">
+          <span class="toggle-text">Scheduled sessions<br><span class="opt">Give sessions a time window — off means always available</span></span>
+          <label class="switch"><input type="checkbox" id="cfg-schedule-on"><span class="slider"></span></label>
         </div>
 
         <div class="toggle-row">
@@ -278,6 +285,12 @@
               <p class="result-idle-title">Ready for the next scan</p>
               <p class="result-idle-sub">Your scanner is standing by.</p>
               <p id="idle-clock" class="result-idle-sub"></p>
+            </div>
+          </div>
+          <div class="result-locked-view">
+            <div>
+              <p class="result-idle-title">Scanning is closed</p>
+              <p id="locked-sub" class="result-idle-sub"></p>
             </div>
           </div>
           <div class="result-scan-view">
@@ -522,6 +535,32 @@
     </div>
     <div class="modal-actions">
       <button type="button" id="btn-admin-help-close" class="btn">Close</button>
+    </div>
+  </dialog>
+
+  <dialog id="setup-key-modal" class="modal" aria-labelledby="setup-key-title">
+    <div class="modal-body">
+      <h2 id="setup-key-title">Access key required</h2>
+      <p class="hint">This sheet is protected. Enter the access key to continue.</p>
+      <input id="setup-key-input" type="password" placeholder="Access key" autocomplete="off">
+      <p id="setup-key-error" class="form-error" role="alert" hidden></p>
+    </div>
+    <div class="modal-actions">
+      <button type="button" id="btn-setup-key-cancel" class="btn">Cancel</button>
+      <button type="button" id="btn-setup-key-confirm" class="btn btn-primary">Continue</button>
+    </div>
+  </dialog>
+
+  <dialog id="join-setup-modal" class="modal" aria-labelledby="join-setup-title">
+    <div class="modal-body">
+      <h2 id="join-setup-title">Apply shared setup</h2>
+      <div id="join-names"></div>
+      <p id="join-setup-error" class="form-error" role="alert" hidden></p>
+    </div>
+    <div class="modal-actions">
+      <button type="button" id="btn-join-reset" class="btn btn-danger">Reset device</button>
+      <button type="button" id="btn-join-cancel" class="btn">Cancel</button>
+      <button type="button" id="btn-join-confirm" class="btn btn-primary">Confirm</button>
     </div>
   </dialog>
 
