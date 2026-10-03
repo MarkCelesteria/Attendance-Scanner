@@ -83,6 +83,8 @@
       <details class="advanced">
         <summary>Advanced</summary>
 
+        <div class="adv-sep">General</div>
+
         <div class="toggle-row">
           <span class="toggle-text">Appearance<br><span class="opt">Choose how the app looks on this device</span></span>
           <div class="theme-seg" role="radiogroup" aria-label="Appearance">
@@ -97,6 +99,13 @@
           <span class="toggle-text">24-hour time<br><span class="opt">Off shows 12-hour time with AM/PM</span></span>
           <label class="switch"><input type="checkbox" id="cfg-clock-24"><span class="slider"></span></label>
         </div>
+
+        <div class="toggle-row">
+          <span class="toggle-text">Sound on scan<br><span class="opt">Plays a beep for a successful or failed scan</span></span>
+          <label class="switch"><input type="checkbox" id="cfg-sound-on" checked><span class="slider"></span></label>
+        </div>
+
+        <div class="adv-sep">Sheet &amp; data</div>
 
         <div class="toggle-row">
           <span class="toggle-text">Custom sheet tab(s)<br><span class="opt">Off uses the first tab. List several, comma-separated, to combine them into one roster. Tab names can't contain a comma.</span></span>
@@ -136,39 +145,6 @@
           </div>
           <p class="hint" id="super-hint">Enter each session's timekeeper next to that session above.</p>
         </div>
-        <div class="toggle-row">
-          <span class="toggle-text">Enable Admin Access<br><span class="opt">Adds an admin button on the scanner screen</span></span>
-          <div class="toggle-controls">
-            <button type="button" id="btn-adminfeature-help" class="help-btn" aria-label="What can an admin do?" title="What can an admin do?">?</button>
-            <label class="switch"><input type="checkbox" id="cfg-admin-on" checked><span class="slider"></span></label>
-          </div>
-        </div>
-        <div class="toggle-row">
-          <span class="toggle-text">Require access key to switch sessions<br><span class="opt">Off lets anyone switch sessions freely</span></span>
-          <label class="switch"><input type="checkbox" id="cfg-session-lock-on" checked><span class="slider"></span></label>
-        </div>
-        <div class="toggle-row">
-          <span class="toggle-text">Require access key to undo a scan<br><span class="opt">Stops a student from undoing the previous student's scan</span></span>
-          <label class="switch"><input type="checkbox" id="cfg-undo-lock-on" checked><span class="slider"></span></label>
-        </div>
-        <div class="toggle-row">
-          <span class="toggle-text">Sound on scan<br><span class="opt">Plays a beep for a successful or failed scan</span></span>
-          <label class="switch"><input type="checkbox" id="cfg-sound-on" checked><span class="slider"></span></label>
-        </div>
-        <div class="toggle-row">
-          <span class="toggle-text">Automatically close camera if unused<br><span class="opt">Closes the camera after no scans for a while, to save battery</span></span>
-          <label class="switch"><input type="checkbox" id="cfg-camera-idle-on"><span class="slider"></span></label>
-        </div>
-        <div id="camera-idle-wrap" class="idle-select-wrap" hidden>
-          <label for="cfg-camera-idle" class="opt">Close after</label>
-          <select id="cfg-camera-idle" class="idle-select">
-            <option value="30000">30 seconds</option>
-            <option value="60000" selected>1 minute</option>
-            <option value="120000">2 minutes</option>
-            <option value="300000">5 minutes</option>
-            <option value="600000">10 minutes</option>
-          </select>
-        </div>
 
         <div class="toggle-row">
           <span class="toggle-text">Large-scale scanning<br><span class="opt">For very high daily scan volumes — batches more scans per upload to use less of the sheet's daily quota</span></span>
@@ -186,6 +162,41 @@
             <option value="extreme">Extreme — 60 scans or 6 min (~21,600 scans/day)</option>
             <option value="colossal">Colossal — 300 scans or 20 min (~108,000 scans/day)</option>
           </select>
+        </div>
+
+        <div class="adv-sep">Scanner</div>
+
+        <div class="toggle-row">
+          <span class="toggle-text">Require access key to switch sessions<br><span class="opt">Off lets anyone switch sessions freely</span></span>
+          <label class="switch"><input type="checkbox" id="cfg-session-lock-on" checked><span class="slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <span class="toggle-text">Require access key to undo a scan<br><span class="opt">Stops a student from undoing the previous student's scan</span></span>
+          <label class="switch"><input type="checkbox" id="cfg-undo-lock-on" checked><span class="slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <span class="toggle-text">Automatically close camera if unused<br><span class="opt">Closes the camera after no scans for a while, to save battery</span></span>
+          <label class="switch"><input type="checkbox" id="cfg-camera-idle-on"><span class="slider"></span></label>
+        </div>
+        <div id="camera-idle-wrap" class="idle-select-wrap" hidden>
+          <label for="cfg-camera-idle" class="opt">Close after</label>
+          <select id="cfg-camera-idle" class="idle-select">
+            <option value="30000">30 seconds</option>
+            <option value="60000" selected>1 minute</option>
+            <option value="120000">2 minutes</option>
+            <option value="300000">5 minutes</option>
+            <option value="600000">10 minutes</option>
+          </select>
+        </div>
+
+        <div class="adv-sep">Admin</div>
+
+        <div class="toggle-row">
+          <span class="toggle-text">Enable Admin Access<br><span class="opt">Adds an admin button on the scanner screen</span></span>
+          <div class="toggle-controls">
+            <button type="button" id="btn-adminfeature-help" class="help-btn" aria-label="What can an admin do?" title="What can an admin do?">?</button>
+            <label class="switch"><input type="checkbox" id="cfg-admin-on" checked><span class="slider"></span></label>
+          </div>
         </div>
       </details>
       <p id="setup-error" class="form-error" role="alert" hidden></p>

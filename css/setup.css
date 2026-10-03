@@ -16,6 +16,13 @@
 .advanced { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 0 16px; margin-bottom: 14px; }
 .advanced[open] { padding-bottom: 16px; }
 .advanced summary { line-height: 48px; min-height: 48px; margin: 0; padding: 0; font-weight: 700; cursor: pointer; }
+.adv-sep {
+  display: flex; align-items: center; gap: 10px;
+  margin: 18px 0 2px; font-size: .75rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .04em; color: var(--ink-2);
+}
+.adv-sep::after { content: ''; flex: 1 1 auto; height: 1px; background: var(--line); }
+.advanced[open] summary + .adv-sep { margin-top: 4px; }
 .advanced[open] summary { margin-bottom: 4px; }
 .form-error { background: var(--bad-soft); color: var(--bad); border: 1px solid var(--bad); padding: 10px 12px; border-radius: 10px; font-weight: 600; }
 .setup-actions { display: flex; flex-wrap: wrap; gap: 10px; }
