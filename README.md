@@ -1,90 +1,184 @@
 # Attendance Scanner
-Offline-first barcode/QR attendance app. Runs as a static site on **GitHub Pages**
-and writes timestamps into a **Google Sheet** through a small Apps Script web app.
 
-**Live app:** [markcelesteria.github.io/Attendance-Scanner](https://markcelesteria.github.io/Attendance-Scanner/)
-- One row per student; one column per session (Morning In, Morning Out, …)
-- Fully configurable on first launch (saved in `localStorage`), so one deployment fits any sheet
-- Roster (5,000+ students) and unsent scans live in IndexedDB; lookups are in-memory
-- Works offline; scans sync automatically when the connection returns
-- Installable PWA (Add to Home Screen)
-- Combine several sheet tabs into one roster; scans still write back to whichever tab the student came from
-- Admin dashboard: search, filter (by category, by time range), and download printable QR codes — optionally split into a zip organized by college/program/year
+A lightweight, offline-first attendance app for scanning student IDs and writing attendance timestamps to a Google Sheet. The app runs as a static PWA on GitHub Pages and uses a small Google Apps Script backend for secure, sheet-based writes.
 
-## Project layout
+Live demo: [markcelesteria.github.io/Attendance-Scanner](https://markcelesteria.github.io/Attendance-Scanner/)
 
-```
+## Overview
+
+This project is designed for educational or workplace attendance tracking where:
+
+- a roster may contain thousands of students
+- scans need to work offline on a mobile device
+- the app must remain flexible across different sheet layouts
+- attendance data needs to be written back to specific tabs and sessions
+
+The app stores roster data and pending scan entries locally in IndexedDB, then syncs them automatically when the connection is available.
+
+## Key features
+
+- Offline-first attendance scanning with IndexedDB queueing
+- Works with barcode scanners, QR scans, and manual entry
+- Flexible column configuration for any Google Sheet layout
+- Supports multiple sheet tabs merged into one roster
+- Writes timestamps back to the correct tab for each student
+- Session-aware attendance tracking such as Morning In, Morning Out, etc.
+- PWA install support for mobile devices
+- Admin dashboard with filtering, search, and QR/PDF export
+- Automatic retry and sync when the device reconnects
+
+## How it works
+
+1. The app loads the student roster from Google Sheets.
+2. Each scan is validated against the roster map in memory.
+3. Valid results are queued locally for offline operation.
+4. A background sync process sends queued entries to the Apps Script backend.
+5. The backend writes the timestamps into the configured session columns.
+
+## Project structure
+
+```text
 attendance-pwa/
-├── index.html                 App shell (setup view + dashboard view)
+├── index.html                 App shell for setup and dashboard views
 ├── manifest.webmanifest       PWA manifest
-├── sw.js                      Service worker (must stay in the root for scope)
+├── sw.js                      Service worker for offline updates
 ├── css/
-│   ├── base.css               Tokens, reset, layout, reduced-motion
-│   ├── components.css         Buttons, inputs, top bar, sync pill, toast
-│   ├── setup.css              Setup screen
-│   └── dashboard.css          Session toggle, scanner, result card, manual entry
-├── js/                        ES modules (no build step)
-│   ├── main.js                Entry point: events + first view
-│   ├── constants.js           Storage keys and tunables (FPS, batch size, …)
-│   ├── state.js                Shared state object
-│   ├── utils.js                DOM helper, column letters, ID normalising, toast
-│   ├── db.js                  IndexedDB: roster + pending queue
-│   ├── config.js              localStorage config + form validation
-│   ├── roster.js              Roster download (combines multiple sheet tabs when configured)
-│   ├── ui.js                  Rendering: sessions, sync pill, result card, session-switch access-key prompt
-│   ├── scanner.js             Camera (html5-qrcode)
-│   ├── scan.js                ID handling (camera + manual)
-│   ├── sync.js                Batched upload + retry
-│   ├── audio.js               Success/error beeps (toggleable)
-│   ├── barcode.js             Hardware/USB barcode scanner input (keyboard-wedge)
-│   ├── admin.js                Admin dashboard: table, filters, QR code export
-│   ├── qrpdf.js                QR code PDF/zip generation
-│   ├── dashboard.js           Dashboard view
-│   └── setup.js               Setup view, reset, roster refresh
-├── assets/icons/              PWA icons
-├── assets/vendor/             Vendored libraries (zxing, qrcode, jspdf, jszip) for offline use
-├── backend/apps-script/
-│   ├── Code.gs                Google Apps Script web app (doGet / doPost)
-│   └── appsscript.json        Apps Script manifest (for clasp users)
+│   ├── base.css               Global styles and layout
+│   ├── components.css         Shared UI components
+│   ├── setup.css              Setup screen styling
+│   └── dashboard.css          Attendance dashboard styles
+├── js/
+│   ├── main.js                App bootstrap and event wiring
+│   ├── constants.js           Configurable constants and limits
+│   ├── state.js               Shared app state
+│   ├── utils.js               Helpers and normalisation utilities
+│   ├── db.js                  IndexedDB roster and queue storage
+│   ├── config.js              Setup and localStorage config handling
+│   ├── roster.js              Roster fetch and multi-tab merge logic
+│   ├── ui.js                  Rendering and dashboard updates
+│   ├── scanner.js             Camera scanning integration
+│   ├── scan.js                Scan validation and handling
+│   ├── scheduler.js           Sync scheduling and background triggers
+│   ├── sync.js                Upload and retry logic
+│   ├── audio.js               Sound notifications
+│   ├── barcode.js             Keyboard/barcode input handling
+│   ├── admin.js               Admin dashboard and filters
+│   ├── qrpdf.js               QR/PDF export logic
+│   ├── dashboard.js           Dashboard view logic
+│   └── setup.js               Setup view logic
+├── assets/
+│   ├── icons/                 PWA icons
+│   └── vendor/                Vendored libraries for offline use
+├── backend/
+│   └── apps-script/
+│       ├── Code.gs            Google Apps Script backend
+│       └── appsscript.json    Apps Script manifest
 ├── docs/
-│   ├── DEPLOYMENT.md          Step-by-step deployment
-│   └── ARCHITECTURE.md        Data flow and API contract
-└── tests/backend.test.js      Backend tests (no dependencies)
+│   ├── ARCHITECTURE.md        Data flow and API contract
+│   └── DEPLOYMENT.md          Deployment and setup guide
+├── tests/
+│   └── backend.test.js        Backend validation tests
+├── LICENSE
+├── package.json
+├── README.md
+└── sw.js
 ```
 
-## Quick start
+## Getting started
 
-1. Set up the sheet and Apps Script → [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md#1-google-sheet--apps-script)
-2. Publish to GitHub Pages → [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md#2-github-pages)
-3. Open the site, enter your settings, install it on the phone
+### Prerequisites
 
-Local preview: `npx serve .` (camera access needs HTTPS or `localhost`).
+- A Google account
+- A Google Sheet with student IDs and attendance columns
+- A deployed Google Apps Script web app
+- GitHub Pages access for the front-end deployment
 
-## Configuration
+### 1) Prepare the Google Sheet
+
+Set up your sheet so each student has a row and each attendance session has a column.
+
+Example layout:
+
+- Column A: Student ID
+- Column B: Name
+- Column C: Program
+- Column D: Year
+- Column E onward: attendance session columns like Morning In, Morning Out
+
+More detailed setup instructions are available in [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
+
+### 2) Deploy the Apps Script backend
+
+- Open the Apps Script files in [backend/apps-script/Code.gs](backend/apps-script/Code.gs)
+- Deploy as a web app
+- Copy the generated web app URL
+- Set script properties such as the access key if required
+
+### 3) Publish the front end
+
+The web front end is static and can be hosted on GitHub Pages.
+
+Recommended local preview:
+
+```bash
+npx serve .
+```
+
+> Camera-based scanning requires HTTPS or localhost access.
+
+### 4) Configure the app
+
+On first launch, enter the following settings in the setup screen:
+
+- Web App URL
+- Access key (if enabled)
+- Session names
+- Column mapping
+- Sheet tab names and first data row
+- Optional sound settings
+
+## Configuration reference
 
 | Setting | Example | Notes |
 |---|---|---|
-| Web App URL | `https://script.google.com/macros/s/…/exec` | From the Apps Script deployment |
-| Access key | `my-secret` | Optional; must match the `ACCESS_KEY` script property |
-| Sessions | `Morning In, Morning Out` | Order = column order |
-| Column letters | A / B / C / D | ID / Name / Program / Year |
-| First timestamp column | `E` | 4 sessions → E, F, G, H |
-| Sheet tab(s), first student row | blank, `2` | Advanced. Comma-separate several tab names to combine them into one roster |
-| Sound on scan | on | Advanced. Beeps on a successful or failed scan |
-| Require access key to switch sessions | on | Advanced. Prompts for the access key before letting anyone change sessions |
+| Web App URL | `https://script.google.com/macros/s/.../exec` | Generated by the Google Apps Script deployment |
+| Access key | `my-secret` | Optional but recommended for protected switching |
+| Sessions | `Morning In, Morning Out` | Order matches the sheet column order |
+| ID / Name / Program / Year columns | `A / B / C / D` | Depends on your sheet structure |
+| First timestamp column | `E` | Additional sessions continue across columns |
+| Sheet tabs | `Tab1,Tab2` | Lets the app merge multiple tabs into one roster |
+| First student row | `2` | Commonly the first data row |
+| Sound on scan | On / Off | Enables or disables scan feedback |
+| Require access key to switch sessions | On / Off | Adds a guard before session switching |
 
-## Tests
+## Development
 
+This project has no build step. It is a plain static web app using ES modules.
+
+Useful commands:
+
+```bash
+npm test
+npm run serve
 ```
+
+## Testing
+
+The repository includes backend validation tests for roster reads, duplicate handling, writes, and unknown IDs/session checks.
+
+```bash
 npm test
 ```
 
-Runs the Apps Script code against a fake spreadsheet (roster read, writes, duplicates, unknown IDs/sessions).
+## Documentation
+
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) – data flow, modules, and API contract
+- [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) – setup and deployment instructions
 
 ## Tuning
 
-Edit `js/constants.js` (scan FPS, cooldown, sync interval, batch size). After changing any file, bump `VERSION` in `sw.js` so installed copies update.
+If you need to adjust scan behavior or sync timing, edit [js/constants.js](js/constants.js). After changing any front-end asset, bump the version in [sw.js](sw.js) so installed PWA clients update correctly.
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
