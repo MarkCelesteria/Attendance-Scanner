@@ -59,7 +59,7 @@ export function renderSessions() {
 
   state.config.sessions.forEach((session) => {
     const { name, col } = session;
-    const open = isSessionOpen(session);
+    const open = state.adminUnlocked || isSessionOpen(session);
     const b = document.createElement('button');
     b.type = 'button';
     b.className = 'session-btn' + (open ? '' : ' is-locked');
@@ -72,7 +72,7 @@ export function renderSessions() {
     b.append(n, c);
     b.addEventListener('click', async () => {
       if (name === state.activeSession) return;
-      if (!isSessionOpen(session)) {
+      if (!state.adminUnlocked && !isSessionOpen(session)) {
         toast(`"${name}" opens at ${session.start} and closes at ${session.end}.`, 4000);
         return;
       }

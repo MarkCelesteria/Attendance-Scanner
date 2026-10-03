@@ -414,6 +414,7 @@ async function onSubmit() {
     $('btn-admin-qrpdf').hidden = false;
     $('btn-admin-refresh').hidden = false;
     $('btn-admin-qrpdf').onclick = () => openQrConfirm(data.students);
+    state.adminUnlocked = true;
   } catch (e) {
     $('admin-login-error').textContent = e.message;
     $('admin-login-error').hidden = false;

@@ -383,7 +383,7 @@ export async function onReset() {
   clearLocalSettings();
   await clearAllStores();
   clearRecent();
-  state.config = null; state.roster = new Map(); state.pending = 0;
+  state.config = null; state.roster = new Map(); state.pending = 0; state.adminUnlocked = false;
   $('setup-form').reset();
   showSetup(false);
 }

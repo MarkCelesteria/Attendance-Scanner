@@ -9,6 +9,7 @@ export const state = {
   syncFailed: false,
   authFailed: false,
   scheduleLocked: false,
+  adminUnlocked: false,
   pending: 0,
   lastKey: '',
   lastTime: 0,

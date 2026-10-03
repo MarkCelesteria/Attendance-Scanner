@@ -13,7 +13,7 @@ function scheduleTick() {
   if (openNow && openNow.name !== state.activeSession) autoSwitchSession(openNow.name);
 
   const current = sessions.find((s) => s.name === state.activeSession);
-  const locked = !!(current && !isSessionOpen(current));
+  const locked = !state.adminUnlocked && !!(current && !isSessionOpen(current));
   if (locked && state.scanning) stopScanner();
 
   renderSessions();
