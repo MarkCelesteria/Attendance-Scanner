@@ -28,8 +28,10 @@ export function activeWindowedSession(sessions, now = new Date()) {
   return sessions.find((s) => hasWindow(s) && windowState(s, now) === 'active') || null;
 }
 
+import { formatHM } from './utils.js';
+
 export function formatWindow(session) {
-  return `${session.start}\u2013${session.end}`;
+  return `${formatHM(session.start)}\u2013${formatHM(session.end)}`;
 }
 
 export function startScheduler(tick) {

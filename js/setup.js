@@ -1,4 +1,3 @@
-import { LS_CLOCK_FORMAT } from './constants.js';
 import { state } from './state.js';
 import { $, colToIndex, indexToCol, toast } from './utils.js';
 import { readForm, saveConfig, clearLocalSettings, encodeShareCode, decodeShareCode } from './config.js';
@@ -98,12 +97,6 @@ function updateSuperVisibility() {
 }
 
 export function initAdvancedToggles() {
-  const clockToggle = $('cfg-clock-24');
-  clockToggle.checked = localStorage.getItem(LS_CLOCK_FORMAT) === '24';
-  clockToggle.addEventListener('change', (e) => {
-    localStorage.setItem(LS_CLOCK_FORMAT, e.target.checked ? '24' : '12');
-  });
-
   $('cfg-super-on').addEventListener('change', updateSuperVisibility);
   $('cfg-super-per-session').addEventListener('change', updateSuperVisibility);
   $('cfg-sheet-on').addEventListener('change', (e) => { $('cfg-sheet').hidden = !e.target.checked; });
@@ -273,7 +266,7 @@ async function beginJoinFlow(cfg) {
   stopScanner();
   const result = await openJoinModal(cfg);
   if (!result) return;
-  result.accessKey = (state.config && state.config.scriptUrl === result.scriptUrl) ? (state.config.accessKey || '') : '';
+  result.accessKey = '';
   const ok = await downloadWithKeyRetry(result, (msg) => toast(msg, 6000));
   if (!ok) return;
   state.config = result;
@@ -355,7 +348,7 @@ export async function onSetupSubmit(ev) {
   let cfg;
   try { cfg = readForm(); } catch (e) { errEl.textContent = e.message; errEl.hidden = false; return; }
 
-  cfg.accessKey = (state.config && state.config.scriptUrl === cfg.scriptUrl) ? (state.config.accessKey || '') : '';
+  cfg.accessKey = '';
 
   const btn = $('btn-setup-save');
   btn.disabled = true;

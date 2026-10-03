@@ -32,10 +32,16 @@
        ===================================================================== -->
   <main id="view-setup" class="view" hidden>
     <header class="setup-head">
-      <h1>Set up your attendance sheet</h1>
-      <p>Saved on this device only. You can change it later from the gear icon.</p>
+      <div class="setup-head-row">
+        <div>
+          <h1>Set up your attendance sheet</h1>
+          <p>Saved on this device only. You can change it later from the gear icon.</p>
+        </div>
+        <button type="button" id="btn-device-settings-setup" class="icon-btn" title="Display settings" aria-label="Display settings">
+          <svg viewBox="0 -960 960 960" width="22" height="22" fill="currentColor"><path d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80v-640q-133 0-226.5 93.5T160-480q0 133 93.5 226.5T480-160Z"/></svg>
+        </button>
+      </div>
     </header>
-
     <form id="setup-form" class="setup-form" novalidate autocomplete="off">
       <details class="key-help">
         <summary>Have a setup code from someone else?</summary>
@@ -81,21 +87,6 @@
         <summary>Advanced</summary>
 
         <div class="adv-sep">General</div>
-
-        <div class="toggle-row">
-          <span class="toggle-text">Appearance<br><span class="opt">Choose how the app looks on this device</span></span>
-          <div class="theme-seg" role="radiogroup" aria-label="Appearance">
-            <span class="theme-seg-thumb" aria-hidden="true"></span>
-            <button type="button" class="theme-opt" data-value="light">Light</button>
-            <button type="button" class="theme-opt" data-value="dark">Dark</button>
-            <button type="button" class="theme-opt" data-value="device">Device</button>
-          </div>
-        </div>
-
-        <div class="toggle-row">
-          <span class="toggle-text">24-hour time<br><span class="opt">Off shows 12-hour time with AM/PM</span></span>
-          <label class="switch"><input type="checkbox" id="cfg-clock-24"><span class="slider"></span></label>
-        </div>
 
         <div class="toggle-row">
           <span class="toggle-text">Sound on scan<br><span class="opt">Plays a beep for a successful or failed scan</span></span>
@@ -238,6 +229,9 @@
         <button id="btn-refresh" class="icon-btn" title="Refresh" aria-label="Refresh roster">
           <svg viewBox="0 -960 960 960" width="22" height="22" fill="currentColor"><path d="M480-160q-134 0-227-93t-93-227q0-134 93-227t227-93q69 0 132 28.5T720-690v-110h80v280H520v-80h168q-32-56-87.5-88T480-720q-100 0-170 70t-70 170q0 100 70 170t170 70q77 0 139-44t87-116h84q-28 106-114 173t-196 67Z"/></svg>
         </button>
+        <button id="btn-device-settings" class="icon-btn" title="Display settings" aria-label="Display settings">
+          <svg viewBox="0 -960 960 960" width="22" height="22" fill="currentColor"><path d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80v-640q-133 0-226.5 93.5T160-480q0 133 93.5 226.5T480-160Z"/></svg>
+        </button>
         <button id="btn-settings" class="icon-btn" title="Settings" aria-label="Settings">
           <svg viewBox="0 -960 960 960" width="22" height="22" fill="currentColor"><path d="m370-80-16-128q-13-5-24.5-12T307-235l-119 50L78-375l103-78q-1-7-1-13.5v-27q0-6.5 1-13.5L78-585l110-190 119 50q11-8 23-15t24-12l16-128h220l16 128q13 5 24.5 12t22.5 15l119-50 110 190-103 78q1 7 1 13.5v27q0 6.5-2 13.5l103 78-110 190-118-50q-11 8-23 15t-24 12L590-80H370Zm70-80h79l14-106q31-8 57.5-23.5T639-327l99 41 39-68-86-65q5-14 7-29.5t2-31.5q0-16-2-31.5t-7-29.5l86-65-39-68-99 42q-22-23-48.5-38.5T533-694l-13-106h-79l-14 106q-31 8-57.5 23.5T321-633l-99-41-39 68 86 64q-5 15-7 30t-2 32q0 16 2 31t7 30l-86 65 39 68 99-42q22 23 48.5 38.5T427-266l13 106Zm42-180q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Zm-2-140Z"/></svg>
         </button>
@@ -317,7 +311,10 @@
             <label for="manual-id" class="sr-only">Student ID</label>
             <input id="manual-id" type="text" inputmode="text" placeholder="Type a student ID" enterkeyhint="done">
           </div>
-          <button type="submit" class="btn btn-primary">Record</button>
+          <button type="submit" class="btn btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M440-320v-326L336-542l-56-58 200-200 200 200-56 58-104-104v326h-80ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z"/></svg>
+            Record
+          </button>
         </form>
 
         <!-- Activity tables -->
@@ -535,6 +532,31 @@
     </div>
     <div class="modal-actions">
       <button type="button" id="btn-admin-help-close" class="btn">Close</button>
+    </div>
+  </dialog>
+
+  <dialog id="device-settings-modal" class="modal" aria-labelledby="device-settings-title">
+    <div class="modal-body">
+      <h2 id="device-settings-title">Display settings</h2>
+      <p class="hint">These only affect how things look on this device — they're never shared or saved to the sheet.</p>
+
+      <div class="toggle-row">
+        <span class="toggle-text">Appearance</span>
+        <div class="theme-seg" role="radiogroup" aria-label="Appearance">
+          <span class="theme-seg-thumb" aria-hidden="true"></span>
+          <button type="button" class="theme-opt" data-value="light">Light</button>
+          <button type="button" class="theme-opt" data-value="dark">Dark</button>
+          <button type="button" class="theme-opt" data-value="device">Device</button>
+        </div>
+      </div>
+
+      <div class="toggle-row">
+        <span class="toggle-text">24-hour time<br><span class="opt">Off shows 12-hour time with AM/PM</span></span>
+        <label class="switch"><input type="checkbox" id="cfg-clock-24"><span class="slider"></span></label>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button type="button" id="btn-device-settings-close" class="btn btn-primary">Done</button>
     </div>
   </dialog>
 

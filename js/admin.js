@@ -1,6 +1,7 @@
 import { state } from './state.js';
 import { $, toast } from './utils.js';
 import { downloadQrSheet, downloadQrPackage, estimateQrPdfSize, formatBytes } from './qrpdf.js';
+import { scheduleTick } from './dashboard.js';
 
 const MIN_WIDTH = 1024
 
@@ -52,6 +53,8 @@ function closePanel() {
   $('view-dashboard').classList.remove('admin-active');
   if ($('qrpdf-confirm-modal').open) $('qrpdf-confirm-modal').close();
   resetPanel();
+  state.adminUnlocked = false;
+  scheduleTick();
 }
 
 async function fetchAdminRoster(adminKey) {

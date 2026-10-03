@@ -1,7 +1,9 @@
 import { LS_ACTIVE, LS_ROSTER_T, FLASH_MS, RESULT_DISPLAY_MS } from './constants.js';
 import { state } from './state.js';
-import { $, clockTime, toast } from './utils.js';
+import { $, clockTime, toast, formatHM, formatDateTime } from './utils.js';
 import { isSessionOpen, hasWindow, formatWindow } from './scheduler.js';
+import { commitPendingScan } from './scan.js';
+import { syncNow } from './sync.js';
 
 const RESET_MS = RESULT_DISPLAY_MS;
 let idleClockTimer = null;
@@ -73,7 +75,7 @@ export function renderSessions() {
     b.addEventListener('click', async () => {
       if (name === state.activeSession) return;
       if (!state.adminUnlocked && !isSessionOpen(session)) {
-        toast(`"${name}" opens at ${session.start} and closes at ${session.end}.`, 4000);
+        toast(`"${name}" opens at ${formatHM(session.start)} and closes at ${formatHM(session.end)}.`, 4000);
         return;
       }
       if (state.config.sessionLockEnabled && state.config.accessKey) {
@@ -103,12 +105,14 @@ export function renderScheduleLock(locked, session) {
   cameraBtn.disabled = locked;
   manualInput.disabled = locked;
   if (manualBtn) manualBtn.disabled = locked;
+  if (locked) manualInput.value = '';
 
   if (locked) {
     clearTimeout(state.flashTimer);
+    commitPendingScan().then(syncNow);
     r.className = 'result is-locked';
     $('locked-sub').textContent = session
-      ? `"${session.name}" opens at ${session.start} and closes at ${session.end}.`
+      ? `"${session.name}" opens at ${formatHM(session.start)} and closes at ${formatHM(session.end)}.`
       : 'No session is open right now.';
   } else if (r.classList.contains('is-locked')) {
     resetResultCard();
@@ -117,7 +121,7 @@ export function renderScheduleLock(locked, session) {
 
 export function renderRosterMeta() {
   const t = localStorage.getItem(LS_ROSTER_T);
-  const when = t ? new Date(t).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' }) : 'never';
+  const when = t ? formatDateTime(new Date(t)) : 'never';
   $('roster-meta').textContent = `${state.roster.size} students · updated ${when}`;
 }
 

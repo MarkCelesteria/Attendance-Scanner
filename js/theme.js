@@ -1,4 +1,8 @@
-import { LS_THEME } from './constants.js';
+import { LS_THEME, LS_CLOCK_FORMAT } from './constants.js';
+import { $ } from './utils.js';
+import { state } from './state.js';
+import { renderRosterMeta } from './ui.js';
+import { scheduleTick } from './dashboard.js';
 
 const VALID = ['light', 'dark', 'device'];
 const media = window.matchMedia('(prefers-color-scheme: dark)');
@@ -28,6 +32,12 @@ function positionThumb(btn) {
   thumb.style.transform = `translateX(${btn.offsetLeft - 2}px)`;
 }
 
+let getActiveThemeBtn = () => null;
+
+export function refreshThemeThumb() {
+  positionThumb(getActiveThemeBtn());
+}
+
 export function initTheme() {
   const pref = loadThemePref();
   applyTheme(pref);
@@ -37,7 +47,7 @@ export function initTheme() {
   });
 
   const buttons = [...document.querySelectorAll('.theme-opt')];
-  const activeBtn = () => buttons.find((b) => b.dataset.value === loadThemePref());
+  getActiveThemeBtn = () => buttons.find((b) => b.dataset.value === loadThemePref());
 
   buttons.forEach((b) => {
     b.setAttribute('aria-checked', String(b.dataset.value === pref));
@@ -48,7 +58,12 @@ export function initTheme() {
     });
   });
 
-  const advanced = document.querySelector('.advanced');
-  if (advanced) advanced.addEventListener('toggle', () => { if (advanced.open) positionThumb(activeBtn()); });
-  window.addEventListener('resize', () => positionThumb(activeBtn()));
+  window.addEventListener('resize', refreshThemeThumb);
+
+  const clockToggle = $('cfg-clock-24');
+  clockToggle.checked = localStorage.getItem(LS_CLOCK_FORMAT) === '24';
+  clockToggle.addEventListener('change', (e) => {
+    localStorage.setItem(LS_CLOCK_FORMAT, e.target.checked ? '24' : '12');
+    if (state.config) { scheduleTick(); renderRosterMeta(); }
+  });
 }

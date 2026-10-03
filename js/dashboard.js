@@ -7,10 +7,12 @@ import { renderAdminButton } from './admin.js';
 import { startScheduler, activeWindowedSession, isSessionOpen } from './scheduler.js';
 import { stopScanner } from './scanner.js';
 
-function scheduleTick() {
+export function scheduleTick() {
   const sessions = state.config.sessions;
-  const openNow = activeWindowedSession(sessions);
-  if (openNow && openNow.name !== state.activeSession) autoSwitchSession(openNow.name);
+  if (!state.adminUnlocked) {
+    const openNow = activeWindowedSession(sessions);
+    if (openNow && openNow.name !== state.activeSession) autoSwitchSession(openNow.name);
+  }
 
   const current = sessions.find((s) => s.name === state.activeSession);
   const locked = !state.adminUnlocked && !!(current && !isSessionOpen(current));

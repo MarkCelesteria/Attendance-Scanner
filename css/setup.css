@@ -1,4 +1,5 @@
 /* ---------- Setup ---------- */
+.setup-head-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
 .setup-head h1 { font-size: 1.6rem; margin: 8px 0 4px; letter-spacing: -.01em; }
 .setup-head p { margin: 0 0 16px; color: var(--ink-2); }
 .setup-form fieldset {

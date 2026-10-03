@@ -12,7 +12,7 @@ import { showDashboard } from './dashboard.js';
 import { initHelp, initAdminHelp, initBigScansHelp, initAdminFeatureHelp } from './help.js';
 import { initAdmin } from './admin.js';
 import { showSetup, initSessionEditor, initAdvancedToggles, onSetupSubmit, onReset, onRefreshRoster, onCopySetupCode, onApplySetupCode } from './setup.js';
-import { initTheme } from './theme.js';
+import { initTheme, refreshThemeThumb } from './theme.js';
 
 function registerServiceWorker() {
   if ('serviceWorker' in navigator) {
@@ -27,7 +27,14 @@ function bindEvents() {
   initAdminFeatureHelp();
   initHardwareScanner();
   initTheme();
-  
+  const openDeviceSettings = () => {
+    $('device-settings-modal').showModal();
+    refreshThemeThumb();
+  };
+  $('btn-device-settings').addEventListener('click', openDeviceSettings);
+  $('btn-device-settings-setup').addEventListener('click', openDeviceSettings);
+  $('btn-device-settings-close').addEventListener('click', () => $('device-settings-modal').close());
+
   $('setup-form').addEventListener('submit', onSetupSubmit);
 
   initSessionEditor();
@@ -41,7 +48,7 @@ function bindEvents() {
   $('btn-refresh').addEventListener('click', onRefreshRoster);
   $('btn-sync-now').addEventListener('click', async () => {
     clearTimeout(state.flashTimer);
-    resetResultCard();
+    if (!state.scheduleLocked) resetResultCard();
     await commitPendingScan();
     forceSyncNow();
   });

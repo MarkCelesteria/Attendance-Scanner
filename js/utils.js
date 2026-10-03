@@ -1,3 +1,5 @@
+let toastTimer;
+
 export const $ = (id) => document.getElementById(id);
 
 export async function copyText(text) {
@@ -41,7 +43,29 @@ export function clockTime(d = new Date(), hour12 = isHour12()) {
   }
   return `${pad2(d.getHours())}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())}`;
 }
-let toastTimer;
+
+export function formatHM(hhmm, hour12 = isHour12()) {
+  if (!hhmm) return hhmm;
+  const [hStr, mStr] = hhmm.split(':');
+  if (!hour12) return `${hStr}:${mStr}`;
+  let h = Number(hStr) % 12; if (h === 0) h = 12;
+  const ampm = Number(hStr) < 12 ? 'AM' : 'PM';
+  return `${h}:${mStr} ${ampm}`;
+}
+
+export function formatDateTime(d, hour12 = isHour12()) {
+  const datePart = d.toLocaleDateString();
+  let timePart;
+  if (hour12) {
+    let h = d.getHours() % 12; if (h === 0) h = 12;
+    const ampm = d.getHours() < 12 ? 'AM' : 'PM';
+    timePart = `${h}:${pad2(d.getMinutes())} ${ampm}`;
+  } else {
+    timePart = `${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
+  }
+  return `${datePart} ${timePart}`;
+}
+
 export function toast(msg, ms = 3500) {
   const el = $('toast');
   el.textContent = msg;
