@@ -89,6 +89,7 @@
 
 .join-row { margin: 0 0 14px; }
 .join-row label { display: block; font-weight: 600; margin: 0 0 6px; }
+#super-hint { margin: 8px 0 14px; }
 .key-help { margin: 0 0 12px; border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; }
 .key-help summary { cursor: pointer; font-weight: 600; }
 .key-help[open] summary { margin-bottom: 8px; }
@@ -103,7 +104,8 @@
 .session-head, .session-row { display: grid; grid-template-columns: 1fr 84px 40px; gap: 8px; align-items: center; }
 .session-head { font-size: .85rem; font-weight: 600; color: var(--ink-2); margin: 0 0 6px; }
 .session-head span:nth-child(2) { text-align: center; }
-.session-row { margin-bottom: 8px; }
+.session-row { margin-bottom: 16px; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
+.session-row:last-child { border-bottom: none; padding-bottom: 0; }
 .session-row .s-col { text-align: center; text-transform: uppercase; font-family: var(--mono); font-weight: 700; font-size: 1.1rem; padding-left: 6px; padding-right: 6px; }
 .row-del {
   width: 40px; height: 48px; border-radius: 10px; border: 2px solid var(--line);
@@ -122,10 +124,9 @@
 .session-row .sup-col  { grid-column: 2; text-align: center; text-transform: uppercase; font-family: var(--mono); font-weight: 700; }
 #session-rows.show-sup .sup-name,
 #session-rows.show-sup .sup-col { display: block; }
-.schedule-fields { display: none; align-items: center; gap: 8px; grid-column: 1 / -1; margin-top: 8px; }
+.schedule-fields { grid-column: 1 / -1; margin-top: 8px; }
+#session-rows .schedule-fields { display: none; }
 #session-rows.show-schedule .schedule-fields { display: flex; }
-.schedule-fields input[type="time"] { width: auto; flex: 1 1 120px; }
-.schedule-to { color: var(--ink-2); font-weight: 700; }
 .add-session {
   display: block; width: 100%; min-height: 48px; border: 2px dashed var(--line); border-radius: 10px;
   background: transparent; color: var(--ink); font-size: 1.6rem; font-weight: 700; cursor: pointer;
@@ -173,3 +174,14 @@
 }
 .theme-opt[aria-checked="true"] { color: #fff; }
 .theme-opt:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+@media (max-width: 480px) {
+  .toggle-text { font-size: .85rem; }
+  .toggle-text .opt { font-size: .72rem; }
+  .adv-sep { font-size: .68rem; }
+  .hint { font-size: .82rem; }
+  .idle-select-wrap label { font-size: .78rem; }
+  select { font-size: .9rem; }
+  .setup-form legend { font-size: .95rem; }
+  .help-btn { width: 24px; height: 24px; font-size: .85rem; }
+}

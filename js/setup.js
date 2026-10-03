@@ -52,20 +52,37 @@ function addSessionRow(name = '', col = '', supName = '', supCol = '', start = '
   supColEl.setAttribute('aria-label', 'Timekeeper column letter for this session');
 
   const scheduleWrap = document.createElement('div');
-  scheduleWrap.className = 'schedule-fields';
+  scheduleWrap.className = 'schedule-fields filter-time-row';
 
+  const startField = document.createElement('div');
+  startField.className = 'filter-time-field';
+  const startInner = document.createElement('div');
+  startInner.className = 'filter-time-field-inner';
+  const startLabel = document.createElement('span');
+  startLabel.className = 'filter-time-label'; startLabel.textContent = 'Start';
   const startEl = document.createElement('input');
   startEl.type = 'time'; startEl.className = 's-start'; startEl.value = start;
   startEl.setAttribute('aria-label', 'Session start time');
+  startInner.append(startLabel, startEl);
+  startField.appendChild(startInner);
 
-  const toLabel = document.createElement('span');
-  toLabel.className = 'schedule-to'; toLabel.textContent = '–';
+  const divider = document.createElement('span');
+  divider.className = 'filter-time-divider';
+  divider.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="currentColor"><path d="m560-240-56-58 142-142H160v-80h486L504-662l56-58 240 240-240 240Z"/></svg>';
 
+  const endField = document.createElement('div');
+  endField.className = 'filter-time-field';
+  const endInner = document.createElement('div');
+  endInner.className = 'filter-time-field-inner';
+  const endLabel = document.createElement('span');
+  endLabel.className = 'filter-time-label'; endLabel.textContent = 'End';
   const endEl = document.createElement('input');
   endEl.type = 'time'; endEl.className = 's-end'; endEl.value = end;
   endEl.setAttribute('aria-label', 'Session end time');
+  endInner.append(endLabel, endEl);
+  endField.appendChild(endInner);
 
-  scheduleWrap.append(startEl, toLabel, endEl);
+  scheduleWrap.append(startField, divider, endField);
 
   row.append(nameEl, colEl, del, supNameEl, supColEl, scheduleWrap);
   $('session-rows').appendChild(row);
