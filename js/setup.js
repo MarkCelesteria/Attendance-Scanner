@@ -1,3 +1,4 @@
+import { LS_CLOCK_FORMAT } from './constants.js';
 import { state } from './state.js';
 import { $, colToIndex, indexToCol, toast } from './utils.js';
 import { readForm, saveConfig, clearLocalSettings, encodeShareCode, decodeShareCode } from './config.js';
@@ -79,6 +80,12 @@ function updateSuperVisibility() {
 }
 
 export function initAdvancedToggles() {
+  const clockToggle = $('cfg-clock-24');
+  clockToggle.checked = localStorage.getItem(LS_CLOCK_FORMAT) === '24';
+  clockToggle.addEventListener('change', (e) => {
+    localStorage.setItem(LS_CLOCK_FORMAT, e.target.checked ? '24' : '12');
+  });
+
   $('cfg-super-on').addEventListener('change', updateSuperVisibility);
   $('cfg-super-per-session').addEventListener('change', updateSuperVisibility);
   $('cfg-sheet-on').addEventListener('change', (e) => { $('cfg-sheet').hidden = !e.target.checked; });

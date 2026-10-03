@@ -28,9 +28,19 @@ export function indexToCol(n) {
   return s;
 }
 
-const pad2 = (n) => String(n).padStart(2, '0');
-export const clockTime = (d = new Date()) => `${pad2(d.getHours())}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())}`;
+import { LS_CLOCK_FORMAT } from './constants.js';
 
+export const isHour12 = () => localStorage.getItem(LS_CLOCK_FORMAT) !== '24';
+
+const pad2 = (n) => String(n).padStart(2, '0');
+export function clockTime(d = new Date(), hour12 = isHour12()) {
+  if (hour12) {
+    let h = d.getHours() % 12; if (h === 0) h = 12;
+    const ampm = d.getHours() < 12 ? 'AM' : 'PM';
+    return `${h}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())} ${ampm}`;
+  }
+  return `${pad2(d.getHours())}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())}`;
+}
 let toastTimer;
 export function toast(msg, ms = 3500) {
   const el = $('toast');

@@ -3,6 +3,7 @@ import { state } from './state.js';
 import { $, clockTime } from './utils.js';
 
 const RESET_MS = RESULT_DISPLAY_MS;
+let idleClockTimer = null;
 
 function switchToSession(name, btn, group) {
   state.activeSession = name;
@@ -114,11 +115,16 @@ export function renderSyncPill() {
 }
 
 export function resetResultCard() {
+  clearInterval(idleClockTimer);
   $('result').className = 'result is-idle';
   $('result-status').textContent = 'Ready for the next scan';
   $('result-name').textContent = '';
   $('result-foot').textContent = '';
   $('btn-result-undo').hidden = true;
+  const clockEl = $('idle-clock');
+  const tick = () => { clockEl.textContent = clockTime(); };
+  tick();
+  idleClockTimer = setInterval(tick, 1000);
 }
 
 function fadeToIdle() {
@@ -188,6 +194,7 @@ function confirmUndo(onUndo, onResume, needsKey) {
 export function showResult(kind, student, extra, onUndo, onResume) {
   const r = $('result');
   clearTimeout(state.flashTimer);
+  clearInterval(idleClockTimer);
   r.className = 'result';
   void r.offsetWidth;
   const undoBtn = $('btn-result-undo');

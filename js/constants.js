@@ -2,6 +2,8 @@ export const LS_CONFIG   = 'attendance.config.v1';
 export const LS_ACTIVE   = 'attendance.activeSession.v1';
 export const LS_ROSTER_T = 'attendance.rosterUpdated.v1';
 export const LS_THEME    = 'attendance.theme.v1';
+export const LS_CLOCK_FORMAT = 'attendance.clockFormat.v1';
+
 
 export const DB_NAME = 'attendance-db';
 export const DB_VER  = 1;

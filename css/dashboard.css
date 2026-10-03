@@ -103,12 +103,9 @@
 .result-idle-view { display: none; flex-direction: column; align-items: center; text-align: center; gap: 10px; }
 .result.is-idle .result-idle-view { display: flex; }
 .result.is-idle .result-scan-view { display: none; }
-.result-idle-icon {
-  flex: none; width: 48px; height: 48px; border-radius: 14px;
-  background: var(--ok); color: #fff; display: flex; align-items: center; justify-content: center;
-}
 .result-idle-title { margin: 0; font-size: 1.05rem; font-weight: 700; color: var(--ink); }
 .result-idle-sub { margin: 0; font-size: .9rem; color: var(--ink-2); }
+#idle-clock { font-size: 1.8rem; font-weight: 700; color: var(--ink); font-family: var(--mono); margin-top: 4px; }
 
 .result.is-ok { background: var(--ok); border-color: var(--ok); color: #fff; animation: pop .22s ease-out; }
 .result.is-ok .result-status, .result.is-ok .result-meta dt, .result.is-ok .result-foot { color: rgba(255,255,255,.88); }

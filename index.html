@@ -94,6 +94,11 @@
         </div>
 
         <div class="toggle-row">
+          <span class="toggle-text">24-hour time<br><span class="opt">Off shows 12-hour time with AM/PM</span></span>
+          <label class="switch"><input type="checkbox" id="cfg-clock-24"><span class="slider"></span></label>
+        </div>
+
+        <div class="toggle-row">
           <span class="toggle-text">Custom sheet tab(s)<br><span class="opt">Off uses the first tab. List several, comma-separated, to combine them into one roster. Tab names can't contain a comma.</span></span>
           <label class="switch"><input type="checkbox" id="cfg-sheet-on"><span class="slider"></span></label>
         </div>
@@ -258,12 +263,10 @@
         <!-- Scan result -->
         <section id="result" class="result is-idle" aria-live="assertive">
           <div class="result-idle-view">
-            <div class="result-idle-icon">
-              <svg viewBox="0 -960 960 960" width="20" height="20" fill="currentColor"><path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"/></svg>
-            </div>
             <div>
               <p class="result-idle-title">Ready for the next scan</p>
               <p class="result-idle-sub">Your scanner is standing by.</p>
+              <p id="idle-clock" class="result-idle-sub"></p>
             </div>
           </div>
           <div class="result-scan-view">
