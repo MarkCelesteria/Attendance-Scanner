@@ -1,0 +1,85 @@
+@font-face { font-family: "Plex Sans"; font-weight: 400; font-display: swap; src: url("../../assets/fonts/ibm-plex-sans-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Plex Sans"; font-weight: 600; font-display: swap; src: url("../../assets/fonts/ibm-plex-sans-latin-600-normal.woff2") format("woff2"); }
+@font-face { font-family: "Plex Condensed"; font-weight: 600; font-display: swap; src: url("../../assets/fonts/ibm-plex-sans-condensed-latin-600-normal.woff2") format("woff2"); }
+@font-face { font-family: "Plex Condensed"; font-weight: 700; font-display: swap; src: url("../../assets/fonts/ibm-plex-sans-condensed-latin-700-normal.woff2") format("woff2"); }
+@font-face { font-family: "Plex Mono"; font-weight: 400; font-display: swap; src: url("../../assets/fonts/ibm-plex-mono-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Plex Mono"; font-weight: 600; font-display: swap; src: url("../../assets/fonts/ibm-plex-mono-latin-600-normal.woff2") format("woff2"); }
+
+:root {
+  --paper:   #FFFFFF;
+  --card:    #FFFFFF;
+  --fill:    #F1F1EE;
+  --ink:     #111111;
+  --ink-2:   #5C5C58;
+  --line:    #E2E2DE;
+  --line-strong: #BDBDB6;
+  --brand:   #111111;
+  --on-brand:#FFFFFF;
+  --hl:      #FFD60A;
+  --hl-ink:  #111111;
+  --ok:      #0A7D3E;
+  --ok-soft: #E3F3E8;
+  --ok-border: #8CC9A3;
+  --warn:    #B45309;
+  --warn-soft:#FDEBD3;
+  --bad:     #C4222F;
+  --bad-soft:#FBE4E6;
+  --focus:   #111111;
+  --focus-ring: rgba(255, 214, 10, .6);
+  --hover:   rgba(17, 17, 17, .06);
+  --toast-bg: #111111;
+  --toast-fg: #FFFFFF;
+  --overlay-fg: #111111;
+  --radius:  6px;
+  --font:    "Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --display: "Plex Condensed", "Arial Narrow", "Roboto Condensed", ui-sans-serif, system-ui, sans-serif;
+  --mono:    "Plex Mono", ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper:   #0E0E0F;
+  --card:    #0E0E0F;
+  --fill:    #1A1A1C;
+  --ink:     #F2F1EC;
+  --ink-2:   #A3A29B;
+  --line:    #2A2A2C;
+  --line-strong: #4A4A4D;
+  --brand:   #F2F1EC;
+  --on-brand:#0E0E0F;
+  --ok:      #16874A;
+  --ok-soft: #12251A;
+  --ok-border: #2F6B49;
+  --warn:    #E08A2B;
+  --warn-soft:#2A1E0E;
+  --bad:     #D03B47;
+  --bad-soft:#2A1618;
+  --focus:   #F2F1EC;
+  --focus-ring: rgba(255, 214, 10, .45);
+  --hover:   rgba(255, 255, 255, .08);
+  --toast-bg: #F2F1EC;
+  --toast-fg: #111111;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--paper);
+  color: var(--ink);
+  font: 16px/1.5 var(--font);
+  -webkit-font-smoothing: antialiased;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+h1, h2, h3 { font-family: var(--display); font-weight: 700; letter-spacing: 0; }
+[hidden] { display: none !important; }
+.view { max-width: 720px; margin: 0 auto; padding: 16px; }
+#view-dashboard.admin-active { max-width: 1400px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
