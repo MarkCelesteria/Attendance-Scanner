@@ -1,0 +1,82 @@
+/* Mono — off-white, black, one magenta spot color. System fonts only. */
+:root {
+  --paper:   #F7F6F2;
+  --card:    #FFFFFF;
+  --fill:    #ECEBE6;
+  --ink:     #0B0B0B;
+  --ink-2:   #5A5A56;
+  --line:    #DAD9D3;
+  --line-strong: #85847E;
+  --brand:   #0B0B0B;
+  --on-brand:#F7F6F2;
+  --hl:      #0B0B0B;
+  --hl-ink:  #F7F6F2;
+  --ok:      #1B7A3E;
+  --ok-soft: #DEEBDF;
+  --ok-border: #8DBB98;
+  --warn:    #985A00;
+  --warn-soft:#F4E4C2;
+  --bad:     #C21F1F;
+  --bad-soft:#F7DCDC;
+  --focus:   #0B0B0B;
+  --focus-ring: rgba(11, 11, 11, .25);
+  --hover:   rgba(11, 11, 11, .06);
+  --toast-bg: #0B0B0B;
+  --toast-fg: #F7F6F2;
+  --overlay-fg: #0B0B0B;
+  --radius:  0;
+  --font:    system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --display: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono:    ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper:   #0D0D0D;
+  --card:    #151515;
+  --fill:    #1D1D1D;
+  --ink:     #F2F0EA;
+  --ink-2:   #A3A29C;
+  --line:    #2A2A2A;
+  --line-strong: #6A6A66;
+  --brand:   #F2F0EA;
+  --on-brand:#0D0D0D;
+  --hl:      #F2F0EA;
+  --hl-ink:  #0D0D0D;
+  --ok:      #278049;
+  --ok-soft: #12241A;
+  --ok-border: #2F6B49;
+  --warn:    #E0A04A;
+  --warn-soft:#2A200E;
+  --bad:     #C84040;
+  --bad-soft:#2C1515;
+  --focus:   #F2F0EA;
+  --focus-ring: rgba(242, 240, 234, .35);
+  --hover:   rgba(242, 240, 234, .08);
+  --toast-bg: #F2F0EA;
+  --toast-fg: #0D0D0D;
+  --overlay-fg: #F2F0EA;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--paper);
+  color: var(--ink);
+  font: 16px/1.5 var(--font);
+  -webkit-font-smoothing: antialiased;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+h1, h2, h3 { font-family: var(--display); font-weight: 600; letter-spacing: -.01em; }
+[hidden] { display: none !important; }
+.view { max-width: 720px; margin: 0 auto; padding: 16px; }
+#view-dashboard.admin-active { max-width: 1400px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}

@@ -1,0 +1,82 @@
+/* Paper — warm stationery theme. System fonts only (no font files, no new dependencies). */
+:root {
+  --paper:   #F3EEE3;
+  --card:    #FBF8F1;
+  --fill:    #E9E2D3;
+  --ink:     #221E18;
+  --ink-2:   #645C4F;
+  --line:    #DAD2C0;
+  --line-strong: #8C8372;
+  --brand:   #1D4E5F;
+  --on-brand:#FBF8F1;
+  --hl:      #1D4E5F;
+  --hl-ink:  #FBF8F1;
+  --ok:      #1F7A45;
+  --ok-soft: #DDEBDD;
+  --ok-border: #8DBB98;
+  --warn:    #9A5B0C;
+  --warn-soft:#F5E3C3;
+  --bad:     #B3261E;
+  --bad-soft:#F6DCD6;
+  --focus:   #1D4E5F;
+  --focus-ring: rgba(29, 78, 95, .28);
+  --hover:   rgba(34, 30, 24, .06);
+  --toast-bg: #221E18;
+  --toast-fg: #FBF8F1;
+  --overlay-fg: #221E18;
+  --radius:  3px;
+  --font:    system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --display: "Iowan Old Style", "Palatino Linotype", Palatino, "Noto Serif", Georgia, "Times New Roman", serif;
+  --mono:    ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper:   #16130F;
+  --card:    #1E1A15;
+  --fill:    #26211B;
+  --ink:     #EDE6D7;
+  --ink-2:   #A89F8E;
+  --line:    #332D25;
+  --line-strong: #6A6254;
+  --brand:   #8CC7D6;
+  --on-brand:#0F1D22;
+  --hl:      #8CC7D6;
+  --hl-ink:  #0F1D22;
+  --ok:      #2A8553;
+  --ok-soft: #162419;
+  --ok-border: #2F6B49;
+  --warn:    #E0A04A;
+  --warn-soft:#2A200E;
+  --bad:     #C2453B;
+  --bad-soft:#2A1815;
+  --focus:   #8CC7D6;
+  --focus-ring: rgba(140, 199, 214, .35);
+  --hover:   rgba(237, 230, 215, .08);
+  --toast-bg: #EDE6D7;
+  --toast-fg: #16130F;
+  --overlay-fg: #EDE6D7;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--paper);
+  color: var(--ink);
+  font: 16px/1.5 var(--font);
+  -webkit-font-smoothing: antialiased;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+h1, h2, h3 { font-family: var(--display); font-weight: 700; letter-spacing: 0; }
+[hidden] { display: none !important; }
+.view { max-width: 720px; margin: 0 auto; padding: 16px; }
+#view-dashboard.admin-active { max-width: 1400px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}

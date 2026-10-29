@@ -1,10 +1,16 @@
 import { LS_DESIGN } from './constants.js';
 import { $, toast } from './utils.js';
 import { refreshThemeThumb } from './theme.js';
+import { onDisplayPrefs } from './display.js';
 
 export const DESIGNS = [
   { id: 'classic', label: 'Classic', dir: 'css/',        color: { light: '#14213D', dark: '#14213D' } },
   { id: 'ledger',  label: 'Ledger',  dir: 'css/ledger/', color: { light: '#FFFFFF', dark: '#0E0E0F' } },
+  { id: 'paper',   label: 'Paper',   dir: 'css/paper/',  color: { light: '#F3EEE3', dark: '#16130F' } },
+  { id: 'clay',    label: 'Clay',    dir: 'css/clay/',   color: { light: '#F2E9DC', dark: '#1B1612' } },
+  { id: 'mono',    label: 'Mono',    dir: 'css/mono/',   color: { light: '#F7F6F2', dark: '#0D0D0D' } },
+  { id: 'space',   label: 'Space',   dir: 'css/space/',  color: { light: '#0D0D0D', dark: '#0D0D0D' } },
+  { id: 'tech',    label: 'Tech',    dir: 'css/tech/',   color: { light: '#F7F6F2', dark: '#0D0D0D' } },
 ];
 
 const FILES = ['base', 'components', 'setup', 'dashboard'];
@@ -68,15 +74,26 @@ async function setDesign(id, select) {
   else select.value = root.getAttribute('data-design') || DEFAULT_ID;
 }
 
+function enforceLock(cfg) {
+  const lockedId = cfg && cfg.locked && cfg.lockDesign && find(cfg.design) ? cfg.design : null;
+  const select = $('cfg-design');
+  const note = $('design-lock-note');
+  select.disabled = !!lockedId;
+  if (note) note.hidden = !lockedId;
+  const target = lockedId || loadDesignPref();
+  select.value = target;
+  applyDesign(target);
+}
+
 export function initDesign() {
-  const pref = loadDesignPref();
   const select = $('cfg-design');
   DESIGNS.forEach((d) => select.add(new Option(d.label, d.id)));
-  select.value = pref;
 
-  if (root.getAttribute('data-design') !== pref) applyDesign(pref);
-  else syncMeta();
+  const current = root.getAttribute('data-design');
+  if (find(current)) { select.value = current; syncMeta(); }
+  else { select.value = loadDesignPref(); applyDesign(select.value); }
 
+  onDisplayPrefs(enforceLock);
   new MutationObserver(syncMeta).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
   select.addEventListener('change', () => setDesign(select.value, select));
 }

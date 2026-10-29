@@ -6,6 +6,7 @@ import { refreshPending, syncNow } from './sync.js';
 import { renderAdminButton } from './admin.js';
 import { startScheduler, activeWindowedSession, isSessionOpen } from './scheduler.js';
 import { stopScanner } from './scanner.js';
+import { applyDisplayPrefs } from './display.js';
 
 export function scheduleTick() {
   const sessions = state.config.sessions;
@@ -25,6 +26,7 @@ export function scheduleTick() {
 export function showDashboard() {
   $('view-setup').hidden = true;
   $('view-dashboard').hidden = false;
+  applyDisplayPrefs(state.config);
 
   const stored = localStorage.getItem(LS_ACTIVE);
   const names = state.config.sessions.map((s) => s.name);

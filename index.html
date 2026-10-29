@@ -24,6 +24,10 @@
     (function () {
       var d = 'classic';
       try { var v = localStorage.getItem('attendance.design.v1'); if (v && /^[a-z0-9-]+$/.test(v)) d = v; } catch (e) {}
+      try {
+        var c = JSON.parse(localStorage.getItem('attendance.config.v1'));
+        if (c && c.locked && c.lockDesign && /^[a-z0-9-]+$/.test(c.design)) d = c.design;
+      } catch (e) {}
       document.documentElement.setAttribute('data-design', d);
       var dir = d === 'classic' ? 'css/' : 'css/' + d + '/';
       ['base', 'components', 'setup', 'dashboard'].forEach(function (f) {
@@ -100,6 +104,11 @@
           <label class="switch"><input type="checkbox" id="cfg-sound-on" checked><span class="slider"></span></label>
         </div>
 
+        <div class="toggle-row">
+          <span class="toggle-text">Side-by-side layout<br><span class="opt">On wide screens: camera on the left, result and manual entry on the right</span></span>
+          <label class="switch"><input type="checkbox" id="cfg-layout-split-on" checked><span class="slider"></span></label>
+        </div>
+
         <div class="adv-sep">Sheet &amp; data</div>
 
         <div class="toggle-row">
@@ -146,6 +155,11 @@
           <label class="switch"><input type="checkbox" id="cfg-restrict-share-on"><span class="slider"></span></label>
         </div>
 
+        <div class="toggle-row" id="lock-design-row" hidden>
+          <span class="toggle-text">Also lock the current design<br><span class="opt">Devices that join use the design this device has when you copy the code, and can't change it</span></span>
+          <label class="switch"><input type="checkbox" id="cfg-lock-design-on"><span class="slider"></span></label>
+        </div>
+
         <div class="toggle-row">
           <span class="toggle-text">Scheduled sessions<br><span class="opt">Give sessions a time window — off means always available</span></span>
           <label class="switch"><input type="checkbox" id="cfg-schedule-on"><span class="slider"></span></label>
@@ -170,6 +184,11 @@
         </div>
 
         <div class="adv-sep">Scanner</div>
+
+        <div class="toggle-row">
+          <span class="toggle-text">Scan animation<br><span class="opt">Moving line over the camera view</span></span>
+          <label class="switch"><input type="checkbox" id="cfg-scan-anim-on" checked><span class="slider"></span></label>
+        </div>
 
         <div class="toggle-row">
           <span class="toggle-text">Require access key to switch sessions<br><span class="opt">Off lets anyone switch sessions freely</span></span>
@@ -558,7 +577,7 @@
       </div>
 
       <div class="toggle-row">
-        <span class="toggle-text">Design</span>
+        <span class="toggle-text">Design<span class="opt" id="design-lock-note" hidden><br>Set by the shared setup</span></span>
         <select id="cfg-design" class="idle-select" style="width:auto;min-width:130px" aria-label="Design"></select>
       </div>
 

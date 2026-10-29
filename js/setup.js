@@ -127,6 +127,7 @@ export function initAdvancedToggles() {
     if (e.target.checked) $('cfg-camera-idle').value = '60000';
   });
   $('cfg-bigscans-on').addEventListener('change', (e) => { $('bigscans-options').hidden = !e.target.checked; });
+  $('cfg-restrict-share-on').addEventListener('change', (e) => { $('lock-design-row').hidden = !e.target.checked; });
   $('cfg-schedule-on').addEventListener('change', (e) => { $('session-rows').classList.toggle('show-schedule', e.target.checked); });
 }
 
@@ -159,6 +160,8 @@ function fillFormFromConfig(c) {
   $('cfg-session-lock-on').checked = c.sessionLockEnabled !== false;
   $('cfg-undo-lock-on').checked = c.undoLockEnabled !== false;
   $('cfg-sound-on').checked = c.soundOnScan !== false;
+  $('cfg-layout-split-on').checked = !!c.layoutSplit;
+  $('cfg-scan-anim-on').checked = !!c.scanAnimation;
   $('cfg-camera-idle-on').checked = c.cameraIdleMs > 0;
   $('cfg-camera-idle').value = String(c.cameraIdleMs || 60000);
   $('camera-idle-wrap').hidden = !(c.cameraIdleMs > 0);
@@ -166,6 +169,8 @@ function fillFormFromConfig(c) {
   $('cfg-bigscans-profile').value = c.syncProfile || 'standard';
   $('bigscans-options').hidden = !c.bigScansEnabled;
   $('cfg-restrict-share-on').checked = !!c.restrictShare;
+  $('cfg-lock-design-on').checked = !!c.lockDesign;
+  $('lock-design-row').hidden = !c.restrictShare;
   const hasSchedule = (c.sessions || []).some((s) => s.start && s.end);
   $('cfg-schedule-on').checked = hasSchedule;
   $('session-rows').classList.toggle('show-schedule', hasSchedule);

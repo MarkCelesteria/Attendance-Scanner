@@ -1,4 +1,4 @@
-import { LS_CONFIG, LS_ACTIVE, LS_ROSTER_T } from './constants.js';
+import { LS_CONFIG, LS_ACTIVE, LS_ROSTER_T, LS_DESIGN } from './constants.js';
 import { $, colToIndex, indexToCol } from './utils.js';
 
 export function loadConfig() {
@@ -30,6 +30,8 @@ export function clearLocalSettings() {
 export function encodeShareCode(cfg) {
   const { accessKey, ...shareable } = cfg;
   if (cfg.restrictShare) shareable.locked = true;
+  if (cfg.restrictShare && cfg.lockDesign) shareable.design = localStorage.getItem(LS_DESIGN) || 'classic';
+  else delete shareable.lockDesign;
   return btoa(unescape(encodeURIComponent(JSON.stringify(shareable))));
 }
 
@@ -168,5 +170,7 @@ export function readForm() {
     adminEnabled: $('cfg-admin-on').checked, sessionLockEnabled: $('cfg-session-lock-on').checked,
     soundOnScan: $('cfg-sound-on').checked, cameraIdleMs, undoLockEnabled: $('cfg-undo-lock-on').checked,
     bigScansEnabled: $('cfg-bigscans-on').checked, syncProfile: $('cfg-bigscans-profile').value,
-    restrictShare: $('cfg-restrict-share-on').checked };
+    restrictShare: $('cfg-restrict-share-on').checked,
+    lockDesign: $('cfg-restrict-share-on').checked && $('cfg-lock-design-on').checked,
+    layoutSplit: $('cfg-layout-split-on').checked, scanAnimation: $('cfg-scan-anim-on').checked };
 }

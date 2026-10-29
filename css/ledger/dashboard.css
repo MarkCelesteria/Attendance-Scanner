@@ -1,3 +1,4 @@
+/* DESIGN: LEDGER | file: css/ledger/dashboard.css */
 /* ---------- Session toggle group ---------- */
 .session-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 6px; margin-bottom: 12px; }
 .session-btn {
@@ -150,6 +151,8 @@
   animation: sweep 2.2s ease-in-out infinite alternate;
 }
 @keyframes sweep { to { top: calc(100% - 2px); } }
+:root[data-scan-anim="off"] .reticle::after { display: none; }
+@media (prefers-reduced-motion: reduce) { .reticle::after { display: none; } }
 
 /* ---------- Activity lists (ledger, not cards) ---------- */
 .tables { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 32px; }
@@ -245,17 +248,17 @@
   #view-dashboard.admin-active .scanner { aspect-ratio: 4 / 3; }
 }
 
-/* Wide screens without admin: scanner left, result + entry right */
+/* Side-by-side layout (Advanced setting "Side-by-side layout"): scanner left, result + entry right */
 @media (min-width: 860px) {
-  #view-dashboard:not(.admin-active) { max-width: 1080px; }
-  #view-dashboard:not(.admin-active) .dash-main {
+  :root[data-layout="split"] #view-dashboard:not(.admin-active) { max-width: 1080px; }
+  :root[data-layout="split"] #view-dashboard:not(.admin-active) .dash-main {
     display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); column-gap: 20px; align-items: start;
   }
-  #view-dashboard:not(.admin-active) .dash-main > section[aria-label="Active session"] { grid-column: 1 / -1; }
-  #view-dashboard:not(.admin-active) .dash-main > .scanner { grid-column: 1; grid-row: 2 / span 2; margin-bottom: 0; }
-  #view-dashboard:not(.admin-active) .dash-main > .result { grid-column: 2; grid-row: 2; min-height: 260px; }
-  #view-dashboard:not(.admin-active) .dash-main > .manual { grid-column: 2; grid-row: 3; align-self: start; }
-  #view-dashboard:not(.admin-active) .dash-main > .tables { grid-column: 1 / -1; }
+  :root[data-layout="split"] #view-dashboard:not(.admin-active) .dash-main > section[aria-label="Active session"] { grid-column: 1 / -1; }
+  :root[data-layout="split"] #view-dashboard:not(.admin-active) .dash-main > .scanner { grid-column: 1; grid-row: 2 / span 2; margin-bottom: 0; }
+  :root[data-layout="split"] #view-dashboard:not(.admin-active) .dash-main > .result { grid-column: 2; grid-row: 2; min-height: 260px; }
+  :root[data-layout="split"] #view-dashboard:not(.admin-active) .dash-main > .manual { grid-column: 2; grid-row: 3; align-self: start; margin-bottom: 0; }
+  :root[data-layout="split"] #view-dashboard:not(.admin-active) .dash-main > .tables { grid-column: 1 / -1; }
 }
 
 @media (max-width: 600px) {

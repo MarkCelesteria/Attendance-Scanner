@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION = 'v1.9.6';
+const VERSION = 'v1.9.7';
 const CACHE = `attendance-shell-${VERSION}`;
 
 const SHELL = [
@@ -15,11 +15,21 @@ const SHELL = [
   'js/main.js', 'js/constants.js', 'js/state.js', 'js/utils.js', 'js/db.js',
   'js/config.js', 'js/roster.js', 'js/audio.js', 'js/ui.js', 'js/sync.js',
   'js/scanner.js', 'js/scan.js', 'js/barcode.js', 'js/dashboard.js', 'js/setup.js',
-  'js/history.js', 'js/admin.js', 'js/qrpdf.js', 'js/theme.js',
+  'js/history.js', 'js/admin.js', 'js/qrpdf.js', 'js/theme.js', 'js/designs.js', 'js/display.js',
+  'assets/fonts/ibm-plex-sans-latin-400-normal.woff2',
+  'assets/fonts/ibm-plex-sans-latin-600-normal.woff2',
+  'assets/fonts/ibm-plex-sans-condensed-latin-600-normal.woff2',
+  'assets/fonts/ibm-plex-sans-condensed-latin-700-normal.woff2',
+  'assets/fonts/ibm-plex-mono-latin-400-normal.woff2',
+  'assets/fonts/ibm-plex-mono-latin-600-normal.woff2',
   'assets/icons/logo.png', 'assets/icons/logo-pwa.png',
   'assets/icons/Settings.svg', 'assets/icons/Admin.svg', 'assets/icons/Refresh.svg',
   'css/ledger/base.css', 'css/ledger/components.css', 'css/ledger/setup.css', 'css/ledger/dashboard.css',
-  'js/designs.js',
+  'css/paper/base.css', 'css/paper/components.css', 'css/paper/setup.css', 'css/paper/dashboard.css',
+  'css/clay/base.css', 'css/clay/components.css', 'css/clay/setup.css', 'css/clay/dashboard.css',
+  'css/mono/base.css', 'css/mono/components.css', 'css/mono/setup.css', 'css/mono/dashboard.css',
+  'css/space/base.css', 'css/space/components.css', 'css/space/setup.css', 'css/space/dashboard.css',
+  'css/tech/base.css', 'css/tech/components.css', 'css/tech/setup.css', 'css/tech/dashboard.css',
 ];
 const QR_LIB = 'https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js';
 
