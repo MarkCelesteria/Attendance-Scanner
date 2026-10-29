@@ -4,6 +4,7 @@ export const LS_ROSTER_T = 'attendance.rosterUpdated.v1';
 export const LS_THEME    = 'attendance.theme.v1';
 export const LS_CLOCK_FORMAT = 'attendance.clockFormat.v1';
 export const LS_DESIGN = 'attendance.design.v1';
+export const LS_ANIM = 'attendance.animations.v1';
 
 
 export const DB_NAME = 'attendance-db';

@@ -108,3 +108,159 @@ body {
 h1, h2, h3 { font-family: var(--display); letter-spacing: .02em; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 @keyframes blink { 50% { opacity: 0; } }
+
+/* =====================================================================
+   TECH v2 : binary rain (bursts), scan sweep, scanlines, HUD tokens
+   Pure CSS. Kill switch: <html data-rain="off">
+   ===================================================================== */
+:root {
+  --rain-rgb: 8 126 164;
+  --rain-head-rgb: 4 88 118;
+  --rain-max: .5;
+  --rain-trail: linear-gradient(to bottom,
+      rgb(var(--rain-rgb) / 0) 0%, rgb(var(--rain-rgb) / .22) 28%,
+      rgb(var(--rain-rgb) / .55) 60%, rgb(var(--rain-head-rgb)) 69%, rgb(var(--rain-head-rgb) / 0) 70%);
+  --scanline: rgba(8, 100, 140, .035);
+  --sweep: rgba(8, 145, 178, .13);
+  --grid-major: rgba(8, 100, 140, .10);
+  --hud: linear-gradient(var(--accent), var(--accent)) top left / 12px 2px no-repeat,
+         linear-gradient(var(--accent), var(--accent)) top left / 2px 12px no-repeat,
+         linear-gradient(var(--accent), var(--accent)) top right / 12px 2px no-repeat,
+         linear-gradient(var(--accent), var(--accent)) top right / 2px 12px no-repeat,
+         linear-gradient(var(--accent), var(--accent)) bottom left / 12px 2px no-repeat,
+         linear-gradient(var(--accent), var(--accent)) bottom left / 2px 12px no-repeat,
+         linear-gradient(var(--accent), var(--accent)) bottom right / 12px 2px no-repeat,
+         linear-gradient(var(--accent), var(--accent)) bottom right / 2px 12px no-repeat;
+}
+:root[data-theme="dark"] {
+  --rain-rgb: 34 211 238;
+  --rain-head-rgb: 214 252 255;
+  --rain-max: .9;
+  --scanline: rgba(34, 211, 238, .03);
+  --sweep: rgba(34, 211, 238, .12);
+  --grid-major: rgba(34, 211, 238, .09);
+}
+
+/* grid: fine 32px + major 160px lines */
+body {
+  background-image:
+    radial-gradient(60vmax 40vmax at 50% -12%, var(--glow-bg), transparent 70%),
+    linear-gradient(var(--grid-major) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-major) 1px, transparent 1px),
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: auto, 160px 160px, 160px 160px, 32px 32px, 32px 32px;
+}
+
+/* scanlines + vignette (static, cheap) */
+html::before {
+  content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(120% 90% at 50% 40%, transparent 55%, rgba(0, 0, 0, .10) 100%),
+    repeating-linear-gradient(to bottom, transparent 0 2px, var(--scanline) 2px 3px);
+}
+
+/* binary rain, built to be cheap:
+   - two narrow strips on the left/right edges (where the centered content leaves room), not full-screen layers
+   - streaks are static gradients clipped to glyphs; only transform + opacity animate (GPU, no repaint)
+   - hidden (visibility) between bursts, so nothing is drawn or rasterized while it is off
+   - loop distance 600px = a multiple of every streak tile, so it is seamless */
+body::before {
+  content: "01000011000001110110100000101110001000000110101111111110001010010001111000001100010011100001110101101001010010101001\A \A 01111101001001101110000100010001011110000100001101001100101110011100101011000101111000010011110111100010110110111110\A \A 01011000011100101101001100011011111101100001100011100001011010010101100100010001111010111000000111000111000011100101\A \A 00010011101010001101101010100100111001011001000011000111001011011101001110001010011010100101111110101110010100010100\A \A \A 01100110001011000011110101111010010011000111100100000000001000000000001011111010110001110111111100101100111011001101\A \A 01001111001000000100101101011011010001110101100000101001110100000101001001111101101111110110001001001000001001000011";
+  position: fixed; top: 0; left: 0; width: min(30vw, 520px); height: 2088px; z-index: -1; pointer-events: none; overflow: hidden;
+  writing-mode: vertical-lr; text-orientation: upright; white-space: pre;
+  font: 600 15px/40px var(--mono); letter-spacing: 3px;
+  color: transparent; -webkit-background-clip: text; background-clip: text;
+  background-repeat: repeat-y;
+  background-image: var(--rain-trail), var(--rain-trail), var(--rain-trail);
+  background-size: 40px 200px, 40px 600px, 40px 200px;
+  background-position: 0px 40px, 160px 440px, 360px 80px;
+  opacity: 0; visibility: hidden;
+  animation: bin-fall 12s linear infinite, bin-burst 70s ease-in-out infinite;
+}
+
+html::after {
+  content: "\A 10011011001100101101000010001011111101010001111101000011110110111101000001111010010000011110100111011110011111010000\A \A 10001000100111100001101110000010011111010101101011111101001011110111011111001001111110100000111100011010010000011001\A \A 10100111101110000111101011100000101000110111110110100011000110001000100111000111111110010101101100001011101100011011\A \A \A 11010101100111110111000101001011111001100111100011100000010100010011001100001001010111011110100011101110010111010011\A \A 00110110010000011011000101011100101101101010110110111000111101010000001010100110110100101010000011011000101010110100\A \A 10010000111100111010111010110111100000000011111110000001100000101100110001100000110010101000001110000111110111111000";
+  position: fixed; top: 0; right: 0; width: min(30vw, 520px); height: 2088px; z-index: -1; pointer-events: none; overflow: hidden;
+  writing-mode: vertical-lr; text-orientation: upright; white-space: pre;
+  font: 600 15px/40px var(--mono); letter-spacing: 3px;
+  color: transparent; -webkit-background-clip: text; background-clip: text;
+  background-repeat: repeat-y;
+  background-image: var(--rain-trail), var(--rain-trail), var(--rain-trail);
+  background-size: 40px 200px, 40px 600px, 40px 200px;
+  background-position: 40px 80px, 200px 120px, 400px 120px;
+  opacity: 0; visibility: hidden;
+  animation: bin-fall 19s linear infinite, bin-burst 53s ease-in-out infinite;
+}
+@keyframes bin-fall {
+  from { transform: translate3d(0, -600px, 0); }
+  to   { transform: translate3d(0, 0, 0); }
+}
+@keyframes bin-fall-s {
+  from { transform: translate3d(0, -300px, 0); }
+  to   { transform: translate3d(0, 0, 0); }
+}
+/* appears now and then: one long burst, one short flicker, mostly off */
+@keyframes bin-burst {
+  0%, 10%  { opacity: 0; visibility: hidden; }
+  14%      { opacity: var(--rain-max); visibility: visible; }
+  30%      { opacity: var(--rain-max); visibility: visible; }
+  36%      { opacity: 0; visibility: hidden; }
+  62%      { opacity: 0; visibility: hidden; }
+  63%      { opacity: calc(var(--rain-max) * .7); visibility: visible; }
+  64%      { opacity: 0; visibility: hidden; }
+  65%      { opacity: calc(var(--rain-max) * .8); visibility: visible; }
+  72%      { opacity: calc(var(--rain-max) * .8); visibility: visible; }
+  78%, 100% { opacity: 0; visibility: hidden; }
+}
+:root[data-rain="off"] body::before, :root[data-rain="off"] html::after { display: none; }
+
+/* slow scan sweep, runs in the gaps between bursts */
+body::after {
+  content: ''; position: fixed; left: 0; right: 0; top: 0; height: 26vh; z-index: -1; pointer-events: none;
+  background: linear-gradient(to bottom, transparent, var(--sweep) 85%, var(--accent) 100%);
+  background-size: 100% 100%; opacity: .55;
+  transform: translateY(-30vh);
+  animation: tech-sweep 16s linear infinite;
+}
+@keyframes tech-sweep {
+  0%   { transform: translateY(-30vh); }
+  45%  { transform: translateY(110vh); }
+  100% { transform: translateY(110vh); }
+}
+:root[data-rain="off"] body::after { display: none; }
+
+/* small polish */
+::selection { background: var(--accent); color: var(--accent-ink); }
+html { scrollbar-width: thin; scrollbar-color: var(--line-strong) var(--paper); }
+input, textarea { caret-color: var(--accent); }
+:root[data-theme="dark"] h1 { text-shadow: 0 0 18px var(--glow); }
+@keyframes hud-flicker { 0%, 100% { opacity: 1; } 92% { opacity: 1; } 94% { opacity: .55; } 96% { opacity: 1; } 98% { opacity: .7; } }
+
+
+/* ---- PERFORMANCE ---------------------------------------------------- */
+/* a fixed background re-paints on scroll; let the grid scroll with the page instead */
+body { background-attachment: scroll; }
+
+/* camera running = keep the GPU/CPU for the scanner: no background effects at all */
+body:has(.scanner.is-live)::before { display: none; }
+body:has(.scanner.is-live)::after { display: none; }
+html:has(.scanner.is-live)::after { display: none; }
+html:has(.scanner.is-live)::before { display: none; }
+
+/* phones / touch / narrow: lite tier = one small rain strip, no scanlines, sweep or second layer */
+@media (hover: none), (pointer: coarse), (max-width: 700px) {
+  html::before, body::after, html::after { display: none; }
+  body {
+    background-image:
+      radial-gradient(60vmax 40vmax at 50% -12%, var(--glow-bg), transparent 70%),
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: auto, 32px 32px, 32px 32px;
+  }
+  body::before {
+    width: 100vw; height: 1300px;
+    background-size: 40px 300px, 40px 300px, 40px 300px;
+    animation: bin-fall-s 12s linear infinite, bin-burst 70s ease-in-out infinite;
+  }
+}

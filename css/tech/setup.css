@@ -233,3 +233,60 @@
 .theme-opt { border-radius: 2px; font-family: var(--mono); font-size: .78rem; text-transform: uppercase; letter-spacing: .05em; }
 .theme-opt[aria-checked="true"] { color: var(--accent-ink); }
 .theme-opt:focus-visible { outline-color: var(--accent); }
+
+/* =====================================================================
+   TECH v2 : setup + modals
+   ===================================================================== */
+/* panels get HUD corner brackets (no extra markup, drawn as backgrounds) */
+.setup-form fieldset, .advanced { background: var(--hud), var(--card); }
+.setup-form fieldset:focus-within { border-color: var(--accent); box-shadow: 0 0 24px var(--glow-bg); }
+.advanced[open] { border-color: var(--accent); }
+
+/* title cursor */
+.setup-head h1::after { content: '_'; color: var(--accent); margin-left: 2px; animation: blink 1s steps(1) infinite; }
+.setup-head h1 { animation: hud-flicker 9s linear infinite; }
+
+/* session row: active row lights a rail */
+.session-row:focus-within { background: linear-gradient(90deg, var(--accent-soft), transparent 45%); }
+.session-row:focus-within .s-name { border-color: var(--accent); }
+
+/* toggles read like a status register */
+.switch .slider::after {
+  content: ''; position: absolute; right: 6px; top: 50%; width: 4px; height: 4px; margin-top: -2px;
+  background: var(--ink-2); opacity: .5;
+}
+.switch input:checked + .slider::after { right: auto; left: 8px; background: var(--accent-ink); opacity: 1; }
+
+/* modal: HUD corners, boot-in, tinted gridded backdrop */
+.modal { background: var(--hud), var(--card); }
+.modal[open] { animation: modal-boot .28s cubic-bezier(.2, .8, .2, 1) both; }
+@keyframes modal-boot {
+  0%   { opacity: 0; transform: scale(.96, .02); }
+  55%  { opacity: 1; transform: scale(1, .9); }
+  100% { opacity: 1; transform: scale(1, 1); }
+}
+.modal::backdrop {
+  background:
+    repeating-linear-gradient(to bottom, transparent 0 2px, rgba(34, 211, 238, .04) 2px 3px),
+    rgba(2, 6, 11, .72);
+  backdrop-filter: blur(2px);
+}
+.modal h2::before { content: '// '; color: var(--accent); opacity: .7; }
+
+/* progress bar: marching hazard stripes while it fills */
+.qrpdf-bar-fill {
+  background-image: repeating-linear-gradient(-45deg, rgba(255,255,255,.28) 0 4px, transparent 4px 8px), linear-gradient(var(--accent), var(--accent));
+  background-size: 11.31px 11.31px, auto;
+  animation: bar-march .7s linear infinite;
+}
+@keyframes bar-march { to { background-position: 11.31px 0, 0 0; } }
+.qrpdf-line::before { content: '$ '; color: var(--accent); }
+
+
+/* ---- PERFORMANCE: lite tier (phones / touch / narrow) ---- */
+@media (hover: none), (pointer: coarse), (max-width: 700px) {
+  .setup-head h1 { animation: none; }
+  .modal::backdrop { backdrop-filter: none; }
+  .qrpdf-bar-fill { animation: none; }
+  .setup-form fieldset:focus-within { box-shadow: none; }
+}

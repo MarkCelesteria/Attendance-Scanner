@@ -1,0 +1,309 @@
+/* DESIGN: NATURE | file: css/nature/base.css | Classic base + nature theme layer */
+:root {
+  --paper:   #EEF1F5;
+  --card:    #FFFFFF;
+  --ink:     #14213D;
+  --ink-2:   #4A5877;
+  --line:    #CBD3E1;
+  --brand:   #14213D;
+  --ok:      #12A150;
+  --ok-soft: #DDF5E7;
+  --warn:    #B7791F;
+  --warn-soft:#FFF3D6;
+  --bad:     #C62F3E;
+  --bad-soft:#FBE3E6;
+  --focus:   #2B5BFF;
+  --ok-border: #8FD1AB;
+  --toast-bg: #14213D;
+  --toast-fg: #FFFFFF;
+  --overlay-fg: #14213D;
+  --radius:  14px;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper:   #121317;
+  --card:    #1B1C22;
+  --ink:     #ECEDF2;
+  --ink-2:   #9B9EAC;
+  --line:    #303239;
+  --brand:   #14213D;
+  --ok:      #279E5B;
+  --ok-soft: #172219;
+  --ok-border: #3C6B4E;
+  --warn:    #D69A1F;
+  --warn-soft:#26200F;
+  --bad:     #D9636F;
+  --bad-soft:#271A1C;
+  --focus:   #5D79D6;
+}
+
+:root[data-theme="dark"] .icon-btn:hover { background: rgba(255,255,255,.1); }
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--paper);
+  color: var(--ink);
+  font: 16px/1.45 var(--font);
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+[hidden] { display: none !important; }
+.view { max-width: 720px; margin: 0 auto; padding: 16px; }
+#view-dashboard.admin-active { max-width: 1400px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* ===================================================================== NATURE */
+:root {
+  --paper:   #EAF3EA;
+  --card:    #FBFDF9;
+  --fill:    #E2EDE0;
+  --ink:     #16301F;
+  --ink-2:   #4F6B58;
+  --line:    #CFE0CF;
+  --line-strong: #A9C4AE;
+  --brand:   #2A6A3C;
+  --accent:  #36844A;
+  --accent-ink: #FFFFFF;
+  --accent-soft: rgba(54, 132, 74, .12);
+  --ok:      #1F8F55;
+  --ok-soft: #DDF2E3;
+  --ok-border: #8FCFA5;
+  --ok-glow: rgba(31, 143, 85, .25);
+  --warn:    #B7791F;
+  --warn-soft:#FFF1D2;
+  --bad:     #C4442F;
+  --bad-soft:#FBE4DE;
+  --bad-glow: rgba(196, 68, 47, .22);
+  --focus:   #36844A;
+  --hover:   rgba(42, 106, 60, .09);
+  --toast-bg: #16301F;
+  --toast-fg: #EAF8EA;
+  --overlay-fg: #16301F;
+  --glow:    rgba(54, 132, 74, .28);
+  --sky-a:   #D9EDF1;
+  --sky-b:   #E8F4EA;
+  --sky-c:   #F3F8EC;
+  --sun:     radial-gradient(circle at calc(100% - 88px) 96px, #FFE7A0 0 24px, rgba(255, 231, 160, .45) 25px 70px, rgba(255, 231, 160, 0) 230px);
+  --stars:   linear-gradient(transparent, transparent);
+  --radius:  22px;
+  --leaf:    22px 6px 22px 6px;
+  --font:    system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --display: ui-rounded, "SF Pro Rounded", "Nunito", "Quicksand", "Segoe UI", system-ui, sans-serif;
+  --mono:    ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+  --far-h:   clamp(170px, 32vh, 320px);
+  --mtn-h:   clamp(240px, 46vh, 460px);
+  --near-h:  clamp(130px, 25vh, 270px);
+  --trees-far:  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='240' viewBox='0 0 900 240'%3E%3Cpolygon points='0,191.0 20,194.7 40,195.4 60,193.7 80,191.4 100,190.0 120,190.6 140,193.0 160,195.7 180,196.9 200,195.4 220,190.8 240,184.2 260,177.7 280,173.2 300,172.0 320,174.0 340,177.8 360,181.5 380,183.7 400,183.6 420,182.2 440,181.0 460,181.5 480,184.7 500,190.1 520,196.1 540,200.6 560,201.9 580,199.8 600,194.9 620,189.3 640,184.8 660,182.7 680,183.0 700,184.4 720,185.2 740,184.1 760,180.8 780,176.3 800,172.5 820,171.2 840,173.2 860,178.4 880,185.0 900,191.0 900,240 0,240' fill='%23C9E0CC'/%3E%3Ccircle cx='24.0' cy='141.0' r='19.6' fill='%23B4D3BA'/%3E%3Ccircle cx='12.5' cy='152.5' r='15.0' fill='%23B4D3BA'/%3E%3Ccircle cx='36.7' cy='151.6' r='15.6' fill='%23B4D3BA'/%3E%3Ccircle cx='25.2' cy='126.9' r='13.8' fill='%23B4D3BA'/%3E%3Cpolygon points='75.0,99.9 86.4,148.9 63.6,148.9' fill='%23B4D3BA'/%3E%3Cpolygon points='75.0,124.4 91.7,171.4 58.3,171.4' fill='%23B4D3BA'/%3E%3Cpolygon points='75.0,148.9 97.0,194.0 53.0,194.0' fill='%23B4D3BA'/%3E%3Ccircle cx='115.0' cy='129.7' r='21.7' fill='%23B4D3BA'/%3E%3Ccircle cx='102.2' cy='142.4' r='16.6' fill='%23B4D3BA'/%3E%3Ccircle cx='129.0' cy='141.5' r='17.2' fill='%23B4D3BA'/%3E%3Ccircle cx='116.3' cy='114.1' r='15.3' fill='%23B4D3BA'/%3E%3Cpolygon points='146.0,138.8 156.1,169.3 135.9,169.3' fill='%23B4D3BA'/%3E%3Cpolygon points='146.0,154.1 160.8,183.3 131.2,183.3' fill='%23B4D3BA'/%3E%3Cpolygon points='146.0,169.3 165.5,197.4 126.5,197.4' fill='%23B4D3BA'/%3E%3Cpolygon points='179.0,124.9 190.7,163.9 167.3,163.9' fill='%23B4D3BA'/%3E%3Cpolygon points='179.0,144.4 196.1,181.9 161.9,181.9' fill='%23B4D3BA'/%3E%3Cpolygon points='179.0,163.9 201.5,199.8 156.5,199.8' fill='%23B4D3BA'/%3E%3Cpolygon points='212.0,144.9 220.8,171.9 203.2,171.9' fill='%23B4D3BA'/%3E%3Cpolygon points='212.0,158.4 224.9,184.4 199.1,184.4' fill='%23B4D3BA'/%3E%3Cpolygon points='212.0,171.9 229.0,196.8 195.0,196.8' fill='%23B4D3BA'/%3E%3Cpolygon points='243.0,86.2 253.4,137.7 232.6,137.7' fill='%23B4D3BA'/%3E%3Cpolygon points='243.0,111.9 258.2,161.4 227.8,161.4' fill='%23B4D3BA'/%3E%3Cpolygon points='243.0,137.7 263.0,185.0 223.0,185.0' fill='%23B4D3BA'/%3E%3Ccircle cx='294.0' cy='140.5' r='12.2' fill='%23B4D3BA'/%3E%3Ccircle cx='286.8' cy='147.7' r='9.3' fill='%23B4D3BA'/%3E%3Ccircle cx='301.9' cy='147.1' r='9.7' fill='%23B4D3BA'/%3E%3Ccircle cx='294.7' cy='131.7' r='8.6' fill='%23B4D3BA'/%3E%3Cpolygon points='334.0,120.6 342.3,151.6 325.7,151.6' fill='%23B4D3BA'/%3E%3Cpolygon points='334.0,136.1 346.2,165.8 321.8,165.8' fill='%23B4D3BA'/%3E%3Cpolygon points='334.0,151.6 350.0,180.1 318.0,180.1' fill='%23B4D3BA'/%3E%3Ccircle cx='360.0' cy='144.3' r='14.1' fill='%23B4D3BA'/%3E%3Ccircle cx='351.7' cy='152.5' r='10.8' fill='%23B4D3BA'/%3E%3Ccircle cx='369.1' cy='151.9' r='11.2' fill='%23B4D3BA'/%3E%3Ccircle cx='360.8' cy='134.1' r='10.0' fill='%23B4D3BA'/%3E%3Cpolygon points='391.0,125.9 400.6,157.9 381.4,157.9' fill='%23B4D3BA'/%3E%3Cpolygon points='391.0,141.9 405.1,172.6 376.9,172.6' fill='%23B4D3BA'/%3E%3Cpolygon points='391.0,157.9 409.5,187.3 372.5,187.3' fill='%23B4D3BA'/%3E%3Cpolygon points='423.0,100.0 431.8,144.0 414.2,144.0' fill='%23B4D3BA'/%3E%3Cpolygon points='423.0,122.0 435.9,164.2 410.1,164.2' fill='%23B4D3BA'/%3E%3Cpolygon points='423.0,144.0 440.0,184.5 406.0,184.5' fill='%23B4D3BA'/%3E%3Cpolygon points='471.0,123.0 481.4,156.0 460.6,156.0' fill='%23B4D3BA'/%3E%3Cpolygon points='471.0,139.5 486.2,171.1 455.8,171.1' fill='%23B4D3BA'/%3E%3Cpolygon points='471.0,156.0 491.0,186.3 451.0,186.3' fill='%23B4D3BA'/%3E%3Ccircle cx='508.0' cy='146.9' r='16.9' fill='%23B4D3BA'/%3E%3Ccircle cx='498.1' cy='156.7' r='12.9' fill='%23B4D3BA'/%3E%3Ccircle cx='518.9' cy='156.0' r='13.4' fill='%23B4D3BA'/%3E%3Ccircle cx='509.0' cy='134.7' r='11.9' fill='%23B4D3BA'/%3E%3Cpolygon points='542.0,148.9 551.9,177.9 532.1,177.9' fill='%23B4D3BA'/%3E%3Cpolygon points='542.0,163.4 556.4,191.2 527.6,191.2' fill='%23B4D3BA'/%3E%3Cpolygon points='542.0,177.9 561.0,204.5 523.0,204.5' fill='%23B4D3BA'/%3E%3Cpolygon points='587.0,113.3 594.3,158.8 579.7,158.8' fill='%23B4D3BA'/%3E%3Cpolygon points='587.0,136.1 597.6,179.7 576.4,179.7' fill='%23B4D3BA'/%3E%3Cpolygon points='587.0,158.8 601.0,200.7 573.0,200.7' fill='%23B4D3BA'/%3E%3Cpolygon points='635.0,116.8 642.8,154.3 627.2,154.3' fill='%23B4D3BA'/%3E%3Cpolygon points='635.0,135.5 646.4,171.5 623.6,171.5' fill='%23B4D3BA'/%3E%3Cpolygon points='635.0,154.3 650.0,188.8 620.0,188.8' fill='%23B4D3BA'/%3E%3Ccircle cx='687.0' cy='142.3' r='15.4' fill='%23B4D3BA'/%3E%3Ccircle cx='677.9' cy='151.3' r='11.8' fill='%23B4D3BA'/%3E%3Ccircle cx='697.0' cy='150.6' r='12.2' fill='%23B4D3BA'/%3E%3Ccircle cx='687.9' cy='131.2' r='10.9' fill='%23B4D3BA'/%3E%3Ccircle cx='718.0' cy='136.9' r='17.7' fill='%23B4D3BA'/%3E%3Ccircle cx='707.6' cy='147.3' r='13.5' fill='%23B4D3BA'/%3E%3Ccircle cx='729.5' cy='146.5' r='14.1' fill='%23B4D3BA'/%3E%3Ccircle cx='719.0' cy='124.1' r='12.5' fill='%23B4D3BA'/%3E%3Ccircle cx='745.0' cy='144.2' r='14.8' fill='%23B4D3BA'/%3E%3Ccircle cx='736.3' cy='152.9' r='11.3' fill='%23B4D3BA'/%3E%3Ccircle cx='754.5' cy='152.2' r='11.7' fill='%23B4D3BA'/%3E%3Ccircle cx='745.9' cy='133.6' r='10.4' fill='%23B4D3BA'/%3E%3Cpolygon points='782.0,102.9 789.3,142.4 774.7,142.4' fill='%23B4D3BA'/%3E%3Cpolygon points='782.0,122.6 792.6,160.6 771.4,160.6' fill='%23B4D3BA'/%3E%3Cpolygon points='782.0,142.4 796.0,178.7 768.0,178.7' fill='%23B4D3BA'/%3E%3Cpolygon points='821.0,100.2 831.4,138.7 810.6,138.7' fill='%23B4D3BA'/%3E%3Cpolygon points='821.0,119.4 836.2,156.4 805.8,156.4' fill='%23B4D3BA'/%3E%3Cpolygon points='821.0,138.7 841.0,174.1 801.0,174.1' fill='%23B4D3BA'/%3E%3Ccircle cx='847.0' cy='127.8' r='17.3' fill='%23B4D3BA'/%3E%3Ccircle cx='836.8' cy='137.9' r='13.2' fill='%23B4D3BA'/%3E%3Ccircle cx='858.2' cy='137.1' r='13.7' fill='%23B4D3BA'/%3E%3Ccircle cx='848.0' cy='115.3' r='12.2' fill='%23B4D3BA'/%3E%3C/svg%3E");
+  --trees-near: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='720' height='300' viewBox='0 0 720 300'%3E%3Crect x='61.5' y='257.9' width='5' height='23.1' fill='%236B4F3A'/%3E%3Cpolygon points='64.0,116.0 89.5,198.5 38.5,198.5' fill='%234F9660'/%3E%3Cpolygon points='64.0,116.0 64.0,198.5 38.5,198.5' fill='%233F8350'/%3E%3Cpolygon points='64.0,157.2 101.2,236.4 26.8,236.4' fill='%234F9660'/%3E%3Cpolygon points='64.0,157.2 64.0,236.4 26.8,236.4' fill='%233F8350'/%3E%3Cpolygon points='64.0,198.5 113.0,274.4 15.0,274.4' fill='%234F9660'/%3E%3Cpolygon points='64.0,198.5 64.0,274.4 15.0,274.4' fill='%233F8350'/%3E%3Crect x='184.0' y='177.0' width='6' height='94.0' fill='%236B4F3A'/%3E%3Ccircle cx='187.0' cy='143.2' r='39.8' fill='%234F9660'/%3E%3Ccircle cx='163.6' cy='167.6' r='30.4' fill='%234F9660'/%3E%3Ccircle cx='212.7' cy='165.7' r='31.6' fill='%234F9660'/%3E%3Ccircle cx='189.3' cy='113.1' r='28.1' fill='%234F9660'/%3E%3Ccircle cx='175.3' cy='154.5' r='23.4' fill='%233F8350' opacity='.55'/%3E%3Crect x='301.5' y='250.9' width='5' height='30.1' fill='%236B4F3A'/%3E%3Cpolygon points='304.0,66.0 326.1,173.5 281.9,173.5' fill='%234F9660'/%3E%3Cpolygon points='304.0,66.0 304.0,173.5 281.9,173.5' fill='%233F8350'/%3E%3Cpolygon points='304.0,119.7 336.3,222.9 271.7,222.9' fill='%234F9660'/%3E%3Cpolygon points='304.0,119.7 304.0,222.9 271.7,222.9' fill='%233F8350'/%3E%3Cpolygon points='304.0,173.5 346.5,272.4 261.5,272.4' fill='%234F9660'/%3E%3Cpolygon points='304.0,173.5 304.0,272.4 261.5,272.4' fill='%233F8350'/%3E%3Crect x='442.0' y='190.1' width='6' height='81.9' fill='%236B4F3A'/%3E%3Ccircle cx='445.0' cy='160.6' r='34.7' fill='%234F9660'/%3E%3Ccircle cx='424.6' cy='181.9' r='26.5' fill='%234F9660'/%3E%3Ccircle cx='467.4' cy='180.3' r='27.5' fill='%234F9660'/%3E%3Ccircle cx='447.0' cy='134.4' r='24.5' fill='%234F9660'/%3E%3Ccircle cx='434.8' cy='170.5' r='20.4' fill='%233F8350' opacity='.55'/%3E%3Crect x='548.5' y='258.0' width='5' height='22.8' fill='%236B4F3A'/%3E%3Cpolygon points='551.0,117.8 574.9,199.3 527.1,199.3' fill='%234F9660'/%3E%3Cpolygon points='551.0,117.8 551.0,199.3 527.1,199.3' fill='%233F8350'/%3E%3Cpolygon points='551.0,158.5 586.0,236.8 516.0,236.8' fill='%234F9660'/%3E%3Cpolygon points='551.0,158.5 551.0,236.8 516.0,236.8' fill='%233F8350'/%3E%3Cpolygon points='551.0,199.3 597.0,274.3 505.0,274.3' fill='%234F9660'/%3E%3Cpolygon points='551.0,199.3 551.0,274.3 505.0,274.3' fill='%233F8350'/%3E%3Crect x='652.0' y='186.9' width='6' height='84.2' fill='%236B4F3A'/%3E%3Ccircle cx='655.0' cy='156.6' r='35.6' fill='%234F9660'/%3E%3Ccircle cx='634.1' cy='178.5' r='27.2' fill='%234F9660'/%3E%3Ccircle cx='678.0' cy='176.8' r='28.3' fill='%234F9660'/%3E%3Ccircle cx='657.1' cy='129.7' r='25.1' fill='%234F9660'/%3E%3Ccircle cx='644.5' cy='166.7' r='20.9' fill='%233F8350' opacity='.55'/%3E%3Cpolygon points='0,270.0 15,271.9 30,273.5 45,274.6 60,275.0 75,274.6 90,273.5 105,271.9 120,270.0 135,268.1 150,266.5 165,265.4 180,265.0 195,265.4 210,266.5 225,268.1 240,270.0 255,271.9 270,273.5 285,274.6 300,275.0 315,274.6 330,273.5 345,271.9 360,270.0 375,268.1 390,266.5 405,265.4 420,265.0 435,265.4 450,266.5 465,268.1 480,270.0 495,271.9 510,273.5 525,274.6 540,275.0 555,274.6 570,273.5 585,271.9 600,270.0 615,268.1 630,266.5 645,265.4 660,265.0 675,265.4 690,266.5 705,268.1 720,270.0 720,300 0,300' fill='%232F6B3F'/%3E%3Cellipse cx='30' cy='275.5' rx='20' ry='12' fill='%233E8E52'/%3E%3Cellipse cx='125' cy='271.3' rx='21' ry='10' fill='%233E8E52'/%3E%3Cellipse cx='250' cy='273.3' rx='25' ry='13' fill='%233E8E52'/%3E%3Cellipse cx='370' cy='270.7' rx='29' ry='11' fill='%233E8E52'/%3E%3Cellipse cx='490' cy='273.3' rx='34' ry='10' fill='%233E8E52'/%3E%3Cellipse cx='600' cy='272.0' rx='25' ry='11' fill='%233E8E52'/%3E%3Cellipse cx='690' cy='268.5' rx='34' ry='14' fill='%233E8E52'/%3E%3Cpath d='M14 271.8 l-3 -11 l4 8 l1 -12 l3 12 l3 -8 l-2 11z' fill='%233E8E52'/%3E%3Cpath d='M52 274.9 l-3 -11 l4 8 l1 -12 l3 12 l3 -8 l-2 11z' fill='%233E8E52'/%3E%3Cpath d='M90 273.5 l-3 -11 l4 8 l1 -12 l3 12 l3 -8 l-2 11z' fill='%233E8E52'/%3E%3Cpath d='M128 269.0 l-3 -11 l4 8 l1 -12 l3 12 l3 -8 l-2 11z' fill='%233E8E52'/%3E%3Cpath d='M166 265.3 l-3 -11 l4 8 l1 -12 l3 12 l3 -8 l-2 11z' fill='%233E8E52'/%3E%3Cpath d='M204 266.0 l-3 -11 l4 8 l1 -12 l3 12 l3 -8 l-2 11z' fill='%233E8E52'/%3E%3Cpath d='M242 270.3 l-3 -11 l4 8 l1 -12 l3 12 l3 -8 l-2 11z' fill='%233E8E52'/%3E%3Cpath d='M280 274.3 l-3 -11 l4 8 l1 -12 l3 12 l3 -8 l-2 11z' fill='%233E8E52'/%3E%3Cpath d='M318 274.5 l-3 -11 l4 8 l1 -12 l3 12 l3 -8 l-2 11z' fill='%233E8E52'/%3E%3Cpath d='M356 270.5 l-3 -11 l4 8 l1 -12 l3 12 l3 -8 l-2 11z' fill='%233E8E52'/%3E%3Cpath d='M394 266.1 l-3 -11 l4 8 l1 -12 l3 12 l3 -8 l-2 11z' fill='%233E8E52'/%3E%3Cpath d='M432 265.2 l-3 -11 l4 8 l1 -12 l3 12 l3 -8 l-2 11z' fill='%233E8E52'/%3E%3Cpath d='M470 268.7 l-3 -11 l4 8 l1 -12 l3 12 l3 -8 l-2 11z' fill='%233E8E52'/%3E%3Cpath d='M508 273.3 l-3 -11 l4 8 l1 -12 l3 12 l3 -8 l-2 11z' fill='%233E8E52'/%3E%3Cpath d='M546 274.9 l-3 -11 l4 8 l1 -12 l3 12 l3 -8 l-2 11z' fill='%233E8E52'/%3E%3Cpath d='M584 272.0 l-3 -11 l4 8 l1 -12 l3 12 l3 -8 l-2 11z' fill='%233E8E52'/%3E%3Cpath d='M622 267.3 l-3 -11 l4 8 l1 -12 l3 12 l3 -8 l-2 11z' fill='%233E8E52'/%3E%3Cpath d='M660 265.0 l-3 -11 l4 8 l1 -12 l3 12 l3 -8 l-2 11z' fill='%233E8E52'/%3E%3Cpath d='M698 267.3 l-3 -11 l4 8 l1 -12 l3 12 l3 -8 l-2 11z' fill='%233E8E52'/%3E%3C/svg%3E");
+  --bird:       url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 16'%3E%3Cpath d='M1 6C8 0 13 2 17 9C21 2 26 0 33 6C27 4 22 6 17 13C12 6 7 4 1 6Z' fill='%23274A33'/%3E%3C/svg%3E");
+  --mountains:  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='360' viewBox='0 0 1200 360'%3E%3Cpolygon points='0,200 110,120 190,170 300,90 410,165 520,130 640,185 760,100 860,160 990,115 1100,175 1200,200 1200,360 0,360' fill='%23C5D8E0'/%3E%3Cpolygon points='110,120 136,152 122,144 110,156 98,144 84,152' fill='%23F4F9FA' opacity='0.9'/%3E%3Cpolygon points='300,90 326,122 312,114 300,126 288,114 274,122' fill='%23F4F9FA' opacity='0.9'/%3E%3Cpolygon points='760,100 786,132 772,124 760,136 748,124 734,132' fill='%23F4F9FA' opacity='0.9'/%3E%3Cpolygon points='990,115 1016,147 1002,139 990,151 978,139 964,147' fill='%23F4F9FA' opacity='0.9'/%3E%3Cpolygon points='0,270 70,230 160,262 260,200 350,258 470,222 560,270 690,215 790,262 900,205 1010,258 1120,228 1200,270 1200,360 0,360' fill='%23A9C4CC'/%3E%3Cpolygon points='260,200 278,222 268,217 260,225 252,217 242,222' fill='%23F4F9FA' opacity='0.9'/%3E%3Cpolygon points='690,215 708,237 698,232 690,240 682,232 672,237' fill='%23F4F9FA' opacity='0.9'/%3E%3Cpolygon points='900,205 918,227 908,222 900,230 892,222 882,227' fill='%23F4F9FA' opacity='0.9'/%3E%3C/svg%3E");
+  --clouds-a:   url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1300' height='260' viewBox='0 0 1300 260'%3E%3Cg fill='%23FFFFFF' opacity='0.75'%3E%3Cellipse cx='160' cy='150' rx='115' ry='21'/%3E%3Ccircle cx='109' cy='134' r='39'/%3E%3Ccircle cx='160' cy='118' r='55'/%3E%3Ccircle cx='211' cy='136' r='41'/%3E%3C/g%3E%3Cg fill='%23FFFFFF' opacity='0.75'%3E%3Cellipse cx='520' cy='100' rx='85' ry='15'/%3E%3Ccircle cx='483' cy='88' r='29'/%3E%3Ccircle cx='520' cy='76' r='41'/%3E%3Ccircle cx='557' cy='90' r='31'/%3E%3C/g%3E%3Cg fill='%23FFFFFF' opacity='0.75'%3E%3Cellipse cx='880' cy='160' rx='130' ry='23'/%3E%3Ccircle cx='823' cy='142' r='44'/%3E%3Ccircle cx='880' cy='124' r='62'/%3E%3Ccircle cx='937' cy='144' r='47'/%3E%3C/g%3E%3Cg fill='%23FFFFFF' opacity='0.75'%3E%3Cellipse cx='1180' cy='90' rx='75' ry='14'/%3E%3Ccircle cx='1147' cy='80' r='26'/%3E%3Ccircle cx='1180' cy='69' r='36'/%3E%3Ccircle cx='1213' cy='81' r='27'/%3E%3C/g%3E%3C/svg%3E");
+  --clouds-b:   url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='160' viewBox='0 0 900 160'%3E%3Cg fill='%23FFFFFF' opacity='0.6'%3E%3Cellipse cx='120' cy='100' rx='60' ry='11'/%3E%3Ccircle cx='94' cy='92' r='20'/%3E%3Ccircle cx='120' cy='83' r='29'/%3E%3Ccircle cx='146' cy='93' r='22'/%3E%3C/g%3E%3Cg fill='%23FFFFFF' opacity='0.6'%3E%3Cellipse cx='430' cy='70' rx='45' ry='8'/%3E%3Ccircle cx='410' cy='64' r='15'/%3E%3Ccircle cx='430' cy='57' r='22'/%3E%3Ccircle cx='450' cy='65' r='16'/%3E%3C/g%3E%3Cg fill='%23FFFFFF' opacity='0.6'%3E%3Cellipse cx='700' cy='110' rx='70' ry='13'/%3E%3Ccircle cx='669' cy='100' r='24'/%3E%3Ccircle cx='700' cy='90' r='34'/%3E%3Ccircle cx='731' cy='102' r='25'/%3E%3C/g%3E%3C/svg%3E");
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper:   #08120D;
+  --card:    #101D16;
+  --fill:    #16271E;
+  --ink:     #E3F0E3;
+  --ink-2:   #93AD9A;
+  --line:    #1E3327;
+  --line-strong: #34553F;
+  --brand:   #5CB46C;
+  --accent:  #7DCB86;
+  --accent-ink: #08170E;
+  --accent-soft: rgba(125, 203, 134, .13);
+  --ok:      #4FD28A;
+  --ok-soft: #0D2A1B;
+  --ok-border: #23724A;
+  --ok-glow: rgba(79, 210, 138, .30);
+  --warn:    #E7B04A;
+  --warn-soft:#2A210C;
+  --bad:     #F0806B;
+  --bad-soft:#2D1511;
+  --bad-glow: rgba(240, 128, 107, .30);
+  --focus:   #7DCB86;
+  --hover:   rgba(125, 203, 134, .10);
+  --toast-bg: #E3F0E3;
+  --toast-fg: #0B1A12;
+  --glow:    rgba(125, 203, 134, .25);
+  --sky-a:   #060E0B;
+  --sky-b:   #0A1913;
+  --sky-c:   #0F2419;
+  --sun:     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cdefs%3E%3Cmask id='m'%3E%3Crect width='64' height='64' fill='white'/%3E%3Ccircle cx='43' cy='25' r='23' fill='black'/%3E%3C/mask%3E%3C/defs%3E%3Ccircle cx='32' cy='32' r='26' fill='%23F1F5E4' mask='url(%23m)'/%3E%3C/svg%3E") right 56px top 64px / 64px 64px no-repeat,
+             radial-gradient(circle at calc(100% - 88px) 96px, rgba(220, 235, 210, .20) 0, rgba(220, 235, 210, .08) 70px, rgba(220, 235, 210, 0) 210px);
+  --stars:
+    radial-gradient(circle at 14px 22px,  rgba(255,255,255,.90) 0 1px,  transparent 1.7px) 0 0 / 173px 151px,
+    radial-gradient(circle at 120px 64px, rgba(255,255,255,.65) 0 .8px, transparent 1.5px) 61px 83px / 211px 197px,
+    radial-gradient(circle at 70px 150px, rgba(235,255,240,.85) 0 1.1px, transparent 1.8px) 137px 29px / 257px 223px,
+    radial-gradient(circle at 200px 40px, rgba(255,255,255,.60) 0 .8px, transparent 1.5px) 23px 171px / 307px 269px,
+    radial-gradient(circle at 250px 210px, rgba(255,255,255,.80) 0 1px, transparent 1.7px) 97px 119px / 359px 331px,
+    radial-gradient(circle at 90px 300px, rgba(235,255,240,.70) 0 .9px, transparent 1.6px) 211px 57px / 421px 383px,
+    radial-gradient(circle at 160px 110px, rgba(235,255,240,.95) 0 1.3px, rgba(235,255,240,.25) 2.2px, transparent 5px) 149px 233px / 487px 443px,
+    radial-gradient(circle at 330px 90px, rgba(255,255,255,.95) 0 1.3px, rgba(255,255,255,.22) 2.2px, transparent 5px) 41px 301px / 563px 509px;
+  --trees-far:  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='240' viewBox='0 0 900 240'%3E%3Cpolygon points='0,191.0 20,194.7 40,195.4 60,193.7 80,191.4 100,190.0 120,190.6 140,193.0 160,195.7 180,196.9 200,195.4 220,190.8 240,184.2 260,177.7 280,173.2 300,172.0 320,174.0 340,177.8 360,181.5 380,183.7 400,183.6 420,182.2 440,181.0 460,181.5 480,184.7 500,190.1 520,196.1 540,200.6 560,201.9 580,199.8 600,194.9 620,189.3 640,184.8 660,182.7 680,183.0 700,184.4 720,185.2 740,184.1 760,180.8 780,176.3 800,172.5 820,171.2 840,173.2 860,178.4 880,185.0 900,191.0 900,240 0,240' fill='%2310251A'/%3E%3Cpolygon points='24.0,113.1 31.8,157.1 16.2,157.1' fill='%2314301F'/%3E%3Cpolygon points='24.0,135.1 35.4,177.3 12.6,177.3' fill='%2314301F'/%3E%3Cpolygon points='24.0,157.1 39.0,197.6 9.0,197.6' fill='%2314301F'/%3E%3Ccircle cx='60.0' cy='152.6' r='15.4' fill='%2314301F'/%3E%3Ccircle cx='50.9' cy='161.6' r='11.8' fill='%2314301F'/%3E%3Ccircle cx='70.0' cy='160.9' r='12.2' fill='%2314301F'/%3E%3Ccircle cx='60.9' cy='141.5' r='10.9' fill='%2314301F'/%3E%3Ccircle cx='106.0' cy='155.3' r='13.3' fill='%2314301F'/%3E%3Ccircle cx='98.2' cy='163.0' r='10.2' fill='%2314301F'/%3E%3Ccircle cx='114.6' cy='162.4' r='10.5' fill='%2314301F'/%3E%3Ccircle cx='106.8' cy='145.7' r='9.4' fill='%2314301F'/%3E%3Cpolygon points='137.0,98.5 144.5,148.5 129.5,148.5' fill='%2314301F'/%3E%3Cpolygon points='137.0,123.5 148.0,171.5 126.0,171.5' fill='%2314301F'/%3E%3Cpolygon points='137.0,148.5 151.5,194.5 122.5,194.5' fill='%2314301F'/%3E%3Cpolygon points='182.0,114.9 192.4,158.9 171.6,158.9' fill='%2314301F'/%3E%3Cpolygon points='182.0,136.9 197.2,179.2 166.8,179.2' fill='%2314301F'/%3E%3Cpolygon points='182.0,158.9 202.0,199.4 162.0,199.4' fill='%2314301F'/%3E%3Ccircle cx='231.0' cy='133.9' r='19.4' fill='%2314301F'/%3E%3Ccircle cx='219.6' cy='145.2' r='14.8' fill='%2314301F'/%3E%3Ccircle cx='243.5' cy='144.3' r='15.4' fill='%2314301F'/%3E%3Ccircle cx='232.1' cy='119.9' r='13.7' fill='%2314301F'/%3E%3Cpolygon points='271.0,85.9 281.7,133.4 260.3,133.4' fill='%2314301F'/%3E%3Cpolygon points='271.0,109.6 286.6,155.2 255.4,155.2' fill='%2314301F'/%3E%3Cpolygon points='271.0,133.4 291.5,177.1 250.5,177.1' fill='%2314301F'/%3E%3Cpolygon points='317.0,123.5 328.2,151.5 305.8,151.5' fill='%2314301F'/%3E%3Cpolygon points='317.0,137.5 333.3,164.4 300.7,164.4' fill='%2314301F'/%3E%3Cpolygon points='317.0,151.5 338.5,177.3 295.5,177.3' fill='%2314301F'/%3E%3Ccircle cx='349.0' cy='145.5' r='13.1' fill='%2314301F'/%3E%3Ccircle cx='341.3' cy='153.2' r='10.0' fill='%2314301F'/%3E%3Ccircle cx='357.5' cy='152.6' r='10.4' fill='%2314301F'/%3E%3Ccircle cx='349.8' cy='136.1' r='9.2' fill='%2314301F'/%3E%3Cpolygon points='395.0,85.8 405.7,137.8 384.3,137.8' fill='%2314301F'/%3E%3Cpolygon points='395.0,111.8 410.6,161.7 379.4,161.7' fill='%2314301F'/%3E%3Cpolygon points='395.0,137.8 415.5,185.7 374.5,185.7' fill='%2314301F'/%3E%3Cpolygon points='434.0,110.2 442.3,148.7 425.7,148.7' fill='%2314301F'/%3E%3Cpolygon points='434.0,129.5 446.2,166.4 421.8,166.4' fill='%2314301F'/%3E%3Cpolygon points='434.0,148.7 450.0,184.1 418.0,184.1' fill='%2314301F'/%3E%3Cpolygon points='473.0,117.3 481.3,153.3 464.7,153.3' fill='%2314301F'/%3E%3Cpolygon points='473.0,135.3 485.2,169.9 460.8,169.9' fill='%2314301F'/%3E%3Cpolygon points='473.0,153.3 489.0,186.4 457.0,186.4' fill='%2314301F'/%3E%3Cpolygon points='518.0,137.5 529.4,169.5 506.6,169.5' fill='%2314301F'/%3E%3Cpolygon points='518.0,153.5 534.7,184.2 501.3,184.2' fill='%2314301F'/%3E%3Cpolygon points='518.0,169.5 540.0,199.0 496.0,199.0' fill='%2314301F'/%3E%3Cpolygon points='559.0,110.0 568.9,159.0 549.1,159.0' fill='%2314301F'/%3E%3Cpolygon points='559.0,134.5 573.4,181.5 544.6,181.5' fill='%2314301F'/%3E%3Cpolygon points='559.0,159.0 578.0,204.0 540.0,204.0' fill='%2314301F'/%3E%3Ccircle cx='594.0' cy='148.3' r='17.7' fill='%2314301F'/%3E%3Ccircle cx='583.6' cy='158.7' r='13.5' fill='%2314301F'/%3E%3Ccircle cx='605.5' cy='157.9' r='14.1' fill='%2314301F'/%3E%3Ccircle cx='595.0' cy='135.5' r='12.5' fill='%2314301F'/%3E%3Ccircle cx='623.0' cy='144.1' r='16.4' fill='%2314301F'/%3E%3Ccircle cx='613.3' cy='153.8' r='12.6' fill='%2314301F'/%3E%3Ccircle cx='633.6' cy='153.0' r='13.1' fill='%2314301F'/%3E%3Ccircle cx='624.0' cy='132.3' r='11.6' fill='%2314301F'/%3E%3Cpolygon points='669.0,103.6 678.9,146.1 659.1,146.1' fill='%2314301F'/%3E%3Cpolygon points='669.0,124.9 683.4,165.7 654.6,165.7' fill='%2314301F'/%3E%3Cpolygon points='669.0,146.1 688.0,185.2 650.0,185.2' fill='%2314301F'/%3E%3Ccircle cx='710.0' cy='145.1' r='15.0' fill='%2314301F'/%3E%3Ccircle cx='701.2' cy='153.8' r='11.4' fill='%2314301F'/%3E%3Ccircle cx='719.7' cy='153.2' r='11.9' fill='%2314301F'/%3E%3Ccircle cx='710.9' cy='134.3' r='10.6' fill='%2314301F'/%3E%3Ccircle cx='752.0' cy='138.6' r='16.2' fill='%2314301F'/%3E%3Ccircle cx='742.5' cy='148.1' r='12.4' fill='%2314301F'/%3E%3Ccircle cx='762.5' cy='147.4' r='12.9' fill='%2314301F'/%3E%3Ccircle cx='753.0' cy='126.9' r='11.5' fill='%2314301F'/%3E%3Ccircle cx='802.0' cy='129.1' r='16.0' fill='%2314301F'/%3E%3Ccircle cx='792.6' cy='138.5' r='12.3' fill='%2314301F'/%3E%3Ccircle cx='812.4' cy='137.8' r='12.7' fill='%2314301F'/%3E%3Ccircle cx='802.9' cy='117.6' r='11.3' fill='%2314301F'/%3E%3Cpolygon points='852.0,109.0 862.1,145.5 841.9,145.5' fill='%2314301F'/%3E%3Cpolygon points='852.0,127.3 866.8,162.3 837.2,162.3' fill='%2314301F'/%3E%3Cpolygon points='852.0,145.5 871.5,179.1 832.5,179.1' fill='%2314301F'/%3E%3C/svg%3E");
+  --trees-near: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='720' height='300' viewBox='0 0 720 300'%3E%3Crect x='66.5' y='251.2' width='5' height='29.7' fill='%230A130E'/%3E%3Cpolygon points='69.0,68.9 90.3,174.9 47.7,174.9' fill='%230F2A1E'/%3E%3Cpolygon points='69.0,68.9 69.0,174.9 47.7,174.9' fill='%230B2017'/%3E%3Cpolygon points='69.0,121.9 100.2,223.6 37.8,223.6' fill='%230F2A1E'/%3E%3Cpolygon points='69.0,121.9 69.0,223.6 37.8,223.6' fill='%230B2017'/%3E%3Cpolygon points='69.0,174.9 110.0,272.4 28.0,272.4' fill='%230F2A1E'/%3E%3Cpolygon points='69.0,174.9 69.0,272.4 28.0,272.4' fill='%230B2017'/%3E%3Crect x='187.0' y='184.3' width='6' height='86.9' fill='%230A130E'/%3E%3Ccircle cx='190.0' cy='153.1' r='36.7' fill='%230F2A1E'/%3E%3Ccircle cx='168.4' cy='175.6' r='28.1' fill='%230F2A1E'/%3E%3Ccircle cx='213.8' cy='173.9' r='29.2' fill='%230F2A1E'/%3E%3Ccircle cx='192.2' cy='125.3' r='25.9' fill='%230F2A1E'/%3E%3Ccircle cx='179.2' cy='163.5' r='21.6' fill='%230B2017' opacity='.55'/%3E%3Crect x='290.5' y='249.6' width='5' height='31.4' fill='%230A130E'/%3E%3Cpolygon points='293.0,56.9 319.3,168.9 266.7,168.9' fill='%230F2A1E'/%3E%3Cpolygon points='293.0,56.9 293.0,168.9 266.7,168.9' fill='%230B2017'/%3E%3Cpolygon points='293.0,112.9 331.4,220.4 254.6,220.4' fill='%230F2A1E'/%3E%3Cpolygon points='293.0,112.9 293.0,220.4 254.6,220.4' fill='%230B2017'/%3E%3Cpolygon points='293.0,168.9 343.5,272.0 242.5,272.0' fill='%230F2A1E'/%3E%3Cpolygon points='293.0,168.9 293.0,272.0 242.5,272.0' fill='%230B2017'/%3E%3Crect x='409.0' y='176.6' width='6' height='94.5' fill='%230A130E'/%3E%3Ccircle cx='412.0' cy='142.6' r='40.0' fill='%230F2A1E'/%3E%3Ccircle cx='388.5' cy='167.2' r='30.6' fill='%230F2A1E'/%3E%3Ccircle cx='437.9' cy='165.3' r='31.8' fill='%230F2A1E'/%3E%3Ccircle cx='414.4' cy='112.3' r='28.2' fill='%230F2A1E'/%3E%3Ccircle cx='400.2' cy='153.9' r='23.5' fill='%230B2017' opacity='.55'/%3E%3Crect x='554.5' y='245.7' width='5' height='34.9' fill='%230A130E'/%3E%3Cpolygon points='557.0,31.5 578.3,156.0 535.7,156.0' fill='%230F2A1E'/%3E%3Cpolygon points='557.0,31.5 557.0,156.0 535.7,156.0' fill='%230B2017'/%3E%3Cpolygon points='557.0,93.8 588.2,213.3 525.8,213.3' fill='%230F2A1E'/%3E%3Cpolygon points='557.0,93.8 557.0,213.3 525.8,213.3' fill='%230B2017'/%3E%3Cpolygon points='557.0,156.0 598.0,270.6 516.0,270.6' fill='%230F2A1E'/%3E%3Cpolygon points='557.0,156.0 557.0,270.6 516.0,270.6' fill='%230B2017'/%3E%3Crect x='649.0' y='165.4' width='6' height='105.8' fill='%230A130E'/%3E%3Ccircle cx='652.0' cy='127.3' r='44.7' fill='%230F2A1E'/%3E%3Ccircle cx='625.7' cy='154.8' r='34.2' fill='%230F2A1E'/%3E%3Ccircle cx='681.0' cy='152.7' r='35.5' fill='%230F2A1E'/%3E%3Ccircle cx='654.6' cy='93.4' r='31.6' fill='%230F2A1E'/%3E%3Ccircle cx='638.8' cy='140.0' r='26.3' fill='%230B2017' opacity='.55'/%3E%3Cpolygon points='0,270.0 15,271.9 30,273.5 45,274.6 60,275.0 75,274.6 90,273.5 105,271.9 120,270.0 135,268.1 150,266.5 165,265.4 180,265.0 195,265.4 210,266.5 225,268.1 240,270.0 255,271.9 270,273.5 285,274.6 300,275.0 315,274.6 330,273.5 345,271.9 360,270.0 375,268.1 390,266.5 405,265.4 420,265.0 435,265.4 450,266.5 465,268.1 480,270.0 495,271.9 510,273.5 525,274.6 540,275.0 555,274.6 570,273.5 585,271.9 600,270.0 615,268.1 630,266.5 645,265.4 660,265.0 675,265.4 690,266.5 705,268.1 720,270.0 720,300 0,300' fill='%230A1812'/%3E%3Cellipse cx='30' cy='275.5' rx='24' ry='12' fill='%2312301F'/%3E%3Cellipse cx='125' cy='271.3' rx='24' ry='13' fill='%2312301F'/%3E%3Cellipse cx='250' cy='273.3' rx='30' ry='14' fill='%2312301F'/%3E%3Cellipse cx='370' cy='270.7' rx='32' ry='11' fill='%2312301F'/%3E%3Cellipse cx='490' cy='273.3' rx='25' ry='11' fill='%2312301F'/%3E%3Cellipse cx='600' cy='272.0' rx='30' ry='11' fill='%2312301F'/%3E%3Cellipse cx='690' cy='268.5' rx='31' ry='12' fill='%2312301F'/%3E%3Cpath d='M14 271.8 l-3 -11 l4 8 l1 -12 l3 12 l3 -8 l-2 11z' fill='%2312301F'/%3E%3Cpath d='M52 274.9 l-3 -11 l4 8 l1 -12 l3 12 l3 -8 l-2 11z' fill='%2312301F'/%3E%3Cpath d='M90 273.5 l-3 -11 l4 8 l1 -12 l3 12 l3 -8 l-2 11z' fill='%2312301F'/%3E%3Cpath d='M128 269.0 l-3 -11 l4 8 l1 -12 l3 12 l3 -8 l-2 11z' fill='%2312301F'/%3E%3Cpath d='M166 265.3 l-3 -11 l4 8 l1 -12 l3 12 l3 -8 l-2 11z' fill='%2312301F'/%3E%3Cpath d='M204 266.0 l-3 -11 l4 8 l1 -12 l3 12 l3 -8 l-2 11z' fill='%2312301F'/%3E%3Cpath d='M242 270.3 l-3 -11 l4 8 l1 -12 l3 12 l3 -8 l-2 11z' fill='%2312301F'/%3E%3Cpath d='M280 274.3 l-3 -11 l4 8 l1 -12 l3 12 l3 -8 l-2 11z' fill='%2312301F'/%3E%3Cpath d='M318 274.5 l-3 -11 l4 8 l1 -12 l3 12 l3 -8 l-2 11z' fill='%2312301F'/%3E%3Cpath d='M356 270.5 l-3 -11 l4 8 l1 -12 l3 12 l3 -8 l-2 11z' fill='%2312301F'/%3E%3Cpath d='M394 266.1 l-3 -11 l4 8 l1 -12 l3 12 l3 -8 l-2 11z' fill='%2312301F'/%3E%3Cpath d='M432 265.2 l-3 -11 l4 8 l1 -12 l3 12 l3 -8 l-2 11z' fill='%2312301F'/%3E%3Cpath d='M470 268.7 l-3 -11 l4 8 l1 -12 l3 12 l3 -8 l-2 11z' fill='%2312301F'/%3E%3Cpath d='M508 273.3 l-3 -11 l4 8 l1 -12 l3 12 l3 -8 l-2 11z' fill='%2312301F'/%3E%3Cpath d='M546 274.9 l-3 -11 l4 8 l1 -12 l3 12 l3 -8 l-2 11z' fill='%2312301F'/%3E%3Cpath d='M584 272.0 l-3 -11 l4 8 l1 -12 l3 12 l3 -8 l-2 11z' fill='%2312301F'/%3E%3Cpath d='M622 267.3 l-3 -11 l4 8 l1 -12 l3 12 l3 -8 l-2 11z' fill='%2312301F'/%3E%3Cpath d='M660 265.0 l-3 -11 l4 8 l1 -12 l3 12 l3 -8 l-2 11z' fill='%2312301F'/%3E%3Cpath d='M698 267.3 l-3 -11 l4 8 l1 -12 l3 12 l3 -8 l-2 11z' fill='%2312301F'/%3E%3C/svg%3E");
+  --bird:       url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 16'%3E%3Cpath d='M1 6C8 0 13 2 17 9C21 2 26 0 33 6C27 4 22 6 17 13C12 6 7 4 1 6Z' fill='%23D9E8D2'/%3E%3C/svg%3E");
+  --mountains:  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='360' viewBox='0 0 1200 360'%3E%3Cpolygon points='0,200 110,120 190,170 300,90 410,165 520,130 640,185 760,100 860,160 990,115 1100,175 1200,200 1200,360 0,360' fill='%231A352E'/%3E%3Cpolygon points='110,120 136,152 122,144 110,156 98,144 84,152' fill='%2341655B' opacity='0.8'/%3E%3Cpolygon points='300,90 326,122 312,114 300,126 288,114 274,122' fill='%2341655B' opacity='0.8'/%3E%3Cpolygon points='760,100 786,132 772,124 760,136 748,124 734,132' fill='%2341655B' opacity='0.8'/%3E%3Cpolygon points='990,115 1016,147 1002,139 990,151 978,139 964,147' fill='%2341655B' opacity='0.8'/%3E%3Cpolygon points='0,270 70,230 160,262 260,200 350,258 470,222 560,270 690,215 790,262 900,205 1010,258 1120,228 1200,270 1200,360 0,360' fill='%23142B24'/%3E%3Cpolygon points='260,200 278,222 268,217 260,225 252,217 242,222' fill='%2341655B' opacity='0.8'/%3E%3Cpolygon points='690,215 708,237 698,232 690,240 682,232 672,237' fill='%2341655B' opacity='0.8'/%3E%3Cpolygon points='900,205 918,227 908,222 900,230 892,222 882,227' fill='%2341655B' opacity='0.8'/%3E%3C/svg%3E");
+  --clouds-a:   url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1300' height='260' viewBox='0 0 1300 260'%3E%3Cg fill='%23A9C2B6' opacity='0.09'%3E%3Cellipse cx='160' cy='150' rx='115' ry='21'/%3E%3Ccircle cx='109' cy='134' r='39'/%3E%3Ccircle cx='160' cy='118' r='55'/%3E%3Ccircle cx='211' cy='136' r='41'/%3E%3C/g%3E%3Cg fill='%23A9C2B6' opacity='0.09'%3E%3Cellipse cx='520' cy='100' rx='85' ry='15'/%3E%3Ccircle cx='483' cy='88' r='29'/%3E%3Ccircle cx='520' cy='76' r='41'/%3E%3Ccircle cx='557' cy='90' r='31'/%3E%3C/g%3E%3Cg fill='%23A9C2B6' opacity='0.09'%3E%3Cellipse cx='880' cy='160' rx='130' ry='23'/%3E%3Ccircle cx='823' cy='142' r='44'/%3E%3Ccircle cx='880' cy='124' r='62'/%3E%3Ccircle cx='937' cy='144' r='47'/%3E%3C/g%3E%3Cg fill='%23A9C2B6' opacity='0.09'%3E%3Cellipse cx='1180' cy='90' rx='75' ry='14'/%3E%3Ccircle cx='1147' cy='80' r='26'/%3E%3Ccircle cx='1180' cy='69' r='36'/%3E%3Ccircle cx='1213' cy='81' r='27'/%3E%3C/g%3E%3C/svg%3E");
+  --clouds-b:   url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='160' viewBox='0 0 900 160'%3E%3Cg fill='%23A9C2B6' opacity='0.07'%3E%3Cellipse cx='120' cy='100' rx='60' ry='11'/%3E%3Ccircle cx='94' cy='92' r='20'/%3E%3Ccircle cx='120' cy='83' r='29'/%3E%3Ccircle cx='146' cy='93' r='22'/%3E%3C/g%3E%3Cg fill='%23A9C2B6' opacity='0.07'%3E%3Cellipse cx='430' cy='70' rx='45' ry='8'/%3E%3Ccircle cx='410' cy='64' r='15'/%3E%3Ccircle cx='430' cy='57' r='22'/%3E%3Ccircle cx='450' cy='65' r='16'/%3E%3C/g%3E%3Cg fill='%23A9C2B6' opacity='0.07'%3E%3Cellipse cx='700' cy='110' rx='70' ry='13'/%3E%3Ccircle cx='669' cy='100' r='24'/%3E%3Ccircle cx='700' cy='90' r='34'/%3E%3Ccircle cx='731' cy='102' r='25'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ---- NATURE layer: sky, trees (static SVG), birds (transform only) ---- */
+body {
+  background:
+    var(--sun),
+    var(--stars),
+    linear-gradient(180deg, var(--sky-a) 0%, var(--sky-b) 60%, var(--sky-c) 100%) 0 0 / 100% 100% no-repeat,
+    var(--paper);
+  background-attachment: scroll;
+}
+h1, h2, h3 { font-family: var(--display); letter-spacing: 0; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+::selection { background: var(--accent); color: var(--accent-ink); }
+html { scrollbar-width: thin; scrollbar-color: var(--line-strong) transparent; }
+input, textarea { caret-color: var(--accent); }
+
+/* far treeline + hills, then near trees + grass. Painted once, never animated. */
+body::before, body::after {
+  content: ''; position: fixed; left: 0; right: 0; bottom: 0; z-index: -1; pointer-events: none;
+  background-repeat: repeat-x; background-position: left bottom; background-size: auto 100%;
+}
+body::before {
+  height: var(--mtn-h);
+  background:
+    var(--trees-near) left bottom / auto var(--near-h) repeat-x,
+    var(--trees-far) left bottom / auto var(--far-h) repeat-x,
+    var(--mountains) left bottom / auto 100% repeat-x;
+}
+
+/* CLOUDS drift slowly across the sky (transform only, GPU). Tile = 950px so the loop is seamless.
+   They sit in front of the sun/moon and stars. */
+body::after {
+  top: 0; bottom: auto; right: auto; left: 0; width: calc(100% + 950px); height: 340px;
+  background:
+    var(--clouds-a) 0 40px / auto 190px repeat-x,
+    var(--clouds-b) 300px 150px / auto 168.889px repeat-x;
+  animation: cloud-drift 150s linear infinite;
+}
+@keyframes cloud-drift {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-950px, 0, 0); }
+}
+
+/* birds: a flock crosses now and then, mostly hidden. Only translate/transform animate. */
+html::before, html::after {
+  content: ''; position: fixed; left: 0; top: 10vh; width: 200px; height: 90px; z-index: 5; pointer-events: none;
+  background:
+    var(--bird) 80px 30px / 34px 16px no-repeat,
+    var(--bird) 50px 44px / 28px 13px no-repeat,
+    var(--bird) 110px 44px / 28px 13px no-repeat,
+    var(--bird) 22px 58px / 22px 10px no-repeat,
+    var(--bird) 138px 58px / 22px 10px no-repeat;
+  opacity: .9; visibility: hidden;
+  translate: -300px 0;
+}
+html::before { animation: flock-a 47s linear infinite, wing-flap .8s ease-in-out infinite alternate; }
+html::after  {
+  top: 24vh; width: 130px; height: 60px; opacity: .75;
+  background:
+    var(--bird) 50px 14px / 26px 12px no-repeat,
+    var(--bird) 22px 30px / 20px 9px no-repeat,
+    var(--bird) 84px 30px / 20px 9px no-repeat;
+  animation: flock-b 61s linear infinite, wing-flap 1s ease-in-out infinite alternate;
+}
+@keyframes flock-a {
+  0%, 32%  { translate: -300px 0; visibility: hidden; }
+  33%      { translate: -300px 0; visibility: visible; }
+  62%      { translate: calc(100vw + 300px) -6vh; visibility: visible; }
+  62.1%, 100% { translate: calc(100vw + 300px) -6vh; visibility: hidden; }
+}
+@keyframes flock-b {
+  0%, 49%  { translate: calc(100vw + 200px) 0; visibility: hidden; }
+  50%      { translate: calc(100vw + 200px) 0; visibility: visible; }
+  80%      { translate: -240px 5vh; visibility: visible; }
+  80.1%, 100% { translate: -240px 5vh; visibility: hidden; }
+}
+@keyframes wing-flap {
+  from { transform: translateY(0) scaleY(1); }
+  to   { transform: translateY(-5px) scaleY(.66); }
+}
+
+/* camera live: no background effects, leave the CPU to the scanner */
+html:has(.scanner.is-live)::before { display: none; }
+html:has(.scanner.is-live)::after { display: none; }
+
+/* NIGHT: the second flock slot becomes a swarm of fireflies drifting low over the trees.
+   Hidden by default; only visible while the animation runs, so "Animations off" removes them. */
+:root[data-theme="dark"]::after {
+  top: 56vh; left: 6vw; width: 88vw; height: 36vh; opacity: 0; visibility: hidden; translate: 0 0;
+  background:
+    radial-gradient(circle, #F0FFA6 0 1.6px, rgba(200, 255, 120, .5) 2.6px, rgba(200, 255, 120, 0) 8px) 8% 22% / 20px 20px no-repeat,
+    radial-gradient(circle, #F0FFA6 0 1.4px, rgba(200, 255, 120, .5) 2.4px, rgba(200, 255, 120, 0) 7px) 21% 64% / 18px 18px no-repeat,
+    radial-gradient(circle, #F0FFA6 0 1.8px, rgba(200, 255, 120, .5) 2.8px, rgba(200, 255, 120, 0) 9px) 34% 35% / 22px 22px no-repeat,
+    radial-gradient(circle, #F0FFA6 0 1.5px, rgba(200, 255, 120, .5) 2.5px, rgba(200, 255, 120, 0) 8px) 47% 80% / 20px 20px no-repeat,
+    radial-gradient(circle, #F0FFA6 0 1.4px, rgba(200, 255, 120, .5) 2.4px, rgba(200, 255, 120, 0) 7px) 58% 18% / 18px 18px no-repeat,
+    radial-gradient(circle, #F0FFA6 0 1.8px, rgba(200, 255, 120, .5) 2.8px, rgba(200, 255, 120, 0) 9px) 66% 55% / 22px 22px no-repeat,
+    radial-gradient(circle, #F0FFA6 0 1.5px, rgba(200, 255, 120, .5) 2.5px, rgba(200, 255, 120, 0) 8px) 78% 30% / 20px 20px no-repeat,
+    radial-gradient(circle, #F0FFA6 0 1.4px, rgba(200, 255, 120, .5) 2.4px, rgba(200, 255, 120, 0) 7px) 88% 72% / 18px 18px no-repeat,
+    radial-gradient(circle, #F0FFA6 0 1.6px, rgba(200, 255, 120, .5) 2.6px, rgba(200, 255, 120, 0) 8px) 93% 12% / 20px 20px no-repeat;
+  animation: firefly-drift 17s ease-in-out infinite alternate, firefly-glow 4.8s ease-in-out infinite alternate;
+}
+@keyframes firefly-drift {
+  from { transform: translate(0, 0); }
+  to   { transform: translate(3vw, -5vh); }
+}
+@keyframes firefly-glow {
+  from { opacity: .3; visibility: visible; }
+  to   { opacity: 1;  visibility: visible; }
+}
+
+/* NIGHT, more fireflies: a second swarm fades in and out on its own slow cycle (52s) while the first
+   one stays, so the number of fireflies changes over time (about 9, then about 18, then back).
+   At night it takes the first flock's slot (the birds are asleep). Opacity/transform only. */
+:root[data-theme="dark"]::before {
+  top: 50vh; left: 2vw; width: 94vw; height: 44vh; opacity: 0; visibility: hidden; translate: 0 0;
+  background:
+    radial-gradient(circle, #F0FFA6 0 1.5px, rgba(200, 255, 120, .5) 2.5px, rgba(200, 255, 120, 0) 8.1px) 5% 40% / 20px 20px no-repeat,
+    radial-gradient(circle, #F0FFA6 0 1.4px, rgba(200, 255, 120, .5) 2.4px, rgba(200, 255, 120, 0) 7.3px) 15% 12% / 18px 18px no-repeat,
+    radial-gradient(circle, #F0FFA6 0 1.7px, rgba(200, 255, 120, .5) 2.7px, rgba(200, 255, 120, 0) 8.9px) 27% 75% / 22px 22px no-repeat,
+    radial-gradient(circle, #F0FFA6 0 1.4px, rgba(200, 255, 120, .5) 2.4px, rgba(200, 255, 120, 0) 7.3px) 38% 55% / 18px 18px no-repeat,
+    radial-gradient(circle, #F0FFA6 0 1.5px, rgba(200, 255, 120, .5) 2.5px, rgba(200, 255, 120, 0) 8.1px) 52% 30% / 20px 20px no-repeat,
+    radial-gradient(circle, #F0FFA6 0 1.7px, rgba(200, 255, 120, .5) 2.7px, rgba(200, 255, 120, 0) 8.9px) 63% 85% / 22px 22px no-repeat,
+    radial-gradient(circle, #F0FFA6 0 1.4px, rgba(200, 255, 120, .5) 2.4px, rgba(200, 255, 120, 0) 7.3px) 74% 60% / 18px 18px no-repeat,
+    radial-gradient(circle, #F0FFA6 0 1.5px, rgba(200, 255, 120, .5) 2.5px, rgba(200, 255, 120, 0) 8.1px) 84% 15% / 20px 20px no-repeat,
+    radial-gradient(circle, #F0FFA6 0 1.4px, rgba(200, 255, 120, .5) 2.4px, rgba(200, 255, 120, 0) 7.3px) 95% 48% / 18px 18px no-repeat;
+  animation: firefly-drift-b 23s ease-in-out infinite alternate, firefly-swarm 52s ease-in-out infinite;
+}
+@keyframes firefly-drift-b {
+  from { transform: translate(0, 0); }
+  to   { transform: translate(-3vw, -4vh); }
+}
+@keyframes firefly-swarm {
+  0%, 16%   { opacity: 0;   visibility: hidden; }
+  28%       { opacity: 1;   visibility: visible; }
+  36%       { opacity: .7;  visibility: visible; }
+  44%       { opacity: 1;   visibility: visible; }
+  52%       { opacity: .75; visibility: visible; }
+  58%       { opacity: 1;   visibility: visible; }
+  72%, 100% { opacity: 0;   visibility: hidden; }
+}
+
+/* phones / touch / narrow: one flock only (fireflies stay: they are tiny) */
+@media (hover: none), (pointer: coarse), (max-width: 700px) {
+  html::after { display: none; }
+  :root[data-theme="dark"]::after { display: block; }
+  body::after { width: 100%; animation: none; }   /* clouds stay, but do not move on phones */
+}
+:root[data-birds="off"]::before, :root[data-birds="off"]::after { display: none; }

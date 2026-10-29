@@ -14,6 +14,7 @@ import { initAdmin } from './admin.js';
 import { showSetup, initSessionEditor, initAdvancedToggles, onSetupSubmit, onReset, onRefreshRoster, onCopySetupCode, onApplySetupCode } from './setup.js';
 import { initTheme, refreshThemeThumb } from './theme.js';
 import { initDesign } from './designs.js';
+import { initAnimations } from './animations.js';
 
 function registerServiceWorker() {
   if ('serviceWorker' in navigator) {
@@ -29,6 +30,7 @@ function bindEvents() {
   initHardwareScanner();
   initTheme();
   initDesign();
+  initAnimations();
   const openDeviceSettings = () => {
     $('device-settings-modal').showModal();
     refreshThemeThumb();

@@ -1,0 +1,98 @@
+/* DESIGN: RETRO | file: css/retro/base.css | Classic base + retro theme layer */
+/* Fonts (self-hosted in assets/fonts). VT323 is small by design, so it is scaled up. */
+@font-face { font-family: "Press Start 2P"; font-weight: 400; font-display: swap; src: url("../../assets/fonts/press-start-2p-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "VT323"; font-weight: 400; font-display: swap; size-adjust: 125%; src: url("../../assets/fonts/vt323-latin-400-normal.woff2") format("woff2"); }
+
+/* RETRO: arcade cabinet. Hard 3px edges, offset block shadows, pixel labels. Lavender light / night-arcade dark. */
+:root {
+  --paper:   #F1EDFF;
+  --card:    #FFFFFF;
+  --fill:    #E4DDFB;
+  --ink:     #1B1040;
+  --ink-2:   #5C4F8F;
+  --line:    #CFC5F2;
+  --line-strong: #A79BDD;
+  --edge:    #1B1040;
+  --pix-shadow: #1B1040;
+  --brand:   #D61F8C;
+  --on-brand:#FFFFFF;
+  --hl:      #FFD21F;
+  --hl-ink:  #1B1040;
+  --ok:      #0B8F4B;
+  --ok-soft: #D9F7E6;
+  --ok-border: #7BD3A2;
+  --warn:    #B45309;
+  --warn-soft:#FFE9CC;
+  --bad:     #D6204A;
+  --bad-soft:#FFE0E7;
+  --focus:   #D61F8C;
+  --toast-bg: #1B1040;
+  --toast-fg: #FFFFFF;
+  --overlay-fg: #1B1040;
+  --dot:     rgba(27, 16, 64, .10);
+  --radius:  0;
+  --font:    system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --display: "Press Start 2P", ui-monospace, Menlo, Consolas, monospace;
+  --mono:    "VT323", ui-monospace, Menlo, Consolas, monospace;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper:   #0F0A24;
+  --card:    #1A1238;
+  --fill:    #231A4D;
+  --ink:     #F4EEFF;
+  --ink-2:   #A99BE0;
+  --line:    #2E2466;
+  --line-strong: #4A3E94;
+  --edge:    #6A5CE0;
+  --pix-shadow: #000000;
+  --brand:   #FF3EA5;
+  --on-brand:#1A0A2E;
+  --hl:      #FFE14D;
+  --hl-ink:  #1A0A2E;
+  --ok:      #39E58C;
+  --ok-soft: #0B2A1D;
+  --ok-border: #1F7F55;
+  --warn:    #FFB020;
+  --warn-soft:#2B1D07;
+  --bad:     #FF4D6D;
+  --bad-soft:#2D0F1A;
+  --focus:   #3DF2FF;
+  --toast-bg: #FFE14D;
+  --toast-fg: #1A0A2E;
+  --dot:     rgba(124, 108, 240, .16);
+}
+
+:root[data-theme="dark"] .icon-btn:hover { background: rgba(255,255,255,.1); }
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--paper);
+  color: var(--ink);
+  font: 16px/1.45 var(--font);
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+[hidden] { display: none !important; }
+.view { max-width: 720px; margin: 0 auto; padding: 16px; }
+#view-dashboard.admin-active { max-width: 1400px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* ---- RETRO layer ---- */
+body {
+  background-color: var(--paper);
+  background-image: radial-gradient(circle, var(--dot) 1px, transparent 1.5px);
+  background-size: 16px 16px;
+}
+h1, h2, h3 { font-family: var(--display); font-weight: 400; letter-spacing: 0; line-height: 1.4; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+@keyframes blink { 50% { opacity: 0; } }

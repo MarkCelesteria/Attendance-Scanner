@@ -113,3 +113,63 @@ input:focus { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), 
 }
 select { border: 1px solid var(--line-strong); border-radius: 2px; background-color: var(--fill); font-family: var(--mono); font-size: .9rem; }
 select:focus { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), 0 0 14px var(--glow); }
+
+/* =====================================================================
+   TECH v2 : components
+   ===================================================================== */
+/* buttons: light sheen sweeps across on hover, press flashes */
+.btn { position: relative; overflow: hidden; isolation: isolate; }
+.btn::before {
+  content: ''; position: absolute; top: 0; bottom: 0; left: -60%; width: 40%; z-index: -1; pointer-events: none;
+  background: linear-gradient(100deg, transparent, var(--accent-soft), transparent);
+  transform: skewX(-20deg);
+}
+@media (hover: hover) { .btn:hover::before { animation: btn-sheen .6s ease-out; } }
+@keyframes btn-sheen { from { left: -60%; } to { left: 130%; } }
+.btn-primary { background-image: repeating-linear-gradient(135deg, rgba(255,255,255,.10) 0 1px, transparent 1px 6px); }
+.btn:active { transform: translateY(1px); box-shadow: 0 0 0 1px var(--accent), 0 0 22px var(--glow); }
+.btn-danger:hover { box-shadow: 0 0 0 1px var(--bad), 0 0 14px var(--bad-glow); border-color: var(--bad); }
+
+/* inputs */
+input::placeholder { font-family: var(--mono); font-size: .85em; color: var(--ink-2); opacity: .6; }
+input:focus { box-shadow: 0 0 0 1px var(--accent), 0 0 14px var(--glow), inset 3px 0 0 var(--accent); }
+select:focus { box-shadow: 0 0 0 1px var(--accent), 0 0 14px var(--glow), inset 3px 0 0 var(--accent); }
+.icon-btn:active { box-shadow: 0 0 0 1px var(--accent); color: var(--accent); }
+
+/* top bar: a bright segment patrols the rule */
+.topbar::after { animation: topbar-run 5s ease-in-out infinite alternate; }
+@keyframes topbar-run { from { left: 0; } to { left: calc(100% - 64px); } }
+
+/* sync pill: bracketed status readout, live dot pings */
+.pill::before, .pill::after { color: var(--accent); opacity: .7; font-weight: 400; }
+.pill::before { content: '['; }
+.pill::after  { content: ']'; }
+.pill .dot { position: relative; }
+.pill-synced .dot::after, .pill-offline .dot::after {
+  content: ''; position: absolute; inset: -4px; border: 1px solid currentColor; border-radius: 1px; opacity: 0;
+}
+.pill-synced  .dot { color: var(--ok); }
+.pill-offline .dot { color: var(--bad); }
+.pill-synced .dot::after  { animation: dot-ping 2.4s ease-out infinite; }
+.pill-offline .dot::after { animation: dot-ping 1s steps(2) infinite; }
+@keyframes dot-ping { 0% { transform: scale(.6); opacity: .8; } 100% { transform: scale(1.8); opacity: 0; } }
+
+/* toast: boots in like a terminal line */
+.toast { animation: toast-boot .38s steps(10, end) both; }
+.toast::before { content: '>'; margin-right: 8px; opacity: .65; }
+@keyframes toast-boot {
+  0%   { opacity: 0; transform: translate(-50%, 14px); clip-path: inset(0 100% 0 0); }
+  70%  { opacity: 1; transform: translate(-50%, 0);    clip-path: inset(0 0 0 0); }
+  80%  { opacity: .6; }
+  100% { opacity: 1; transform: translate(-50%, 0);    clip-path: inset(0 0 0 0); }
+}
+
+
+/* ---- PERFORMANCE: lite tier (phones / touch / narrow) ---- */
+@media (hover: none), (pointer: coarse), (max-width: 700px) {
+  .topbar::after { animation: none; }
+  .pill .dot::after { display: none; }
+  .btn::before { display: none; }
+  .toast { animation: toast-in .22s ease-out; }
+  .toast::before { display: none; }
+}

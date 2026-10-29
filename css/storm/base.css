@@ -1,0 +1,180 @@
+/* DESIGN: STORM | file: css/storm/base.css | Classic base + storm theme layer (dark only) */
+:root {
+  --paper:   #EEF1F5;
+  --card:    #FFFFFF;
+  --ink:     #14213D;
+  --ink-2:   #4A5877;
+  --line:    #CBD3E1;
+  --brand:   #14213D;
+  --ok:      #12A150;
+  --ok-soft: #DDF5E7;
+  --warn:    #B7791F;
+  --warn-soft:#FFF3D6;
+  --bad:     #C62F3E;
+  --bad-soft:#FBE3E6;
+  --focus:   #2B5BFF;
+  --ok-border: #8FD1AB;
+  --toast-bg: #14213D;
+  --toast-fg: #FFFFFF;
+  --overlay-fg: #14213D;
+  --radius:  14px;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper:   #121317;
+  --card:    #1B1C22;
+  --ink:     #ECEDF2;
+  --ink-2:   #9B9EAC;
+  --line:    #303239;
+  --brand:   #14213D;
+  --ok:      #279E5B;
+  --ok-soft: #172219;
+  --ok-border: #3C6B4E;
+  --warn:    #D69A1F;
+  --warn-soft:#26200F;
+  --bad:     #D9636F;
+  --bad-soft:#271A1C;
+  --focus:   #5D79D6;
+}
+
+:root[data-theme="dark"] .icon-btn:hover { background: rgba(255,255,255,.1); }
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--paper);
+  color: var(--ink);
+  font: 16px/1.45 var(--font);
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+[hidden] { display: none !important; }
+.view { max-width: 720px; margin: 0 auto; padding: 16px; }
+#view-dashboard.admin-active { max-width: 1400px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* ===================================================================== STORM
+   Dark-only (like Space): the tokens below apply for light AND dark.
+   Muted blue-grey. Rain falls behind the UI, droplets sit on the glass, lightning flashes now and then. */
+@font-face { font-family: "IBM Plex Sans Condensed"; font-weight: 600; font-display: swap; src: url("../../assets/fonts/ibm-plex-sans-condensed-latin-600-normal.woff2") format("woff2"); }
+@font-face { font-family: "IBM Plex Sans Condensed"; font-weight: 700; font-display: swap; src: url("../../assets/fonts/ibm-plex-sans-condensed-latin-700-normal.woff2") format("woff2"); }
+@font-face { font-family: "IBM Plex Mono"; font-weight: 400; font-display: swap; src: url("../../assets/fonts/ibm-plex-mono-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "IBM Plex Mono"; font-weight: 600; font-display: swap; src: url("../../assets/fonts/ibm-plex-mono-latin-600-normal.woff2") format("woff2"); }
+
+:root, :root[data-theme="light"], :root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper:   #0C1218;
+  --card:    #141C25;
+  --fill:    #1A2430;
+  --ink:     #DCE6EE;
+  --ink-2:   #8CA0B0;
+  --line:    #243240;
+  --line-strong: #3A4F61;
+  --brand:   #6F93B0;
+  --accent:  #8DB4D0;
+  --accent-ink: #0A141C;
+  --accent-soft: rgba(141, 180, 208, .14);
+  --ok:      #5DC7A0;
+  --ok-soft: #0F2A24;
+  --ok-border: #2A7A62;
+  --ok-glow: rgba(93, 199, 160, .28);
+  --warn:    #E0B15A;
+  --warn-soft:#2A2210;
+  --bad:     #F0788A;
+  --bad-soft:#2D141B;
+  --bad-glow: rgba(240, 120, 138, .30);
+  --focus:   #8DB4D0;
+  --hover:   rgba(141, 180, 208, .10);
+  --toast-bg: #DCE6EE;
+  --toast-fg: #0C1218;
+  --overlay-fg: #DCE6EE;
+  --glow:    rgba(141, 180, 208, .28);
+  --radius:  14px;
+  --font:    system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --display: "IBM Plex Sans Condensed", "Arial Narrow", ui-sans-serif, system-ui, sans-serif;
+  --mono:    "IBM Plex Mono", ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+  --rain-far:  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='300' viewBox='0 0 220 300'%3E%3Cline x1='162' y1='193' x2='159.0' y2='223' stroke='%23AFC6D8' stroke-opacity='0.18' stroke-width='0.9' stroke-linecap='round'/%3E%3Cline x1='179' y1='5' x2='176.9' y2='26' stroke='%23AFC6D8' stroke-opacity='0.19' stroke-width='0.9' stroke-linecap='round'/%3E%3Cline x1='160' y1='43' x2='157.0' y2='73' stroke='%23AFC6D8' stroke-opacity='0.19' stroke-width='0.9' stroke-linecap='round'/%3E%3Cline x1='192' y1='196' x2='190.3' y2='213' stroke='%23AFC6D8' stroke-opacity='0.17' stroke-width='0.9' stroke-linecap='round'/%3E%3Cline x1='191' y1='218' x2='188.0' y2='248' stroke='%23AFC6D8' stroke-opacity='0.17' stroke-width='0.9' stroke-linecap='round'/%3E%3Cline x1='19' y1='58' x2='16.7' y2='81' stroke='%23AFC6D8' stroke-opacity='0.17' stroke-width='0.9' stroke-linecap='round'/%3E%3Cline x1='22' y1='198' x2='18.6' y2='232' stroke='%23AFC6D8' stroke-opacity='0.24' stroke-width='0.9' stroke-linecap='round'/%3E%3Cline x1='80' y1='106' x2='78.1' y2='125' stroke='%23AFC6D8' stroke-opacity='0.23' stroke-width='0.9' stroke-linecap='round'/%3E%3Cline x1='28' y1='138' x2='25.1' y2='167' stroke='%23AFC6D8' stroke-opacity='0.25' stroke-width='0.9' stroke-linecap='round'/%3E%3Cline x1='77' y1='176' x2='74.2' y2='204' stroke='%23AFC6D8' stroke-opacity='0.24' stroke-width='0.9' stroke-linecap='round'/%3E%3Cline x1='187' y1='4' x2='184.8' y2='26' stroke='%23AFC6D8' stroke-opacity='0.25' stroke-width='0.9' stroke-linecap='round'/%3E%3Cline x1='102' y1='253' x2='100.3' y2='270' stroke='%23AFC6D8' stroke-opacity='0.17' stroke-width='0.9' stroke-linecap='round'/%3E%3Cline x1='114' y1='59' x2='111.7' y2='82' stroke='%23AFC6D8' stroke-opacity='0.26' stroke-width='0.9' stroke-linecap='round'/%3E%3Cline x1='37' y1='103' x2='35.4' y2='119' stroke='%23AFC6D8' stroke-opacity='0.25' stroke-width='0.9' stroke-linecap='round'/%3E%3Cline x1='90' y1='6' x2='87.8' y2='28' stroke='%23AFC6D8' stroke-opacity='0.25' stroke-width='0.9' stroke-linecap='round'/%3E%3Cline x1='144' y1='10' x2='142.0' y2='30' stroke='%23AFC6D8' stroke-opacity='0.21' stroke-width='0.9' stroke-linecap='round'/%3E%3C/svg%3E");
+  --rain-near: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='340' height='420' viewBox='0 0 340 420'%3E%3Cline x1='260' y1='277' x2='252.2' y2='355' stroke='%23C4D6E6' stroke-opacity='0.37' stroke-width='1.5' stroke-linecap='round'/%3E%3Cline x1='41' y1='205' x2='34.2' y2='273' stroke='%23C4D6E6' stroke-opacity='0.26' stroke-width='1.5' stroke-linecap='round'/%3E%3Cline x1='302' y1='76' x2='297.3' y2='123' stroke='%23C4D6E6' stroke-opacity='0.25' stroke-width='1.5' stroke-linecap='round'/%3E%3Cline x1='27' y1='29' x2='19.0' y2='109' stroke='%23C4D6E6' stroke-opacity='0.27' stroke-width='1.5' stroke-linecap='round'/%3E%3Cline x1='82' y1='139' x2='74.0' y2='219' stroke='%23C4D6E6' stroke-opacity='0.34' stroke-width='1.5' stroke-linecap='round'/%3E%3Cline x1='23' y1='64' x2='15.2' y2='142' stroke='%23C4D6E6' stroke-opacity='0.36' stroke-width='1.5' stroke-linecap='round'/%3E%3Cline x1='127' y1='84' x2='120.3' y2='151' stroke='%23C4D6E6' stroke-opacity='0.32' stroke-width='1.5' stroke-linecap='round'/%3E%3Cline x1='193' y1='347' x2='188.6' y2='391' stroke='%23C4D6E6' stroke-opacity='0.31' stroke-width='1.5' stroke-linecap='round'/%3E%3Cline x1='50' y1='179' x2='42.2' y2='257' stroke='%23C4D6E6' stroke-opacity='0.24' stroke-width='1.5' stroke-linecap='round'/%3E%3Cline x1='193' y1='233' x2='185.1' y2='312' stroke='%23C4D6E6' stroke-opacity='0.26' stroke-width='1.5' stroke-linecap='round'/%3E%3Cline x1='300' y1='11' x2='294.6' y2='65' stroke='%23C4D6E6' stroke-opacity='0.29' stroke-width='1.5' stroke-linecap='round'/%3E%3Cline x1='174' y1='2' x2='166.0' y2='82' stroke='%23C4D6E6' stroke-opacity='0.29' stroke-width='1.5' stroke-linecap='round'/%3E%3Cline x1='119' y1='229' x2='113.5' y2='284' stroke='%23C4D6E6' stroke-opacity='0.27' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  --drops:     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='480' height='480' viewBox='0 0 480 480'%3E%3Cdefs%3E%3CradialGradient id='g' cx='40%25' cy='35%25' r='70%25'%3E%3Cstop offset='0' stop-color='%23fff' stop-opacity='.02'/%3E%3Cstop offset='1' stop-color='%23BFD6EA' stop-opacity='.14'/%3E%3C/radialGradient%3E%3C/defs%3E%3Cline x1='437' y1='55' x2='437.5' y2='98' stroke='%23BFD6EA' stroke-opacity='.10' stroke-width='1.2' stroke-linecap='round'/%3E%3Cline x1='72' y1='274' x2='70.1' y2='301' stroke='%23BFD6EA' stroke-opacity='.10' stroke-width='1.2' stroke-linecap='round'/%3E%3Cline x1='419' y1='296' x2='419.0' y2='347' stroke='%23BFD6EA' stroke-opacity='.10' stroke-width='1.2' stroke-linecap='round'/%3E%3Cline x1='383' y1='137' x2='384.0' y2='197' stroke='%23BFD6EA' stroke-opacity='.10' stroke-width='1.2' stroke-linecap='round'/%3E%3Cline x1='237' y1='341' x2='235.4' y2='379' stroke='%23BFD6EA' stroke-opacity='.10' stroke-width='1.2' stroke-linecap='round'/%3E%3Ccircle cx='399' cy='215' r='5' fill='url(%2523g)' stroke='%23CFE2F2' stroke-opacity='.28' stroke-width='.6'/%3E%3Cellipse cx='397.2' cy='213.0' rx='1.4' ry='0.9' fill='%23fff' fill-opacity='.55'/%3E%3Ccircle cx='450' cy='296' r='5' fill='url(%2523g)' stroke='%23CFE2F2' stroke-opacity='.28' stroke-width='.6'/%3E%3Cellipse cx='448.2' cy='294.0' rx='1.4' ry='0.9' fill='%23fff' fill-opacity='.55'/%3E%3Ccircle cx='81' cy='351' r='4' fill='url(%2523g)' stroke='%23CFE2F2' stroke-opacity='.28' stroke-width='.6'/%3E%3Cellipse cx='79.6' cy='349.4' rx='1.1' ry='0.7' fill='%23fff' fill-opacity='.55'/%3E%3Ccircle cx='97' cy='364' r='4' fill='url(%2523g)' stroke='%23CFE2F2' stroke-opacity='.28' stroke-width='.6'/%3E%3Cellipse cx='95.6' cy='362.4' rx='1.1' ry='0.7' fill='%23fff' fill-opacity='.55'/%3E%3Ccircle cx='25' cy='35' r='3' fill='url(%2523g)' stroke='%23CFE2F2' stroke-opacity='.28' stroke-width='.6'/%3E%3Cellipse cx='23.9' cy='33.8' rx='0.8' ry='0.5' fill='%23fff' fill-opacity='.55'/%3E%3Ccircle cx='144' cy='94' r='2.5' fill='url(%2523g)' stroke='%23CFE2F2' stroke-opacity='.28' stroke-width='.6'/%3E%3Cellipse cx='143.1' cy='93.0' rx='0.7' ry='0.4' fill='%23fff' fill-opacity='.55'/%3E%3Ccircle cx='320' cy='85' r='2' fill='url(%2523g)' stroke='%23CFE2F2' stroke-opacity='.28' stroke-width='.6'/%3E%3Cellipse cx='319.3' cy='84.2' rx='0.6' ry='0.4' fill='%23fff' fill-opacity='.55'/%3E%3Ccircle cx='34' cy='41' r='7' fill='url(%2523g)' stroke='%23CFE2F2' stroke-opacity='.28' stroke-width='.6'/%3E%3Cellipse cx='31.6' cy='38.2' rx='2.0' ry='1.3' fill='%23fff' fill-opacity='.55'/%3E%3Ccircle cx='116' cy='412' r='6' fill='url(%2523g)' stroke='%23CFE2F2' stroke-opacity='.28' stroke-width='.6'/%3E%3Cellipse cx='113.9' cy='409.6' rx='1.7' ry='1.1' fill='%23fff' fill-opacity='.55'/%3E%3Ccircle cx='160' cy='323' r='2' fill='url(%2523g)' stroke='%23CFE2F2' stroke-opacity='.28' stroke-width='.6'/%3E%3Cellipse cx='159.3' cy='322.2' rx='0.6' ry='0.4' fill='%23fff' fill-opacity='.55'/%3E%3Ccircle cx='418' cy='191' r='4' fill='url(%2523g)' stroke='%23CFE2F2' stroke-opacity='.28' stroke-width='.6'/%3E%3Cellipse cx='416.6' cy='189.4' rx='1.1' ry='0.7' fill='%23fff' fill-opacity='.55'/%3E%3Ccircle cx='82' cy='256' r='4' fill='url(%2523g)' stroke='%23CFE2F2' stroke-opacity='.28' stroke-width='.6'/%3E%3Cellipse cx='80.6' cy='254.4' rx='1.1' ry='0.7' fill='%23fff' fill-opacity='.55'/%3E%3Ccircle cx='80' cy='54' r='4' fill='url(%2523g)' stroke='%23CFE2F2' stroke-opacity='.28' stroke-width='.6'/%3E%3Cellipse cx='78.6' cy='52.4' rx='1.1' ry='0.7' fill='%23fff' fill-opacity='.55'/%3E%3Ccircle cx='366' cy='70' r='2.5' fill='url(%2523g)' stroke='%23CFE2F2' stroke-opacity='.28' stroke-width='.6'/%3E%3Cellipse cx='365.1' cy='69.0' rx='0.7' ry='0.4' fill='%23fff' fill-opacity='.55'/%3E%3Ccircle cx='225' cy='241' r='3' fill='url(%2523g)' stroke='%23CFE2F2' stroke-opacity='.28' stroke-width='.6'/%3E%3Cellipse cx='223.9' cy='239.8' rx='0.8' ry='0.5' fill='%23fff' fill-opacity='.55'/%3E%3Ccircle cx='370' cy='297' r='6' fill='url(%2523g)' stroke='%23CFE2F2' stroke-opacity='.28' stroke-width='.6'/%3E%3Cellipse cx='367.9' cy='294.6' rx='1.7' ry='1.1' fill='%23fff' fill-opacity='.55'/%3E%3Ccircle cx='311' cy='464' r='3' fill='url(%2523g)' stroke='%23CFE2F2' stroke-opacity='.28' stroke-width='.6'/%3E%3Cellipse cx='309.9' cy='462.8' rx='0.8' ry='0.5' fill='%23fff' fill-opacity='.55'/%3E%3Ccircle cx='349' cy='376' r='4' fill='url(%2523g)' stroke='%23CFE2F2' stroke-opacity='.28' stroke-width='.6'/%3E%3Cellipse cx='347.6' cy='374.4' rx='1.1' ry='0.7' fill='%23fff' fill-opacity='.55'/%3E%3C/svg%3E");
+  --bolt:      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='110' height='420' viewBox='0 0 110 420' fill='none' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M62 0 L44 78 L64 80 L36 168 L58 170 L26 268 L48 270 L20 372 L40 420' stroke='%23fff' stroke-opacity='.28' stroke-width='11'/%3E%3Cpath d='M58 170 L84 214 L74 216 L92 260' stroke='%23fff' stroke-opacity='.22' stroke-width='7'/%3E%3Cpath d='M62 0 L44 78 L64 80 L36 168 L58 170 L26 268 L48 270 L20 372 L40 420' stroke='%23fff' stroke-width='3'/%3E%3Cpath d='M58 170 L84 214 L74 216 L92 260' stroke='%23fff' stroke-width='2'/%3E%3C/svg%3E");
+  --bolt-clip: polygon(55% 0, 8% 56%, 44% 56%, 32% 100%, 92% 38%, 56% 38%);
+}
+
+/* ---- STORM layer: overcast sky (static) ---- */
+body {
+  background:
+    radial-gradient(ellipse 80% 38% at 18% 0%,  rgba(122, 148, 168, .22), transparent 70%),
+    radial-gradient(ellipse 70% 34% at 86% 6%,  rgba(104, 130, 152, .20), transparent 70%),
+    radial-gradient(ellipse 60% 26% at 52% 14%, rgba(90, 114, 134, .14),  transparent 72%),
+    radial-gradient(ellipse 95% 28% at 50% 100%, rgba(80, 106, 126, .16), transparent 70%),
+    linear-gradient(180deg, #111A23 0%, #0C1218 55%, #090E13 100%) 0 0 / 100% 100% no-repeat,
+    var(--paper);
+  background-attachment: scroll;
+}
+h1, h2, h3 { font-family: var(--display); letter-spacing: .01em; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+::selection { background: var(--accent); color: var(--accent-ink); }
+html { scrollbar-width: thin; scrollbar-color: var(--line-strong) transparent; }
+input, textarea { caret-color: var(--accent); }
+
+html::before, html::after {
+  content: ''; position: fixed; left: 0; right: 0; top: 0; z-index: -1; pointer-events: none;
+  background-repeat: repeat;
+}
+html::before {
+  height: calc(100% + 300px); background-image: var(--rain-far); opacity: .9;
+  transform: translate3d(0, -300px, 0); animation: rain-far 1.15s linear infinite;
+}
+html::after {
+  height: calc(100% + 420px); background-image: var(--rain-near);
+  transform: translate3d(0, -420px, 0); animation: rain-near .72s linear infinite, rain-surge 41s ease-in-out infinite;
+}
+@keyframes rain-far  { to { transform: translate3d(0, 0, 0); } }
+@keyframes rain-near { to { transform: translate3d(0, 0, 0); } }
+@keyframes rain-surge { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
+
+body::after {
+  content: ''; position: fixed; inset: 0; z-index: 30; pointer-events: none;
+  background: var(--drops) 0 0 / 480px 480px repeat;
+}
+
+body::before {
+  content: ''; position: fixed; inset: 0; z-index: 40; pointer-events: none;
+  background: radial-gradient(ellipse 90% 70% at 50% 0%, rgba(255, 255, 255, .9), rgba(214, 228, 250, .36) 55%, rgba(196, 212, 238, .22) 100%);
+  opacity: 0; visibility: hidden;
+  animation: strike 29s linear infinite;
+}
+@keyframes strike {
+  0%, 19.5% { opacity: 0;   visibility: hidden; }
+  19.6%     { opacity: .85; visibility: visible; }
+  20.4%     { opacity: .12; visibility: visible; }
+  21.4%     { opacity: .70; visibility: visible; }
+  23.5%     { opacity: 0;   visibility: hidden; }
+  61.5%     { opacity: 0;   visibility: hidden; }
+  61.6%     { opacity: .50; visibility: visible; }
+  62.4%     { opacity: .10; visibility: visible; }
+  63%       { opacity: .35; visibility: visible; }
+  65%, 100% { opacity: 0;   visibility: hidden; }
+}
+
+/* switches */
+:root[data-lightning="off"] body::before { display: none; }
+:root[data-fx="off"] html::before, :root[data-fx="off"] html::after,
+:root[data-fx="off"] body::before, :root[data-fx="off"] body::after { display: none; }
+
+
+@media (hover: none), (pointer: coarse), (max-width: 700px) {
+  html::before { display: none; }
+}
+
+:root[data-anim="off"]::before, :root[data-anim="off"]::after { display: none; }

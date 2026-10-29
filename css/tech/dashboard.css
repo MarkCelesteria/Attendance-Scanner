@@ -390,3 +390,68 @@
   .result-name { font-size: clamp(1.5rem, 8vw, 2.2rem); }
   .scanner-idle-title { font-size: 1rem; }
 }
+
+/* =====================================================================
+   TECH v2 : dashboard
+   ===================================================================== */
+/* active session: blinking status square */
+.session-btn[aria-checked="true"]::after { animation: blink 1.4s steps(1) infinite; }
+
+/* camera idle: scan line patrols the viewport, dashed orbit ring turns */
+.scanner:not(.is-live)::after {
+  content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background:
+    linear-gradient(90deg, transparent, var(--accent), transparent) top / 100% 2px no-repeat,
+    linear-gradient(to bottom, var(--accent-soft), transparent) top / 100% 28px no-repeat;
+  transform: translateY(-30px);
+  animation: scan-line 3.4s ease-in-out infinite alternate;
+}
+/* moves with transform only (no layout, no repaint) */
+@keyframes scan-line { from { transform: translateY(-30px); opacity: .3; } 50% { opacity: 1; } to { transform: translateY(calc(100% - 2px)); opacity: .3; } }
+.scanner-idle-icon::before {
+  content: ''; position: absolute; inset: -16px; border-radius: 50%;
+  border: 1px dashed var(--accent); opacity: .45; animation: spin 14s linear infinite;
+}
+
+/* result card */
+.result-status:not(:empty)::before { content: '['; margin-right: 4px; opacity: .6; }
+.result-status:not(:empty)::after  { content: ']'; margin-left: 4px;  opacity: .6; }
+.result.is-ok .result-name { text-shadow: 0 0 18px var(--ok-glow); }
+.result.is-error .result-name { text-shadow: 0 0 18px var(--bad-glow); }
+
+/* success: corners snap inward like a target lock */
+.result.is-ok::before, .result.is-ok::after { animation: corner-snap .45s cubic-bezier(.2, 1.3, .4, 1) both; }
+@keyframes corner-snap { from { width: 46px; height: 46px; opacity: .2; } to { width: 14px; height: 14px; opacity: 1; } }
+.result.is-ok { animation: lock-flash .6s ease-out; }
+@keyframes lock-flash { 0% { box-shadow: 0 0 0 1px var(--ok), 0 0 70px var(--ok-glow); } 100% { box-shadow: 0 0 0 1px var(--ok), 0 0 30px var(--ok-glow); } }
+
+/* error: short glitch with chromatic split */
+.result.is-error { animation: glitch-shake .42s steps(2, end) 1; }
+.result.is-error .result-name { animation: chroma .6s steps(3, end) 1; }
+@keyframes glitch-shake {
+  0%, 100% { transform: none; } 20% { transform: translateX(-5px); } 40% { transform: translateX(4px); }
+  60% { transform: translateX(-3px); } 80% { transform: translateX(2px); }
+}
+@keyframes chroma {
+  0%   { text-shadow: 3px 0 rgba(255, 84, 112, .8), -3px 0 rgba(34, 211, 238, .8); }
+  60%  { text-shadow: -2px 0 rgba(255, 84, 112, .6), 2px 0 rgba(34, 211, 238, .6); }
+  100% { text-shadow: 0 0 18px var(--bad-glow); }
+}
+
+/* panels + tables */
+.tbl-card, .admin-panel { background: var(--hud), var(--card); }
+.tbl-row { transition: background-color .12s; }
+.tbl-row:hover { background: var(--accent-soft); box-shadow: inset 2px 0 0 var(--accent); }
+.tbl-badge { box-shadow: 0 0 10px var(--glow); }
+#admin-table tbody tr:nth-child(even) td { background: color-mix(in srgb, var(--fill) 45%, transparent); }
+#admin-table tbody tr:hover td { background: var(--accent-soft); }
+#admin-table tbody tr:hover td:first-child { box-shadow: inset 2px 0 0 var(--accent); }
+.filter-chip.is-on { box-shadow: 0 0 10px var(--glow); }
+
+
+/* ---- PERFORMANCE: lite tier (phones / touch / narrow) ---- */
+@media (hover: none), (pointer: coarse), (max-width: 700px) {
+  .scanner:not(.is-live)::after { animation: none; opacity: 0; }
+  .scanner-idle-icon::before { animation: none; }
+  .session-btn[aria-checked="true"]::after { animation: none; }
+}
