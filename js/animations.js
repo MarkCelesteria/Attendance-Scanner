@@ -1,7 +1,7 @@
 import { LS_ANIM } from './constants.js';
 import { $ } from './utils.js';
 
-const PREMIUM = ['space', 'tech', 'nature', 'storm',];
+const PREMIUM = ['space', 'tech', 'fantasy', 'nature', 'storm','ocean', 'city'];
 
 const root = document.documentElement;
 

@@ -280,3 +280,14 @@
 .btn { max-width: 100%; }
 .setup-actions .btn, .modal-actions .btn, .copy-row .btn { white-space: normal; text-align: center; line-height: 1.35; }
 .modal-actions { flex-wrap: wrap; }
+
+/* ---- RETRO fit fixes ---- */
+.toggle-text { overflow-wrap: break-word; }
+.toggle-row:has(.theme-seg) { flex-wrap: wrap; }
+.toggle-row:has(.theme-seg) .toggle-text { flex: 1 1 100%; }
+.theme-seg { width: 100%; }
+.theme-opt { flex: 1 1 0; padding: 8px 4px; text-align: center; }
+.key-help summary { font-family: var(--mono); font-size: 1.2rem; font-weight: 400; line-height: 1.2; }
+.qrpdf-split-options { flex-wrap: wrap; overflow: visible; }
+.qrpdf-chip { white-space: normal; text-align: left; }
+@media (max-width: 480px) { .modal-actions .btn { flex: 1 1 120px; } }

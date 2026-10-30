@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION = 'v1.9.8';
+const VERSION = 'v1.9.9';
 const CACHE = `attendance-shell-${VERSION}`;
 
 const SHELL = [
@@ -32,6 +32,8 @@ const SHELL = [
   'assets/fonts/orbitron-latin-600-normal.woff2',
   'assets/fonts/press-start-2p-latin-400-normal.woff2',
   'assets/fonts/vt323-latin-400-normal.woff2',
+  'assets/fonts/outfit-latin-500-normal.woff2',
+  'assets/fonts/outfit-latin-700-normal.woff2',
   'assets/icons/logo.png', 'assets/icons/logo-pwa.png',
   'assets/icons/Settings.svg', 'assets/icons/Admin.svg', 'assets/icons/Refresh.svg',
   'css/ledger/base.css', 'css/ledger/components.css', 'css/ledger/setup.css', 'css/ledger/dashboard.css',
@@ -43,6 +45,9 @@ const SHELL = [
   'css/nature/base.css', 'css/nature/components.css', 'css/nature/setup.css', 'css/nature/dashboard.css',
   'css/retro/base.css', 'css/retro/components.css', 'css/retro/setup.css', 'css/retro/dashboard.css',
   'css/storm/base.css', 'css/storm/components.css', 'css/storm/setup.css', 'css/storm/dashboard.css',
+  'css/ocean/base.css', 'css/ocean/components.css', 'css/ocean/setup.css', 'css/ocean/dashboard.css',
+  'css/city/base.css', 'css/city/components.css', 'css/city/setup.css', 'css/city/dashboard.css',
+  'css/fantasy/base.css', 'css/fantasy/components.css', 'css/fantasy/setup.css', 'css/fantasy/dashboard.css',
 ];
 const QR_LIB = 'https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js';
 

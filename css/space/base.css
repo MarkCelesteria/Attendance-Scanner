@@ -93,8 +93,19 @@ body {
 body {
   background-color: var(--paper);
   background-image:
+    /* ringed gas giant */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260' viewBox='0 0 260 260'%3E %3Cdefs%3E %3CradialGradient id='g' cx='.33' cy='.28' r='.95'%3E%3Cstop offset='0' stop-color='%23E2D8FF'/%3E%3Cstop offset='.4' stop-color='%238B7BF5'/%3E%3Cstop offset='.75' stop-color='%233A2E9E'/%3E%3Cstop offset='1' stop-color='%23120E40'/%3E%3C/radialGradient%3E %3CradialGradient id='s' cx='.3' cy='.25' r='.95'%3E%3Cstop offset='.5' stop-color='%23000' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%23000' stop-opacity='.7'/%3E%3C/radialGradient%3E %3CradialGradient id='a' cx='.5' cy='.5' r='.5'%3E%3Cstop offset='.72' stop-color='%23A78BFA' stop-opacity='.4'/%3E%3Cstop offset='1' stop-color='%23A78BFA' stop-opacity='0'/%3E%3C/radialGradient%3E %3ClinearGradient id='r' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%23A78BFA' stop-opacity='.15'/%3E%3Cstop offset='.5' stop-color='%23EDE6FF' stop-opacity='.95'/%3E%3Cstop offset='1' stop-color='%23A78BFA' stop-opacity='.3'/%3E%3C/linearGradient%3E %3CclipPath id='c'%3E%3Ccircle cx='130' cy='130' r='60'/%3E%3C/clipPath%3E %3C/defs%3E %3Cg transform='rotate(-20 130 130)'%3E %3Ccircle cx='130' cy='130' r='84' fill='url(%23a)'/%3E %3Cellipse cx='130' cy='130' rx='120' ry='28' fill='none' stroke='url(%23r)' stroke-width='9'/%3E %3Cellipse cx='130' cy='130' rx='102' ry='23' fill='none' stroke='url(%23r)' stroke-width='3' opacity='.6'/%3E %3Ccircle cx='130' cy='130' r='60' fill='url(%23g)'/%3E %3Cg clip-path='url(%23c)'%3E %3Crect x='60' y='92' width='140' height='7' fill='%23fff' opacity='.14'/%3E %3Crect x='60' y='108' width='140' height='13' fill='%231A1650' opacity='.28'/%3E %3Crect x='60' y='132' width='140' height='6' fill='%23fff' opacity='.12'/%3E %3Crect x='60' y='146' width='140' height='11' fill='%231A1650' opacity='.28'/%3E %3Crect x='60' y='164' width='140' height='5' fill='%23fff' opacity='.1'/%3E %3C/g%3E %3Ccircle cx='130' cy='130' r='60' fill='url(%23s)'/%3E %3Cpath d='M10 130 A120 28 0 0 0 250 130' fill='none' stroke='url(%23r)' stroke-width='9'/%3E %3Cpath d='M28 130 A102 23 0 0 0 232 130' fill='none' stroke='url(%23r)' stroke-width='3' opacity='.6'/%3E %3C/g%3E%3C/svg%3E"),
+    /* teal ocean planet */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E %3Cdefs%3E %3CradialGradient id='g' cx='.33' cy='.28' r='.95'%3E%3Cstop offset='0' stop-color='%238DF5CF'/%3E%3Cstop offset='.45' stop-color='%2313A878'/%3E%3Cstop offset='1' stop-color='%23042A21'/%3E%3C/radialGradient%3E %3CradialGradient id='s' cx='.3' cy='.25' r='.95'%3E%3Cstop offset='.5' stop-color='%23000' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%23000' stop-opacity='.72'/%3E%3C/radialGradient%3E %3CradialGradient id='a' cx='.5' cy='.5' r='.5'%3E%3Cstop offset='.74' stop-color='%235FE3B5' stop-opacity='.45'/%3E%3Cstop offset='1' stop-color='%235FE3B5' stop-opacity='0'/%3E%3C/radialGradient%3E %3CclipPath id='c'%3E%3Ccircle cx='60' cy='60' r='44'/%3E%3C/clipPath%3E %3C/defs%3E %3Ccircle cx='60' cy='60' r='58' fill='url(%23a)'/%3E %3Ccircle cx='60' cy='60' r='44' fill='url(%23g)'/%3E %3Cg clip-path='url(%23c)'%3E %3Cpath d='M28 44 Q38 30 52 38 Q62 46 50 58 Q36 62 28 44Z' fill='%230A5C41' opacity='.75'/%3E %3Cpath d='M64 68 Q78 60 90 72 Q86 88 70 86 Q58 80 64 68Z' fill='%230A5C41' opacity='.75'/%3E %3Cellipse cx='48' cy='34' rx='16' ry='3' fill='%23fff' opacity='.25'/%3E %3Cellipse cx='74' cy='54' rx='14' ry='2.5' fill='%23fff' opacity='.2'/%3E %3Cellipse cx='50' cy='78' rx='18' ry='3' fill='%23fff' opacity='.2'/%3E %3C/g%3E %3Ccircle cx='60' cy='60' r='44' fill='url(%23s)'/%3E %3C/svg%3E"),
+    /* moon */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='70' height='70' viewBox='0 0 70 70'%3E %3Cdefs%3E %3CradialGradient id='g' cx='.33' cy='.28' r='.95'%3E%3Cstop offset='0' stop-color='%23FFFFFF'/%3E%3Cstop offset='.6' stop-color='%23B4B6DC'/%3E%3Cstop offset='1' stop-color='%235A5C8A'/%3E%3C/radialGradient%3E %3CradialGradient id='s' cx='.3' cy='.25' r='.95'%3E%3Cstop offset='.45' stop-color='%23000' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%23000' stop-opacity='.75'/%3E%3C/radialGradient%3E %3CradialGradient id='a' cx='.5' cy='.5' r='.5'%3E%3Cstop offset='.78' stop-color='%23E8E6FF' stop-opacity='.35'/%3E%3Cstop offset='1' stop-color='%23E8E6FF' stop-opacity='0'/%3E%3C/radialGradient%3E %3C/defs%3E %3Ccircle cx='35' cy='35' r='34' fill='url(%23a)'/%3E %3Ccircle cx='35' cy='35' r='26' fill='url(%23g)'/%3E %3Cg fill='%232B2D55' opacity='.28'%3E%3Ccircle cx='26' cy='28' r='6'/%3E%3Ccircle cx='42' cy='42' r='8'/%3E%3Ccircle cx='44' cy='24' r='3.5'/%3E%3Ccircle cx='28' cy='44' r='3'/%3E%3C/g%3E %3Cg fill='none' stroke='%23fff' stroke-opacity='.25'%3E%3Ccircle cx='26' cy='28' r='6'/%3E%3Ccircle cx='42' cy='42' r='8'/%3E%3C/g%3E %3Ccircle cx='35' cy='35' r='26' fill='url(%23s)'/%3E %3C/svg%3E"),
+    /* amber gas planet */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90' viewBox='0 0 90 90'%3E %3Cdefs%3E %3CradialGradient id='g' cx='.33' cy='.28' r='.95'%3E%3Cstop offset='0' stop-color='%23FFE2A8'/%3E%3Cstop offset='.45' stop-color='%23E8801F'/%3E%3Cstop offset='1' stop-color='%234A1F05'/%3E%3C/radialGradient%3E %3CradialGradient id='s' cx='.3' cy='.25' r='.95'%3E%3Cstop offset='.5' stop-color='%23000' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%23000' stop-opacity='.7'/%3E%3C/radialGradient%3E %3CradialGradient id='a' cx='.5' cy='.5' r='.5'%3E%3Cstop offset='.76' stop-color='%23FFB454' stop-opacity='.4'/%3E%3Cstop offset='1' stop-color='%23FFB454' stop-opacity='0'/%3E%3C/radialGradient%3E %3CclipPath id='c'%3E%3Ccircle cx='45' cy='45' r='34'/%3E%3C/clipPath%3E %3C/defs%3E %3Ccircle cx='45' cy='45' r='44' fill='url(%23a)'/%3E %3Ccircle cx='45' cy='45' r='34' fill='url(%23g)'/%3E %3Cg clip-path='url(%23c)'%3E %3Crect x='0' y='22' width='90' height='5' fill='%23fff' opacity='.2'/%3E %3Crect x='0' y='32' width='90' height='8' fill='%235A2A06' opacity='.3'/%3E %3Crect x='0' y='47' width='90' height='5' fill='%23fff' opacity='.15'/%3E %3Crect x='0' y='57' width='90' height='7' fill='%235A2A06' opacity='.3'/%3E %3Cellipse cx='58' cy='50' rx='6' ry='3.5' fill='%23B3361B' opacity='.7'/%3E %3C/g%3E %3Ccircle cx='45' cy='45' r='34' fill='url(%23s)'/%3E %3C/svg%3E"),
     radial-gradient(60vmax 45vmax at 88% -8%, var(--nebula-a), transparent 62%),
     radial-gradient(55vmax 40vmax at -8% 108%, var(--nebula-b), transparent 62%);
+  background-repeat: no-repeat;
+  background-size: 260px 260px, 120px 120px, 70px 70px, 90px 90px, auto, auto;
+  background-position: right 3% bottom 5%, left 5% bottom 15%, left 9% top 8%, right 15% top 18%, 0 0, 0 0;
   background-attachment: fixed;
 }
 body::before, body::after { content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none; }
@@ -119,3 +130,43 @@ body::after {
 @keyframes twinkle { from { opacity: .45; } to { opacity: 1; } }
 h1, h2, h3 { font-family: var(--display); letter-spacing: 0; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ---- SPACE extras (no HTML needed) ---- */
+/* ringed planet, bottom-right */
+html::before {
+  content: ''; position: fixed; z-index: -1; pointer-events: none;
+  right: 3%; bottom: 5%; width: 220px; height: 220px;
+  background:
+    radial-gradient(ellipse 98px 22px at 50% 50%, transparent 72%, rgba(167,139,250,.65) 75%, rgba(167,139,250,.65) 92%, transparent 95%),
+    radial-gradient(circle 55px at 38% 38%, #C4B5FD 0, #5B4BD5 50%, #1A1650 100%);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  transform: rotate(-18deg);
+  filter: drop-shadow(0 0 24px var(--glow));
+}
+
+/* flickering stars: one tiny element, many box-shadows */
+html::after {
+  content: ''; position: fixed; z-index: -1; pointer-events: none;
+  top: 0; left: 0; width: 3px; height: 3px; background: transparent;
+  box-shadow:
+    30vw 14vh 2px 1px #fff,
+    72vw 22vh 2px 1px #fff,
+    12vw 48vh 3px 1px #fff,
+    55vw 60vh 2px 1px #fff,
+    35vw 80vh 3px 1px #fff,
+    90vw 35vh 2px 1px #fff,
+    8vw 12vh 2px 1px #fff,
+    80vw 70vh 3px 1px #fff;
+  animation: flicker 3.4s linear infinite;
+}
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  8%  { opacity: .1; }
+  11% { opacity: .9; }
+  14% { opacity: .05; }
+  18% { opacity: 1; }
+  55% { opacity: .6; }
+  58% { opacity: .1; }
+  61% { opacity: 1; }
+}
