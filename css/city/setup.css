@@ -264,3 +264,13 @@
 .btn { max-width: 100%; }
 .setup-actions .btn, .modal-actions .btn, .copy-row .btn { white-space: normal; text-align: center; line-height: 1.35; }
 .modal-actions { flex-wrap: wrap; }
+
+/* ---- CITY fit fix: "Appearance" row ---- */
+.toggle-text { overflow-wrap: break-word; }
+.toggle-row:has(.theme-seg) { flex-wrap: wrap; gap: 10px 16px; }
+.toggle-row:has(.theme-seg) .toggle-text { flex: 1 1 100%; padding-right: 0; }
+.theme-seg { width: 100%; }
+.theme-opt { flex: 1 1 0; padding: 8px 4px; text-align: center; }
+.toggle-text { min-width: 6em; }
+.toggle-row .toggle-controls { flex: 0 1 auto; min-width: 0; }
+.toggle-controls select { width: auto; min-width: 110px; max-width: 160px; }
