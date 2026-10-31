@@ -19,6 +19,7 @@ export const DESIGNS = [
   { id: 'fantasy',   label: 'Fantasy',   group: 'fun',     dir: 'css/fantasy/',   color: { light: '#6FB2EE', dark: '#0A0E2E' } },
   { id: 'space',     label: 'Space',     group: 'fun',     dir: 'css/space/',     color: { light: '#05060F', dark: '#05060F' } },
   { id: 'retro',     label: 'Retro',     group: 'fun',     dir: 'css/retro/',     color: { light: '#F1EDFF', dark: '#0F0A24' } },
+  { id: 'party',     label: 'Party',     group: 'fun',     dir: 'css/party/',     color: { light: '#FFF1E2', dark: '#FFF1E2' } },
   { id: 'cny',       label: 'New Year',  group: 'holiday', dir: 'css/cny/',       color: { light: '#C8102E', dark: '#14030A' } },
   { id: 'valentine', label: 'Valentine', group: 'holiday', dir: 'css/valentine/', color: { light: '#1A0611', dark: '#1A0611' } },
   { id: 'halloween', label: 'Halloween', group: 'holiday', dir: 'css/halloween/', color: { light: '#0B0420', dark: '#0B0420' } },
