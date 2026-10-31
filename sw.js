@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION = 'v1.9.10';
+const VERSION = 'v1.9.11';
 const CACHE = `attendance-shell-${VERSION}`;
 
 const SHELL = [
@@ -51,6 +51,8 @@ const SHELL = [
   'css/lab/base.css', 'css/lab/components.css', 'css/lab/setup.css', 'css/lab/dashboard.css',
   'css/halloween/base.css', 'css/halloween/components.css', 'css/halloween/setup.css', 'css/halloween/dashboard.css',
   'css/valentine/base.css', 'css/valentine/components.css', 'css/valentine/setup.css', 'css/valentine/dashboard.css',
+  'css/cny/base.css', 'css/cny/components.css', 'css/cny/setup.css', 'css/cny/dashboard.css',
+  'css/christmas/base.css', 'css/christmas/components.css', 'css/christmas/setup.css', 'css/christmas/dashboard.css',
 ];
 const QR_LIB = 'https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js';
 
