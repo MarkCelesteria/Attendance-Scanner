@@ -359,6 +359,16 @@
 .session-btn[aria-checked="true"] { background: linear-gradient(180deg, rgba(229, 56, 59, .30), rgba(229, 56, 59, .08)), #12304F; }
 .session-btn { padding-right: 32px; }
 
+/* ---- idle camera icon: a wrapped gift, the QR code sits on its gift tag ---- */
+.scanner-idle-icon {
+  position: relative; width: 84px; height: 84px; border: 0; border-radius: 0; box-shadow: none; padding: 0;
+  background: var(--gift) center / contain no-repeat; color: #14213D;
+  filter: drop-shadow(0 6px 10px rgba(229, 56, 59, .40)); animation: xm-gift 3.2s ease-in-out infinite;
+}
+.scanner-idle-icon svg { position: absolute; left: 50%; top: 70%; width: 26%; height: 26%; transform: translate(-50%, -50%); }
+@media (max-width: 600px) { .scanner-idle-icon { width: 68px; height: 68px; } }
+@keyframes xm-gift { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-5px) rotate(2deg); } }
+
 /* ---- CHRISTMAS fit fixes ---- */
 .session-btn { min-width: 0; }
 .session-btn .s-name, .tbl-card-head h3, .admin-panel-head h2 { overflow-wrap: break-word; min-width: 0; }

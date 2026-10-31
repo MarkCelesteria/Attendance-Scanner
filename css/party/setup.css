@@ -194,11 +194,15 @@
   color: var(--ink); text-shadow: 3px 3px 0 #FFC93C; }
 .setup-head p { color: var(--ink-2); }
 .setup-form fieldset { border: 2px solid var(--edge); border-radius: 22px; padding-top: 18px; box-shadow: 0 5px 0 var(--edge);
-  background: linear-gradient(90deg, #FF4D8D, #FFB703 33%, #2EC4B6 66%, #7B4FD6) top / 100% 5px no-repeat, var(--glass); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
-.setup-form legend { font-family: var(--label); font-weight: 700; font-size: .78rem; text-transform: uppercase; letter-spacing: .14em; color: var(--accent);
-  background: #fff; border: 2px solid var(--edge); border-radius: 999px; padding: 2px 12px; }
+  background: linear-gradient(90deg, #FF5A36, #FFC93C 25%, #2EC4B6 50%, #3A86FF 75%, #9B5DE5) top / 100% 5px no-repeat, var(--glass); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.setup-form legend { font-family: var(--label); font-weight: 700; font-size: .78rem; text-transform: uppercase; letter-spacing: .14em; color: var(--edge);
+  background: #FFE066; border: 2px solid var(--edge); border-radius: 999px; padding: 2px 12px; }
+.setup-form fieldset:nth-of-type(5n+2) legend { background: #B8F0E4; }
+.setup-form fieldset:nth-of-type(5n+3) legend { background: #DCCBFF; }
+.setup-form fieldset:nth-of-type(5n+4) legend { background: #FFD0B0; }
+.setup-form fieldset:nth-of-type(5n+5) legend { background: #BFE3FF; }
 .advanced { border: 2px solid var(--edge); border-radius: 22px; box-shadow: 0 5px 0 var(--edge);
-  background: linear-gradient(90deg, #FF4D8D, #FFB703 33%, #2EC4B6 66%, #7B4FD6) top / 100% 5px no-repeat, var(--glass); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+  background: linear-gradient(90deg, #FF5A36, #FFC93C 25%, #2EC4B6 50%, #3A86FF 75%, #9B5DE5) top / 100% 5px no-repeat, var(--glass); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
 .advanced summary { font-family: var(--label); font-size: .82rem; text-transform: uppercase; letter-spacing: .12em; color: var(--ink); padding-top: 4px; }
 .adv-sep { font-family: var(--label); font-size: .7rem; letter-spacing: .16em; color: var(--accent); }
 .adv-sep::after { background: repeating-linear-gradient(90deg, var(--line-strong) 0 6px, transparent 6px 12px); height: 2px; }
@@ -212,16 +216,16 @@
 .steps code { background: var(--fill); border-radius: 8px; }
 .qrpdf-chip { border: 2px solid var(--line-strong); background: #fff; }
 .qrpdf-chip-icon { border-color: var(--line-strong); }
-.qrpdf-chip-input:checked + .qrpdf-chip-icon { background: var(--brand); border-color: var(--brand); }
-.qrpdf-chip:has(.qrpdf-chip-input:checked) { background: #FFE6F1; border-color: var(--brand); color: var(--ink); }
+.qrpdf-chip-input:checked + .qrpdf-chip-icon { background: #0F8F86; border-color: #0F8F86; }
+.qrpdf-chip:has(.qrpdf-chip-input:checked) { background: #DDF6F1; border-color: #0F8F86; color: var(--ink); }
 .qrpdf-chip-input:focus-visible + .qrpdf-chip-icon { outline-color: var(--focus); }
 .qrpdf-bar-track { background: var(--fill); border: 2px solid var(--edge); }
-.qrpdf-bar-fill { background: repeating-linear-gradient(45deg, #FF4D8D 0 10px, #FFB703 10px 20px, #2EC4B6 20px 30px); }
+.qrpdf-bar-fill { background: repeating-linear-gradient(45deg, #FF5A36 0 10px, #FFC93C 10px 20px, #2EC4B6 20px 30px, #3A86FF 30px 40px); }
 .key-help { border-radius: 14px; border: 2px dashed var(--line-strong); }
 .session-head { font-family: var(--label); font-size: .7rem; text-transform: uppercase; letter-spacing: .12em; color: var(--ink-2); }
 .row-del { border: 2px solid var(--edge); border-radius: 12px; background: #fff; box-shadow: 0 2px 0 var(--edge); }
 .add-session { border: 2px dashed var(--line-strong); border-radius: 14px; color: var(--accent); }
-.add-session:hover, .add-session:focus-visible { border-color: var(--accent); background: #FFE6F1; color: var(--accent); }
+.add-session:hover, .add-session:focus-visible { border-color: var(--accent); background: #E8DDFF; color: var(--accent); }
 .toggle-row { gap: 16px; }
 .toggle-row ~ .toggle-row { border-top: 2px dashed var(--line); }
 .toggle-text { padding-right: 0; }
