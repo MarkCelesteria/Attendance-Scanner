@@ -195,7 +195,7 @@
 @keyframes pumpkin-flicker { 0%, 100% { opacity: 1; } 22% { opacity: .72; } 30% { opacity: 1; } 61% { opacity: .6; } 68% { opacity: 1; } 84% { opacity: .82; } }
 .setup-form fieldset, .advanced {
   background: var(--panel); color: var(--ink); border: 2px solid #3F6C94; border-radius: 12px;
-  box-shadow: inset 0 1px 0 rgba(255, 200, 87, .35), inset 0 0 24px rgba(90, 160, 230, .18), 0 0 16px rgba(90, 160, 230, .28), 0 8px 18px rgba(0, 0, 0, .6);
+  box-shadow: inset 0 1px 0 rgba(255, 90, 95, .35), inset 0 0 24px rgba(90, 160, 230, .18), 0 0 16px rgba(90, 160, 230, .28), 0 8px 18px rgba(0, 0, 0, .6);
 }
 
 .setup-form fieldset:focus-within, .advanced[open] { border-color: var(--accent); }
@@ -209,7 +209,7 @@
 .help-btn:hover, .help-btn:focus-visible { border-color: var(--accent); color: var(--accent); box-shadow: 0 0 12px var(--glow); }
 .modal {
   background: var(--panel); color: var(--ink); border: 2px solid #3F6C94; border-radius: 12px;
-  box-shadow: inset 0 1px 0 rgba(255, 200, 87, .35), inset 0 0 24px rgba(90, 160, 230, .18), 0 0 16px rgba(90, 160, 230, .28), 0 8px 18px rgba(0, 0, 0, .6);
+  box-shadow: inset 0 1px 0 rgba(255, 90, 95, .35), inset 0 0 24px rgba(90, 160, 230, .18), 0 0 16px rgba(90, 160, 230, .28), 0 8px 18px rgba(0, 0, 0, .6);
 }
 
 .modal { box-shadow: 0 20px 70px rgba(0, 0, 0, .8), 0 0 40px rgba(90, 160, 230, .4); }
@@ -225,7 +225,7 @@
 .qrpdf-chip:has(.qrpdf-chip-input:checked) { background: var(--accent-soft); border-color: var(--accent); color: var(--ink); }
 .qrpdf-chip-input:focus-visible + .qrpdf-chip-icon { outline-color: var(--accent); }
 .qrpdf-bar-track { background: #0A1B31; }
-.qrpdf-bar-fill { background: linear-gradient(90deg, #E5383B, #FFC857); box-shadow: 0 0 10px var(--glow); }
+.qrpdf-bar-fill { background: linear-gradient(90deg, #E5383B, #2FB36B); box-shadow: 0 0 10px var(--glow); }
 .key-help { border-color: #3F6C94; border-radius: 10px; }
 .session-head { color: var(--accent); font-family: var(--display); }
 .row-del { border: 2px solid #3F6C94; border-radius: 10px; background: #12304F; }
@@ -240,15 +240,15 @@
 .theme-opt[aria-checked="true"] { color: #1A0B05; }
 .toggle-row:has(.theme-seg) { display: none; }
 
-.setup-head h1 { text-shadow: 0 0 16px rgba(255, 200, 87, .55); }
-.setup-form legend { position: relative; z-index: 3; background: linear-gradient(180deg, #FF5A5F, #C81E2B); color: #fff; text-shadow: 0 1px 0 rgba(90, 0, 10, .5); border: 1px solid #FFD27A; box-shadow: 0 0 12px var(--red-glow); }
+.setup-head h1 { text-shadow: 0 0 16px rgba(255, 90, 95, .55); }
+.setup-form legend { position: relative; z-index: 3; background: linear-gradient(180deg, #FF5A5F, #C81E2B); color: #fff; text-shadow: 0 1px 0 rgba(90, 0, 10, .5); border: 1px solid #FF9AA0; box-shadow: 0 0 12px var(--red-glow); }
 .setup-form fieldset { padding-top: 28px; }
 .advanced { padding-top: 16px; }
 .modal-body { padding-top: 34px; }
 .switch input:checked + .slider { box-shadow: 0 0 14px rgba(107, 255, 158, .45); }
 .theme-opt[aria-checked="true"] { color: #fff; }
 
-AYOUT SAFEGUARDS (font-size independent) =====
+/* LAYOUT SAFEGUARDS (font-size independent) =====
    Append to the END of a design's setup.css. Layout only: no colours or fonts.
    Keeps columns, session rows, labels with "(optional)" and buttons from overflowing when a design uses big or wide fonts. */
 

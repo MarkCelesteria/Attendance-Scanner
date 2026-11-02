@@ -80,7 +80,6 @@ export function initDesignPicker(select, designs) {
     if (select.disabled) close();
   }
   function place() {
-    // position: fixed, so no dialog/overflow clipping. Measure where (0,0) really lands to cope with transformed ancestors.
     const br = btn.getBoundingClientRect(); const vh = window.innerHeight; const vw = window.innerWidth;
     const gap = 6; const m = 10;
     const below = vh - br.bottom - gap - m; const above = br.top - gap - m;

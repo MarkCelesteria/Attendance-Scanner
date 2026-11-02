@@ -295,19 +295,19 @@
 .session-btn[aria-checked="true"]::after { content: ''; position: absolute; top: 5px; right: 7px; width: 20px; height: 20px; background: var(--bauble) center / contain no-repeat; animation: pumpkin-flicker 2.4s linear infinite; }
 
 /* camera idle: a haunted-hill night scene. Candle-light glows at the bottom (opacity only). */
-.scanner { position: relative; background: var(--village) center bottom / cover no-repeat, #0B0714; border: 3px solid #3F6C94; border-radius: 12px; box-shadow: 0 0 24px rgba(90, 160, 230, .35), inset 0 0 0 1px rgba(255, 200, 87, .4); }
+.scanner { position: relative; background: var(--village) center bottom / cover no-repeat, #0B0714; border: 3px solid #3F6C94; border-radius: 12px; box-shadow: 0 0 24px rgba(90, 160, 230, .35), inset 0 0 0 1px rgba(255, 90, 95, .4); }
 .scanner:not(.is-live)::after {
   content: ''; position: absolute; left: 0; right: 0; top: -2px; height: 26px; z-index: 2; pointer-events: none;
   background: var(--lights-c) left top / 96px 26px repeat-x; animation: xm-twinkle 2.4s step-end infinite;
 }
 .scanner-idle { color: #F2FAFF; text-shadow: 0 1px 4px rgba(0, 0, 0, .9); background: radial-gradient(ellipse at 50% 55%, rgba(4, 10, 28, .6), rgba(4, 10, 28, 0) 72%); }
-.scanner-idle-icon { background: rgba(229, 56, 59, .2); color: #FFD27A; border: 2px solid var(--accent); box-shadow: 0 0 20px var(--glow); text-shadow: none; }
+.scanner-idle-icon { background: rgba(229, 56, 59, .2); color: #FF9AA0; border: 2px solid var(--accent); box-shadow: 0 0 20px var(--glow); text-shadow: none; }
 .scanner-idle-title { font-family: var(--display); color: #F2FAFF; }
 .scanner-idle-sub { color: #DDEEFF; }
-.btn-camera-start { border-radius: 10px; background: linear-gradient(180deg, #FF5A5F, #C81E2B); color: #1A0B05; border: 2px solid #FFD27A; text-shadow: 0 1px 0 rgba(255, 230, 190, .4); box-shadow: 0 0 20px var(--glow); }
+.btn-camera-start { border-radius: 10px; background: linear-gradient(180deg, #FF5A5F, #C81E2B); color: #1A0B05; border: 2px solid #FF9AA0; text-shadow: 0 1px 0 rgba(255, 230, 190, .4); box-shadow: 0 0 20px var(--glow); }
 .scanner.is-live .btn-camera-start { background: rgba(6, 14, 32, .9); color: var(--accent); border: 2px solid var(--accent); box-shadow: none; text-shadow: none; }
 .qsel-btn { border-radius: 10px; background: rgba(6, 14, 32, .9); color: var(--ink); border: 1px solid var(--accent); }
-.qsel-btn:focus-visible { border-color: #FFE29A; box-shadow: 0 0 0 2px var(--glow); }
+.qsel-btn:focus-visible { border-color: #FFB3B8; box-shadow: 0 0 0 2px var(--glow); }
 .qsel-list { background: #0F2540; color: var(--ink); border: 2px solid var(--accent); border-radius: 10px; box-shadow: 0 12px 30px rgba(0, 0, 0, .7); }
 .qsel-group-label { background: #17365A; color: var(--accent); font-family: var(--display); }
 .qsel-option.is-focused { background: var(--accent-soft); }
@@ -315,7 +315,7 @@
 
 .result, .tbl-card, .admin-panel {
   background: var(--panel); color: var(--ink); border: 2px solid #3F6C94; border-radius: 12px;
-  box-shadow: inset 0 1px 0 rgba(255, 200, 87, .35), inset 0 0 24px rgba(90, 160, 230, .18), 0 0 16px rgba(90, 160, 230, .28), 0 8px 18px rgba(0, 0, 0, .6);
+  box-shadow: inset 0 1px 0 rgba(255, 90, 95, .35), inset 0 0 24px rgba(90, 160, 230, .18), 0 0 16px rgba(90, 160, 230, .28), 0 8px 18px rgba(0, 0, 0, .6);
 }
 
 .result.is-idle { background: var(--panel); border-style: dashed; border-color: #3F6C94; }
@@ -351,13 +351,17 @@
 
 .btn-camera-start { color: #fff; border-color: #FF9AA0; text-shadow: 0 1px 0 rgba(90, 0, 10, .5); box-shadow: 0 0 20px var(--red-glow); }
 .scanner.is-live .btn-camera-start { color: var(--accent); text-shadow: none; box-shadow: none; }
-.scanner-idle-icon { background: rgba(229, 56, 59, .25); color: #FFD27A; }
+.scanner-idle-icon { background: rgba(229, 56, 59, .25); color: #FF9AA0; }
 .result { padding-top: 30px; }
 .tbl-card { padding-top: 28px; }
 .admin-panel { padding-top: 30px; }
 @media (max-width: 600px) { .result { padding-top: 26px; } }
 .session-btn[aria-checked="true"] { background: linear-gradient(180deg, rgba(229, 56, 59, .30), rgba(229, 56, 59, .08)), #12304F; }
 .session-btn { padding-right: 32px; }
+
+/* selected option + count badge: red with white text */
+.qsel-option[aria-selected="true"], .tbl-badge { background: var(--brand); color: #fff; }
+.theme-seg-thumb { background: var(--brand); }
 
 /* ---- idle camera icon: a wrapped gift, the QR code sits on its gift tag ---- */
 .scanner-idle-icon {

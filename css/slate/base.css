@@ -1,0 +1,67 @@
+/* Slate — cool blue-gray, soft elevated cards, filled fields, dot-grid page. System fonts only. */
+:root {
+  --paper:   #EEF1F5;  --card: #FFFFFF;  --fill: #E3E8EF;
+  --ink:     #172033;  --ink-2: #5B667A;
+  --line:    #DCE2EB;  --line-strong: #98A3B8;
+  --brand:   #3B5BDB;  --on-brand: #FFFFFF;
+  --hl:      #3B5BDB;  --hl-ink: #FFFFFF;
+  --ok:      #1E8A52;  --ok-soft: #DDF1E5;  --ok-border: #8CC8A5;
+  --warn:    #A15C07;  --warn-soft: #FBE9C6;
+  --bad:     #C7372F;  --bad-soft: #FADCD9;
+  --focus:   #3B5BDB;  --focus-ring: rgba(59, 91, 219, .28);
+  --hover:   rgba(23, 32, 51, .06);
+  --toast-bg: #172033; --toast-fg: #F4F6FA; --overlay-fg: #172033;
+  --accent-soft: rgba(59, 91, 219, .10);
+  --accent-glow: rgba(59, 91, 219, .35);
+  --shadow: 0 1px 2px rgba(23, 32, 51, .06), 0 6px 18px rgba(23, 32, 51, .08);
+  --dots: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22'%3E%3Ccircle cx='1.5' cy='1.5' r='1.1' fill='%23172033' fill-opacity='.10'/%3E%3C/svg%3E");
+  --radius:  10px;
+  --r-sm:    6px;
+  --font:    system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --display: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono:    ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper:   #0E131B;  --card: #161D29;  --fill: #1E2735;
+  --ink:     #E6EBF4;  --ink-2: #9AA6BC;
+  --line:    #263041;  --line-strong: #5A667C;
+  --brand:   #7C9BFF;  --on-brand: #0B1226;
+  --hl:      #7C9BFF;  --hl-ink: #0B1226;
+  --ok:      #43B079;  --ok-soft: #112419;  --ok-border: #2D6B4A;
+  --warn:    #E5AC55;  --warn-soft: #2A210F;
+  --bad:     #E8665E;  --bad-soft: #2B1614;
+  --focus:   #7C9BFF;  --focus-ring: rgba(124, 155, 255, .35);
+  --hover:   rgba(230, 235, 244, .07);
+  --toast-bg: #E6EBF4; --toast-fg: #0E131B; --overlay-fg: #E6EBF4;
+  --accent-soft: rgba(124, 155, 255, .14);
+  --accent-glow: rgba(124, 155, 255, .30);
+  --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 22px rgba(0, 0, 0, .35);
+  --dots: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22'%3E%3Ccircle cx='1.5' cy='1.5' r='1.1' fill='%23E6EBF4' fill-opacity='.07'/%3E%3C/svg%3E");
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background-color: var(--paper);
+  background-image: var(--dots);
+  background-attachment: fixed;
+  color: var(--ink);
+  font: 16px/1.5 var(--font);
+  -webkit-font-smoothing: antialiased;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+h1, h2, h3 { font-family: var(--display); font-weight: 700; letter-spacing: -.02em; }
+[hidden] { display: none !important; }
+.view { max-width: 720px; margin: 0 auto; padding: 16px; }
+#view-dashboard.admin-active { max-width: 1400px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}

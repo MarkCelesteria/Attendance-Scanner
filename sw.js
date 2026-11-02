@@ -1,6 +1,6 @@
 'use strict';
 
-const VERSION = 'v1.9.13';
+const VERSION = 'v1.9.14';
 const CACHE = `attendance-shell-${VERSION}`;
 
 const SHELL = [
@@ -39,6 +39,8 @@ const SHELL = [
   'css/ledger/base.css', 'css/ledger/components.css', 'css/ledger/setup.css', 'css/ledger/dashboard.css',
   'css/paper/base.css', 'css/paper/components.css', 'css/paper/setup.css', 'css/paper/dashboard.css',
   'css/clay/base.css', 'css/clay/components.css', 'css/clay/setup.css', 'css/clay/dashboard.css',
+  'css/wood/base.css', 'css/wood/components.css', 'css/wood/setup.css', 'css/wood/dashboard.css',
+  'css/slate/base.css', 'css/slate/components.css', 'css/slate/setup.css', 'css/slate/dashboard.css',
   'css/mono/base.css', 'css/mono/components.css', 'css/mono/setup.css', 'css/mono/dashboard.css',
   'css/space/base.css', 'css/space/components.css', 'css/space/setup.css', 'css/space/dashboard.css',
   'css/tech/base.css', 'css/tech/components.css', 'css/tech/setup.css', 'css/tech/dashboard.css',

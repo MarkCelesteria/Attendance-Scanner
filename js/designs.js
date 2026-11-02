@@ -10,6 +10,8 @@ export const DESIGNS = [
   { id: 'mono',      label: 'Mono',      group: 'basic',   dir: 'css/mono/',      color: { light: '#F7F6F2', dark: '#0D0D0D' } },
   { id: 'paper',     label: 'Paper',     group: 'basic',   dir: 'css/paper/',     color: { light: '#F3EEE3', dark: '#16130F' } },
   { id: 'clay',      label: 'Clay',      group: 'basic',   dir: 'css/clay/',      color: { light: '#F2E9DC', dark: '#1B1612' } },
+  { id: 'wood',      label: 'Wood',      group: 'basic',   dir: 'css/wood/',      color: { light: '#E4CFA9', dark: '#1A120B' } },
+  { id: 'slate',     label: 'Slate',     group: 'basic',   dir: 'css/slate/',     color: { light: '#F1F3F6', dark: '#0F1218' } },
   { id: 'tech',      label: 'Tech',      group: 'tech',    dir: 'css/tech/',      color: { light: '#E9EFF6', dark: '#060A11' } },
   { id: 'lab',       label: 'Lab',       group: 'tech',    dir: 'css/lab/',       color: { light: '#E4EEF0', dark: '#0C1820' } },
   { id: 'nature',    label: 'Nature',    group: 'nature',  dir: 'css/nature/',    color: { light: '#EAF3EA', dark: '#08120D' } },
